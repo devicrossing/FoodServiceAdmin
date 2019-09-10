@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
+    style
+      include css/index.css
+    
+  body
+
+    a(class='link' href='http://localhost:3030/foodList')
+        i(class='fas fa-utensils')
+    a(class='link' href='http://localhost:3030/listimage') 
+        i(class='fas fa-images')
+    a(class='link' href='http://localhost:3030/listPlaces') 
+        i(class='fas fa-map-marker')
+
+    
+    h1 Food Info Service - Menu
+
+    a(class='btn' href='http://localhost:3030/foodList') Food JSON
+    a(class='btn' href='http://localhost:3030/listimage') Food Images
+    a(class='btn' href='http://localhost:3030/listPlaces') Places JSON
+    
+    
