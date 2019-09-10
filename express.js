@@ -234,15 +234,12 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
     // Rename the image selected for validation 
 
-
-
     if (!req.files)
       return res.status(400).send('No files were uploaded.');
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     let sampleFile = req.files.picture;
     let ext = sampleFile.name.split(".")[1];
-
 
     pictureUrl.forEach((_url) => {
       fs.unlink(`./uploads/${_url}`, (err) => {
@@ -268,341 +265,11 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 // END___POST upload FROM ADMIN PANEL AND DELETE OTHER PENDING PHOTOS
 
 
-// list of pictures pending and validated
+
+// ___GET LIST of pictures pending and validated
 app.get("/listImage", (request, response) => {
 
-
-
-
-  var compiled = _.template(`
-    <!DOCTYPE html>
-    <html lang="en">
-    
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-
-      <title>Document</title>
-      <style>
-      div {
-        width: 100%;
-      }
-
-      body{
-        background:#00adf7;
-        margin:0;
-      }
-       
-      h2 {
-        font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        text-align:center;
-        font-weight: bold;
-        color:white;
-        margin-bottom:20px;
-      }
-       
-      ul.item-list {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-       
-      }
-       
-      ul.item-list li {
-        font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
-        border-bottom: 1px solid #ccc;
-        text-align:center;
-        
-      }
-       
-      ul.item-list  li:last-child {
-        border: none;
-      }
-       
-      ul.item-list  li a {
-        text-decoration: none;
-        color: #fff;
-        display: block;
-        width: 100%;
-       
-        -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-        -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-        -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-        -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
-        transition: font-size 0.3s ease, background-color 0.3s ease;
-      }
-       
-      ul.item-list  li a:hover {
-        font-size: 30px;
-        background: #f6f6f6;
-        color:#00adf7;
-
-      }
-
-#link_ul{
-  list-style: none;
-  font-decoration:none;
-}
-
-#link_ul li{
-display:inline-block;
-width:30%;
-border-bottom: none;
-
-}
-
-.item-list li:first-child{
-  display:none;
-}
-
-li#index0{
-  display:none;
-}
-
-h1{
-  margin:0;
-  padding:18px;
-}
-
-h1 a:hover {
-  transform:scale(1.1);
-}
-
-@media screen and (min-width: 960px){
-  .table-container{
-    display:inline-block;
-    width:49%;
-    margin:0;
-    padding:0;
-    background:white;
-    margin-left:.5%;
-    margin-top:1%;
-   vertical-align:top;
-    min-height:500px;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  }
-
-  ol li{
-    color:#00adf7;
-  }
-
-  h2{
-    color:#00adf7;
-  }
-
-
-}
-
-
-
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
-}
-.overlay:target {
-  visibility: visible;
-  opacity: 1;
-}
-
-.popup {
-  margin: 700px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  width: 30%;
-  position: relative;
-  transition: all 5s ease-in-out;
-  margin-top:100px;
-}
-
-.popup h2 {
-  margin-top: 0;
-  color: #00adf7;
-  font-family: Tahoma, Arial, sans-serif;
-}
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
-}
-.popup .close:hover {
-  color: #00adf7;
-}
-.popup .content {
-  max-height: 30%;
-  overflow: auto;
-}
-
-@media screen and (max-width: 700px){
-  .box{
-    width: 100%;
-  }
-  .popup{
-    width: 70%;
-  }
-}
-
-
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-
-}
-.form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-.form button  {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: ;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.form button:hover,.form button:active,.form button:focus {
-  background: #00f3ff;
-}
-
-
-
-.button{
-
-
-  background:white;
-  color:#00adf7;
-  display:inline-block;
-
-  line-height:3rem;
-  border:none;
-  font-size:3rem;
-  text-decoration:none;
-  transition:all 1s;
-  margin-left:50px;
-}
-
-.fantome_item:first-of-type{
-  display:none;
-}
-
-
-      </style>
-    </head>
-    
-    <body>
-    <h1 style="color:#00adf7; text-align:center; background:white"><a style="transition:transform 1s; background:#00adf7; color:white; text-decoration:none;  margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"  href="http://localhost:3030/"><i style="line-height:3rem;" class="fa fa-home"></i></a>
-    <a style=" transition:transform 1s; background:#00adf7; color:white; text-decoration:none;  margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"  href="http://localhost:3030/listPlaces"><i style="line-height:3rem;" class="fas fa-map-marker"></i> </i></a>
-    <a style=" transition:transform 1s; background:#00adf7; color:white; text-decoration:none;  margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"  href="http://localhost:3030/foodList"><i style="line-height:3rem;" class="fas fa-utensils"></i> </i></a> 
-    Food Service Images ADMIN PANEL
-    <a style=" background:#00adf7; padding:3px; border-radius:3px; color:white;" class="button " href="#popup1">Fantome img</a>
-    </h1>
-      <div class="table-container">
-        <div>
-          <h2 >
-            Images Waiting <i style="color: #FF9800;" class="fas fa-clock"></i>
-          </h2>
-          <ul class="item-list">
-
-        <div>
-        <ol id="link_ul" style="text-align:center; background:#00adf7; border-bottom:2px white solid;">
-        <li class="ol_header" style="font-size:2rem; color:white;">id</li>
-        <li class="ol_header" style="font-size:2rem; color:white;">name</li>
-        <li class="ol_header" style="font-size:2rem; color:white;">place</li>
-      </div>
-        </li>
-
-            <% for(var pic in picsNon) { %>
-              <li id="index<%= pic %>" >
-              <a href="http://localhost:3030/foodValidate/<%= picsNon[pic] %>/non">
-                <ol id="link_ul">
-                  <li><%= picsNon[pic].split("_")[0] %></li>
-                  <li><%= picsNon[pic].split("_")[1] %></li>
-                  <li><%= picsNon[pic].split("_")[2] %></li>
-                </ol>
-              </a>
-              </li>
-              <% } %>
-          </ul>
-        </div>
-      </div><div class="table-container">
-      <div>
-        <h2 >
-         Image Validated <i style="color:#4CAF50;" class="fas fa-check"></i>
-        </h2>
-        <ul class="item-list">
-
-      <div>
-      <ol id="link_ul" style="text-align:center; background:#00adf7; color:white; border-bottom:2px white solid;">
-      <li class="ol_header" style="font-size:2rem; color:white;">id</li>
-      <li class="ol_header" style="font-size:2rem; color:white;">name</li>
-      <li class="ol_header" style="font-size:2rem; color:white;">place</li>
-    </div>
-      </li>
-
-          <% for(var pic in picsYes) { %>
-            <li  >
-            <a href="http://localhost:3030/foodValidate/<%= picsYes[pic] %>/yes">
-              <ol id="link_ul">
-                <li><%= picsYes[pic].split("_")[0] %></li>
-                <li><%= picsYes[pic].split("_")[1] %></li>
-                <li><%= picsYes[pic].split("_")[2] %></li>
-              </ol>
-            </a>
-            </li>
-            <% } %>
-        </ul>
-      </div>
-    </div>
-
-
-    <div id="popup1" class="overlay">
-    <div class="popup form">
-      <h2>Fantome Images</h2>
-      <a class="close" href="#">&times;</a>
-      <% for(var pic in picsFantome) { %>
-       <div class="fantome_item">
-       <%= picsFantome[pic] %>   <a style="float:right; color:red;"  href="http://localhost:3030/imagesRemove/<%= picsFantome[pic] %>"> <i class="fa fa-trash"></i> </a>
-       </div>
-        <% } %>
-    </div>
-  </div>
-    
-    </body>`);
-
+  // var compiled = _.template(``);
 
   // get the pictures in uploads folder and put them in list
   let _folder = "./uploads/";
@@ -634,14 +301,11 @@ h1 a:hover {
       }
     });
 
-
-
     // retreive the id_name_place pattern from foodList
     let patterns = [];
     foodList.forEach(function (value) {
       patterns.push(`${value.id}_${value.name.replace(/ /g, '')}_${value.place.replace(/ /g , '')}`);
     })
-
 
     // pictures fantome that exist but no reference in database
     picturesList.forEach(function (value) {
@@ -654,22 +318,21 @@ h1 a:hover {
       }
     });
 
-    let template = compiled({
+    response.render('list_image', {
+      pageTitle: 'Images List - ADMIN PANEL',
       picsNon: pictureGroupsNonValidated,
       picsYes: pictureGroupsYesValidated,
       picsFantome: picturesGroupsFantome
-    });
-    response.end(template);
+
+    })
+
   });
 
-});
+}); // END___GET LIST of pictures pending and validated
 
 
 // get food Item MANAGEMENT
-
 app.get("/foodValidate/:foodId/:validated", (req, res) => {
-
-
 
   var compiled = _.template(`
     <!DOCTYPE html>

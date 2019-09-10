@@ -1,0 +1,74 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
+    style
+      include css/list_image.css
+    
+  body
+    h1(class='header')
+        a(class='link left' href='http://localhost:3030/foodList')
+            i(class='fas fa-utensils')
+        a(class='link left' href='http://localhost:3030/listimage') 
+            i(class='fas fa-images')
+        a(class='link left' href='http://localhost:3030/listPlaces')  
+            i(class='fas fa-map-marker')
+        . 
+            Food Service Images ADMIN PANEL    
+        a(class='right btn' href="#popup1") GHOST IMG
+    div(class='table-container')
+        div
+            h2(class='header_pending')  Images Waiting
+                i(class='fas fa-clock')
+            ul(class='item-list')
+                div
+                    ol(id='link_ul')
+                        li(class='ol_header') id
+                        li(class='ol_header') name
+                        li(class='ol_header') place
+                each pic in picsNon
+                 li(id= pic)
+                    a(href="http://localhost:3030/foodValidate/" + pic + "/nom")
+                        ol(id='link_ul' class="link_ul_item")
+                            li= pic.split("_")[0]
+                            li= pic.split("_")[1]
+                            li= pic.split("_")[2]
+    div(class='table-container')
+        div
+            h2(class='header_pending')  Image Validated
+                i(class='fas fa-check')
+            ul(class='item-list')
+                div
+                    ol(id='link_ul')
+                        li(class='ol_header') id
+                        li(class='ol_header') name
+                        li(class='ol_header') place
+                each pic in picsYes
+                 li(id= pic)
+                    a(href="http://localhost:3030/foodValidate/" + pic + "/yes")
+                        ol(id='link_ul' class="link_ul_item")
+                            li= pic.split("_")[0]
+                            li= pic.split("_")[1]
+                            li= pic.split("_")[2]
+    div(id='popup1' class='overlay')
+        div(class='popup form')
+            h2 Fantome Images
+            a(class='close' href="#") &times;
+            each pic in picsFantome
+             div(class='fantome_item')= pic
+                a(href="http://localhost:3030/imagesRemove/" + pic)
+                    i(class='fa fa-trash')
+                
+              
+
+
+            
+    
+                                            
+
+
+                                    
+    
+ 
+    
