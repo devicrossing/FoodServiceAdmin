@@ -368,9 +368,6 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
 
 }); // END___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
 
-
-
-
 // ___GET TABLE LIST OF ALL FOODS
 app.get("/foodList", (req, res) => {
 
@@ -459,7 +456,7 @@ app.get("/foodList", (req, res) => {
     });
   });
 
-}) // END___GET DABLE LIST OF ALL FOODS
+}) // END___GET TABLE LIST OF ALL FOODS
 
 
 // ___GET Validate A Picture
@@ -508,55 +505,7 @@ app.get("/validate/:foodId", (req, res) => {
 
     });
 
-    res.end(`
-    
-    <style rel="stylesheet">
-body{
-  padding:0;
-  margin:0;
-  background: #00adf7;
-}
-div{
-  background: #00adf7;
-  height:100%;
-
-}
-
-h1{
-  color:white;
-  font-weight: bold;
-  text-align:center;
-  margin-top: 30px;
-}
-
-    .btn{
-      color:##00adf7;
-text-align: center;
-padding: 20px;
-      text-align: center;
-cursor: pointer;
-font-size:24px;
-margin: 0 0 0 100px;
-      border-radius: 4px;
-background-color:#fff;
-border: none;
-padding: 20px;
-width: 200px;
-display: inline-block;
-transition: all 0.5s;
-margin-top:20px;
-transition: all 1s;
-
-    }
-
-    .btn:hover{
-      transform:scale(1.2);
-    }
-    </style>
-    <div>
-        <h1>Image Validated and others deleted</h1>
-        <a class="btn" href="http://localhost:3030/foodList">Back to List</a>
-    </div>`);
+    res.render('validate_picture');
 
   });
 
