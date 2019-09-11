@@ -1,0 +1,67 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+    link(href='//datatables.net/download/build/nightly/jquery.dataTables.css' rel='stylesheet' type='text/css')
+    script(src='//datatables.net/download/build/nightly/jquery.dataTables.js')
+    link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
+    style
+      include css/list_foods.css
+    
+  body
+    div(class='box')
+        a(href="http://localhost:3030/")
+            i(class='fa fa-home')
+        a(href="http://localhost:3030/listPlaces")
+            i(class='fas fa-map-marker')
+        a(href="http://localhost:3030/listimage")
+            i(class='fas fa-images')
+        h1 List of Foods Json 
+        a(href="#popup1" class='button') +
+    div(class='container')
+        table(id='example' datatable='' width='100%' cellspacing='0' data-page-length='33' data-scroll-x='true' scroll-collapse='false')
+            thead
+                tr
+                    th id
+                    th place
+                    th name
+                    th category
+                    th price
+                    th photo
+            tfoot    
+                tr
+                    th id
+                    th place
+                    th name
+                    th category
+                    th price
+                    th photo
+            tbody
+             each  food , index  in foodList
+              tr(class='item')
+                td= food.id
+                td= food.place 
+                td= food.name 
+                td= food.category 
+                td= food.price 
+                td!= images[index].state
+                        a(href='http://localhost:3030/foodDelete/' + food.id)
+                            i(class='fas fa-trash')
+                    
+    div(id='popup1' class='overlay')
+        div(class='popup form')
+            h2 Add new Food form
+            a(class='close' href="#") &times;
+            form(method='post' action='http://localhost:3030/foodAdd' class='login-form')
+                input(required name='name' type='text' placeholder='NOM')
+                input(required name='place' type='text' placeholder='LIEUX')
+                select(name="category" required)
+                    option pizza
+                    option burger
+                    option tacos
+                input(required name='price' type='number' placeholder='prix')    
+                input(type='submit' value='ajouter')
+
+    script
+        include js/list_foods.js

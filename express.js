@@ -331,7 +331,7 @@ app.get("/listImage", (request, response) => {
 }); // END___GET LIST of pictures pending and validated
 
 
-// get food Item MANAGEMENT
+// ___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
 app.get("/foodValidate/:foodId/:validated", (req, res) => {
 
   var compiled = _.template(`
@@ -773,7 +773,124 @@ span.onclick = function() {
     res.end(template);
   });
 
-});
+}); // END___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
+// 
+
+
+
+
+// ___GET DABLE LIST OF ALL FOODS
+app.get("/foodList", (req, res) => {
+
+
+
+
+  let foodImages = [];
+
+  let picturesList = [];
+  let _folder = "./uploads/";
+
+
+  let picturesUrl = [];
+  let pictureState = "";
+
+  // update the foodList
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("foods").find({}).toArray(function (err, result) {
+      if (err) throw err;
+      foodList = result;
+      db.close();
+
+      // get all files in List
+      fs.readdir(_folder, (err, files) => {
+        files.forEach(file => {
+          picturesList.push(file);
+        });
+        // console.dir(picturesList);
+
+
+        // for each food in the list search for images related to it
+        foodList.forEach(food => {
+
+
+
+          picturesList.forEach(function (value, index) {
+
+
+
+            if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
+
+              // console.log(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`);
+              // console.log(value);
+              picturesUrl.push(value);
+
+            }
+          });
+
+          // console.log(food.id)
+          // console.log(picturesUrl);
+
+          // console.dir(picturesUrl);
+
+          if (picturesUrl.length == 0) {
+            pictureState = `<a href="http://localhost:3030/uploadNewImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}"><span style='color:red;'> no photo </span> </a>`;
+            // console.log("no photo");
+          } else if (picturesUrl.length == 1) {
+
+            if (picturesUrl[0].indexOf("-validated") != -1) {
+              // console.log("validated");
+              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
+            } else {
+              // console.log("1 pending");
+              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> 1 pending <i class="far fa-clock"></i>  </span>   </a>     `;
+            }
+
+          } else {
+            // console.log(`${picturesUrl.length} pending`);
+            pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'>  ${picturesUrl.length} pending <i class="far fa-clock"> </i>  </span>  </a>    `;
+          }
+
+          // console.log("*********");
+
+
+
+          // pictureimages is array of ids and pictures
+          foodImages.push({
+            id: food.id,
+            images: picturesUrl,
+            state: pictureState
+          });
+
+          picturesUrl = [];
+
+        });
+
+        console.log(foodImages);
+
+        // console.log(foodImages);
+
+        // let template = compiled({
+        //   foodList: foodList,
+        //   images: foodImages
+        // });
+
+        // res.end(template);
+
+        res.render('list_foods', {
+          pageTitle: 'Listof all foods - ADMIN PANEL',
+          foodList: foodList,
+          images: foodImages
+        })
+
+      });
+
+    });
+  });
+
+}) // END___GET DABLE LIST OF ALL FOODS
 
 
 // Validate A Picture
@@ -1006,633 +1123,6 @@ app.get('/categoryAndPlaceFood/:budget/:category/:place', function (req, res) {
   });
 
   res.json(foodListFiltred);
-})
-
-
-app.get("/foodList", (req, res) => {
-
-
-  var compiled = _.template(`
-
-  <html>
-  <head>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-
-    <link href="//datatables.net/download/build/nightly/jquery.dataTables.css" rel="stylesheet" type="text/css" />
-    <script src="//datatables.net/download/build/nightly/jquery.dataTables.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-
-
-    <style>
-    // Table Styles
-
-    // flexbox support for scroll-y
-    
-    @mixin dt-display-flex {
-      display: -webkit-flex; // support for responsive scroll-y
-      display: -ms-flexbox;
-      display: flex;
-    }
-    @mixin dt-flex-11a {
-      -webkit-flex: 1 1 auto;
-      -ms-flex: 1 1 auto;
-      flex: 1 1 auto;
-    }
-    @mixin dt-flex-100 {
-      -webkit-flex: 1 0 0px;
-      -ms-flex: 1 0 0px;
-      flex: 1 0 0px;
-    }
-    @mixin dt-flex-vertical {
-      -webkit-flex-flow: column nowrap;
-      -ms-flex-flow: column nowrap;
-      flex-flow: column nowrap;
-    }
-    
-    // codepen example support
-    html, body {
-      height:100%;
-      width: 100%;
-      max-width: 100%;
-      overflow-y: hidden;
-    }
-    
-    // core layout
-    
-    .container {
-      @include dt-display-flex;
-      @include dt-flex-11a;
-      height: 80%; // codepen - vary to see flex rule in action
-      width: 60%;  // codepen - vary to see flex rule in action
-      //  code rules to better identify container visually
-      background-color: #f0f0f0;
-      border: 1px solid blue;
-      margin-top: 1rem;
-      padding: 1rem;
-    }
-    
-    .dataTables_wrapper {
-      width: 100%;
-      overflow: hidden;
-      -webkit-overflow-scrolling: touch;
-      -ms-overflow-style: -ms-autohiding-scrollbar;
-      @include dt-display-flex;
-      @include dt-flex-vertical;
-      @include dt-flex-11a;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-
-    }
-    
-    table.dataTable {
-      background-color: #fff;
-      width: 100%;
-      margin: 0 auto;
-      clear: both;
-      border-collapse: separate;
-      border-spacing: 0;
-    }
-    
-    // header
-    
-    table.dataTable thead,
-    table.dataTable tfoot {
-      background-color: #f5f5f5;
-    }
-
-
-
-    .dataTables_filter input{
-      font-family: "Roboto", sans-serif;
-    outline: 0;
-    background: #f2f2f2;
-    width: 100%;
-    border: 0;
-    margin: 0 0 15px;
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 14px;
-    }
-
-    select{
-      font-family: "Roboto", sans-serif;
-      outline: 0;
-      background: #f2f2f2;
-      width: 100%;
-      border: 0;
-      margin: 0 0 15px;
-      padding: 10px;
-      box-sizing: border-box;
-      font-size: 14px;
-      height:30px;
-    }
-
-    #example_filter{
-      color:white;
-      margin-right:2%;
-      width:25%;
-    }
-
-    #example_length{
-      color:white;
-    }
-    
-    table.dataTable thead th,
-    table.dataTable tfoot th {
-      font-weight: bold;
-
-    }
-    
-    table.dataTable thead th:active,
-    table.dataTable thead td:active {
-      outline: none;
-    }
-    
-    // rows
-    
-    table.dataTable tr.even,
-    table.dataTable tr.alt,
-    table.dataTable tr:nth-of-type(even) {
-      background: #F9F9F9;
-    }
-    
-    // compact toggle
-    // table.dataTable.dt-compact th,
-    // table.dataTable.dt-compact td {
-    // font-size: .875rem;
-    // padding: .5rem .625rem;
-    // text-align: left;
-    // white-space: nowrap;
-    // }
-    
-    table.dataTable th,
-    table.dataTable td {
-      padding: 1rem;
-      white-space: nowrap;
-      text-align: left;
-    }
-    
-    table.dataTable tfoot th,
-    table.dataTable tfoot td {
-      border:none;
-    }
-    
-    // hover indicator(s)
-    
-    table.dataTable tbody > tr:hover {
-      background-color: lightblue;
-    }
-    
-    // scroll-x and scroll-y support
-    // content-box rule is critical
-    
-    table.dataTable,
-    table.dataTable th,
-    table.dataTable td {
-      -webkit-box-sizing: content-box;
-      -moz-box-sizing: content-box;
-      box-sizing: content-box;
-    }
-    .dataTables_wrapper .dataTables_scroll {
-      clear: both;
-      @include dt-display-flex;
-      @include dt-flex-vertical;
-      @include dt-flex-11a;
-      // codepen rules to better identify scroll wrapper
-      border: 1px solid #ccc;
-      margin: 1.5rem 0
-    }
-    
-    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
-      @include dt-flex-100;
-      margin-top: -1px;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    // Fixes issue with Safari width calc. under rare conditions
-    .dataTables_scrollHeadInner {
-      flex: 1 1 auto;
-    }
-    
-    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th > div.dataTables_sizing,
-    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td > div.dataTables_sizing {
-      height: 0;
-      overflow: hidden;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-    
-    .dataTables_wrapper:after {
-      visibility: hidden;
-      display: block;
-      content: "";
-      clear: both;
-      height: 0;
-    }
-    
-    // column sorting indicators
-    
-    table.dataTable thead .sorting_asc,
-    table.dataTable thead .sorting_desc,
-    table.dataTable thead .sorting {
-      cursor: pointer;
-    }
-    table.dataTable thead .sorting {
-      background: url("../img/datatables/sort_both.png") no-repeat center right;
-      background: #00adf7;
-      color:white;
-
-    }
-
-    table.dataTable tfoot {
-      background: #00adf7;
-      color:white;
-    }
-
-    table.dataTable thead .sorting_asc {
-      background: url("../img/datatables/sort_asc.png") no-repeat center right;
-      background: #4CAF50;
-      color:white;
-    }
-    table.dataTable thead .sorting_desc {
-      background: url("../img/datatables/sort_desc.png") no-repeat center right;
-      background: red;
-      color:white;
-    }
-    table.dataTable thead .sorting_asc_disabled {
-      background: url("../img/datatables/sort_asc_disabled.png") no-repeat center right;
-      background: purple;
-    }
-    table.dataTable thead .sorting_desc_disabled {
-      background: url("../img/datatables/sort_desc_disabled.png") no-repeat center right;
-      background: cyan;
-    }
-
-     
-
-    h1{
-text-align:center;
-font-size:2rem;
-
-    }
-    .container{
-      background:white;
-      color:#00adf7;
-      padding:10px;
-      
-
-    }
-    body{
-      background:#00adf7; 
-    }
-   
- 
-  
-
-  #example{
-    
-  }
-
-
-
-  .overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    transition: opacity 500ms;
-    visibility: hidden;
-    opacity: 0;
-  }
-  .overlay:target {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  .popup {
-    margin: 700px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 5px;
-    width: 30%;
-    position: relative;
-    transition: all 5s ease-in-out;
-    margin-top:100px;
-  }
-  
-  .popup h2 {
-    margin-top: 0;
-    color: #00adf7;
-    font-family: Tahoma, Arial, sans-serif;
-  }
-  .popup .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #333;
-  }
-  .popup .close:hover {
-    color: #00adf7;
-  }
-  .popup .content {
-    max-height: 30%;
-    overflow: auto;
-  }
-  
-  @media screen and (max-width: 700px){
-    .box{
-      width: 100%;
-    }
-    .popup{
-      width: 70%;
-    }
-  }
-
-  .button{
-    width: 50px;
-    height: 50px;
-    background:#00adf7;
-    display:inline-block;
-    color:white;
-    line-height:3rem;
-    border:none;
-    font-size:3rem;
-    text-decoration:none;
-    transition:all 1s;
-    margin-left:50px;
-  }
-
-  .button:hover{
-    transform: scale(1.1);
-  }
-  
-
-  .form {
-    position: relative;
-    z-index: 1;
-    background: #FFFFFF;
-    max-width: 360px;
-    margin: 0 auto 100px;
-    padding: 45px;
-    text-align: center;
-
-  }
-  .form input {
-    font-family: "Roboto", sans-serif;
-    outline: 0;
-    background: #f2f2f2;
-    width: 100%;
-    border: 0;
-    margin: 0 0 15px;
-    padding: 15px;
-    box-sizing: border-box;
-    font-size: 14px;
-  }
-  .form button  {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-    outline: 0;
-    background: ;
-    width: 100%;
-    border: 0;
-    padding: 15px;
-    color: #FFFFFF;
-    font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-  }
-  .form button:hover,.form button:active,.form button:focus {
-    background: #00f3ff;
-  }
-
-  .fa-trash{
-    float:right;
-    color:red;
-    cursor:pointer;
-    transition:transform 1s;
-  }
-
-  .fa-trash:hover{
-    transform:scale(1.2);
-  }
-
-
-  .item:hover{
-    background: #00adf7;
-    color:white;
-  }
-
-.item a{
-  text-decoration:none;
-}
-
-.link:hover{
-  transform:scale(1.1);
-}
-
-    </style>
-    <meta charset=utf-8 />
-    <title>DataTables - JS Bin</title>
-  </head>
-  <body style="margin:0;">
-  <div class="box" style="text-align:center; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);  ">
- <a class="link" style=" background:white; transition:transform 1s; color:#00adf7; text-decoration:none; margin-top:15px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"  href="http://localhost:3030/"><i style="line-height:3rem;" class="fa fa-home"></i></a>
- <a class="link" style=" background:white; transition:transform 1s; color:#00adf7; text-decoration:none; margin-top:15px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"  href="http://localhost:3030/listPlaces"><i style="line-height:3rem;" class="fas fa-map-marker"></i> </i></a>
- <a class="link" style=" background:white; transition:transform 1s; color:#00adf7; text-decoration:none; margin-top:15px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"  href="http://localhost:3030/listimage"><i style="line-height:3rem;" class="fas fa-images"></i> </i></a>
-  <h1 style=" display:inline-block; color:white">List of Foods Json </h1>
-    <a style="border-radius: 50%; background:white; color:#00adf7;" class="button " href="#popup1">+</a>
-  </div>
-    <div class="container" style="padding:0;">
-     
-      <table id="example"
-        datatable="" width="100%" cellspacing="0"
-        data-page-length="33"
-        data-scroll-x="true"
-        scroll-collapse="false">
-        <thead>
-          <tr>
-          <th>id</th>
-          <th>place</th>
-          <th>name</th>
-          <th>category</th>
-          <th>price</th>
-          <th>Photo</th>
-          </tr>
-        </thead>
-
-        <tfoot>
-          <tr>
-          <th>id</th>
-          <th>place</th>
-          <th>name</th>
-          <th>category</th>
-          <th>price</th>
-          <th>Photo</th>
-          </tr>
-        </tfoot>
-
-        <tbody>
-
-        <% for(var food in foodList) { %>
-          <tr class="item">
-          <td><%= foodList[food].id %>         </td>
-          <td><%= foodList[food].place %></td>
-          <td><%= foodList[food].name %></td>
-          <td><%= foodList[food].category %></td>
-          <td><%= foodList[food].price %></td>
-          <td><%= images[food].state %> <a href="http://localhost:3030/foodDelete/<%= foodList[food].id %>"><i class="fas fa-trash"></i></a>   </td>
-        </tr>
-        
-          <% } %>
-      
-        </tbody>
-      </table>
-    </div>
-
-    
-
-<div id="popup1" class="overlay">
-	<div class="popup form">
-		<h2>Add new Food form</h2>
-		<a class="close" href="#">&times;</a>
-		 
-    <form method="post" action="http://localhost:3030/foodAdd" class="login-form">
-    <input required name="name" type="text" placeholder="name"/>
-    <input required name="place" type="text" placeholder="place"/>
-
-
-    <select required style="width:100%; height: 50px; border:none; margin-bottom:5px;" name="category">
-          <option>burger</option>
-          <option>pizza</option>
-          <option>tacos</option>
-    </select>
-    <input required name="price" type="number" placeholder="price"/>
-      <input style="background: #00adf7; color:white; " type="submit" value="Ajouter" />
-
-  </form>	 
-	</div>
-</div>
-    
-    <script>
-    $(document).ready( function () {
-      var table = $('#example').DataTable();
-    } );
-
-   
-    </script>
-  </body>
-</html>
-  
-  `);
-
-
-  let foodImages = [];
-
-  let picturesList = [];
-  let _folder = "./uploads/";
-
-
-  let picturesUrl = [];
-  let pictureState = "";
-
-  // update the foodList
-
-  MongoClient.connect(db_url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("foodservice");
-    dbo.collection("foods").find({}).toArray(function (err, result) {
-      if (err) throw err;
-      foodList = result;
-      db.close();
-
-      // get all files in List
-      fs.readdir(_folder, (err, files) => {
-        files.forEach(file => {
-          picturesList.push(file);
-        });
-        // console.dir(picturesList);
-
-
-        // for each food in the list search for images related to it
-        foodList.forEach(food => {
-
-
-
-          picturesList.forEach(function (value, index) {
-
-
-
-            if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
-
-              // console.log(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`);
-              // console.log(value);
-              picturesUrl.push(value);
-
-            }
-          });
-
-          // console.log(food.id)
-          // console.log(picturesUrl);
-
-          // console.dir(picturesUrl);
-
-          if (picturesUrl.length == 0) {
-            pictureState = `<a href="http://localhost:3030/uploadNewImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}"><span style='color:red;'> no photo </span> </a>`;
-            // console.log("no photo");
-          } else if (picturesUrl.length == 1) {
-
-            if (picturesUrl[0].indexOf("-validated") != -1) {
-              // console.log("validated");
-              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
-            } else {
-              // console.log("1 pending");
-              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> 1 pending <i class="far fa-clock"></i>  </span>   </a>     `;
-            }
-
-          } else {
-            // console.log(`${picturesUrl.length} pending`);
-            pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'>  ${picturesUrl.length} pending <i class="far fa-clock"> </i>  </span>  </a>    `;
-          }
-
-          // console.log("*********");
-
-          // pictureimages is array of ids and pictures
-          foodImages.push({
-            id: food.id,
-            images: picturesUrl,
-            state: pictureState
-          });
-
-          picturesUrl = [];
-
-        });
-
-        // console.log(foodImages);
-
-        let template = compiled({
-          foodList: foodList,
-          images: foodImages
-        });
-
-        res.end(template);
-
-      });
-
-    });
-  });
-
-
-
-
-
-
-
 })
 
 app.get("/uploadNewImage/:url", (req, res) => {

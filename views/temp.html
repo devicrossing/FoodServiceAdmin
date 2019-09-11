@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <link href="//datatables.net/download/build/nightly/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="//datatables.net/download/build/nightly/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+        integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+
+    <style>
+
+    </style>
+
+    <meta charset=utf-8 />
+    <title>DataTables - JS Bin</title>
+</head>
+
+<body style="margin:0;">
+    <div class="box" style="text-align:center; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);  ">
+        <a class="link"
+            style=" background:white; transition:transform 1s; color:#00adf7; text-decoration:none; margin-top:15px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"
+            href="http://localhost:3030/"><i style="line-height:3rem;" class="fa fa-home"></i></a>
+        <a class="link"
+            style=" background:white; transition:transform 1s; color:#00adf7; text-decoration:none; margin-top:15px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"
+            href="http://localhost:3030/listPlaces"><i style="line-height:3rem;" class="fas fa-map-marker"></i> </i></a>
+        <a class="link"
+            style=" background:white; transition:transform 1s; color:#00adf7; text-decoration:none; margin-top:15px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"
+            href="http://localhost:3030/listimage"><i style="line-height:3rem;" class="fas fa-images"></i> </i></a>
+        <h1 style=" display:inline-block; color:white">List of Foods Json </h1>
+        <a style="border-radius: 50%; background:white; color:#00adf7;" class="button " href="#popup1">+</a>
+    </div>
+    <div class="container" style="padding:0;">
+
+        <table id="example" datatable="" width="100%" cellspacing="0" data-page-length="33" data-scroll-x="true"
+            scroll-collapse="false">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>place</th>
+                    <th>name</th>
+                    <th>category</th>
+                    <th>price</th>
+                    <th>Photo</th>
+                </tr>
+            </thead>
+
+            <tfoot>
+                <tr>
+                    <th>id</th>
+                    <th>place</th>
+                    <th>name</th>
+                    <th>category</th>
+                    <th>price</th>
+                    <th>Photo</th>
+                </tr>
+            </tfoot>
+
+            <tbody>
+
+                <% for(var food in foodList) { %>
+                <tr class="item">
+                    <td><%= foodList[food].id %> </td>
+                    <td><%= foodList[food].place %></td>
+                    <td><%= foodList[food].name %></td>
+                    <td><%= foodList[food].category %></td>
+                    <td><%= foodList[food].price %></td>
+                    <td><%= images[food].state %> <a href="http://localhost:3030/foodDelete/<%= foodList[food].id %>"><i
+                                class="fas fa-trash"></i></a> </td>
+                </tr>
+
+                <% } %>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div id="popup1" class="overlay">
+        <div class="popup form">
+            <h2>Add new Food form</h2>
+            <a class="close" href="#">&times;</a>
+
+            <form method="post" action="http://localhost:3030/foodAdd" class="login-form">
+                <input required name="name" type="text" placeholder="name" />
+                <input required name="place" type="text" placeholder="place" />
+
+
+                <select required style="width:100%; height: 50px; border:none; margin-bottom:5px;" name="category">
+                    <option>burger</option>
+                    <option>pizza</option>
+                    <option>tacos</option>
+                </select>
+                <input required name="price" type="number" placeholder="price" />
+                <input style="background: #00adf7; color:white; " type="submit" value="Ajouter" />
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable();
+        });
+    </script>
+</body>
+
+</html>
