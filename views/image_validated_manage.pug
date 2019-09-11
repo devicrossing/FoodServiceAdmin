@@ -3,11 +3,38 @@ html(lang="en")
   head
     title= pageTitle
     script(src='https://code.jquery.com/jquery-1.11.1.min.js')
-    link(href='//datatables.net/download/build/nightly/jquery.dataTables.css' rel='stylesheet' type='text/css')
-    script(src='//datatables.net/download/build/nightly/jquery.dataTables.js')
     link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
     style
-      include image_validated_manage.css
+      include css/image_validated_manage.css
     
   body
-    
+    div(class='site')
+        header(class='entry-header wide')
+            a(href='http://localhost:3030/foodList')
+                li(class='fas fa-arrow-left')
+            a(href='http://localhost:3030/imagesRemove/' + pictureUrl[0].split('-')[0])
+                li(class='fa fa-trash')
+            h2(class='entry-title')=  pic_name.split("_")[1] + "Chez" + pic_name.split("_")[2]
+        div(class='entry-content wide')
+            ul(class='gallery-portfolio')
+                if validated === 'non'
+                    each pic in pics
+                        li(class='food_item')
+                            a(href="#")
+                                img(src="http://localhost:3030/uploads/" + pic , class='food_img' alt="")
+                            div(class='food_actions')
+                                a(href='http://localhost:3030/validate/' + pic , id='btn_validate' class='btn_validate') VALIDATE
+                                a(class='btn_delete' id='btn_delete' href='http://localhost:3030/delete') DELETE
+                if validated === 'yes'
+                    a(href="#")
+                        img(class='food_img food_img_validated' src="http://localhost:3030/uploads/" + pics[0] , alt="")
+               
+                form(class='navigation' encType='multipart/form-data' method='post' action='http://localhost:3030/uploadAdmin/' + pics[0].split("-")[0])
+                    input(class='btn' name='picture' , type='file')  
+                    input(class='btn' value='new' type='submit')  
+                
+    div(class='modal' , id='myModal')
+        span(class='close') &times;            
+        img(class='modal-content' id='img01')
+        div(id='caption')
+    script js/image_validated_manage.js    

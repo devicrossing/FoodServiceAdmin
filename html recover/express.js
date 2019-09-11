@@ -264,6 +264,8 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 });
 // END___POST upload FROM ADMIN PANEL AND DELETE OTHER PENDING PHOTOS
 
+
+
 // ___GET LIST of pictures pending and validated
 app.get("/listImage", (request, response) => {
 
@@ -328,12 +330,9 @@ app.get("/listImage", (request, response) => {
 
 }); // END___GET LIST of pictures pending and validated
 
-// not working 
+
 // ___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
 app.get("/foodValidate/:foodId/:validated", (req, res) => {
-
-  var compiled = _.template(`
-   `);
 
 
   let _folder = "./uploads/";
@@ -357,22 +356,32 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
 
     // console.log(pictureGroups);
 
-    res.render('image_validated_manage.pug', {
-      pageTitle: 'MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS',
+    // let template = compiled({
+    //   pics: pictureUrl,
+    //   pic_name: id,
+    //   validated: validated
+    // });
+    // res.end(template);
+
+    res.render('image_validated_manage', {
+      pageTitle: 'MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS - ADMIN PANEL',
       pics: pictureUrl,
       pic_name: id,
       validated: validated
     })
-
   });
 
 }); // END___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
+// 
 
 
 
 
-// ___GET TABLE LIST OF ALL FOODS
+// ___GET DABLE LIST OF ALL FOODS
 app.get("/foodList", (req, res) => {
+
+
+
 
   let foodImages = [];
 
@@ -400,10 +409,15 @@ app.get("/foodList", (req, res) => {
         });
         // console.dir(picturesList);
 
+
         // for each food in the list search for images related to it
         foodList.forEach(food => {
 
+
+
           picturesList.forEach(function (value, index) {
+
+
 
             if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
 
@@ -415,6 +429,8 @@ app.get("/foodList", (req, res) => {
           });
 
           // console.log(food.id)
+          // console.log(picturesUrl);
+
           // console.dir(picturesUrl);
 
           if (picturesUrl.length == 0) {
@@ -435,6 +451,10 @@ app.get("/foodList", (req, res) => {
             pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'>  ${picturesUrl.length} pending <i class="far fa-clock"> </i>  </span>  </a>    `;
           }
 
+          // console.log("*********");
+
+
+
           // pictureimages is array of ids and pictures
           foodImages.push({
             id: food.id,
@@ -446,7 +466,16 @@ app.get("/foodList", (req, res) => {
 
         });
 
+        console.log(foodImages);
+
         // console.log(foodImages);
+
+        // let template = compiled({
+        //   foodList: foodList,
+        //   images: foodImages
+        // });
+
+        // res.end(template);
 
         res.render('list_foods', {
           pageTitle: 'Listof all foods - ADMIN PANEL',
@@ -462,7 +491,8 @@ app.get("/foodList", (req, res) => {
 }) // END___GET DABLE LIST OF ALL FOODS
 
 
-// ___GET Validate A Picture
+// Validate A Picture
+
 app.get("/validate/:foodId", (req, res) => {
 
   // need to validate one pictures and remove all others related to this food Item
@@ -473,6 +503,7 @@ app.get("/validate/:foodId", (req, res) => {
   pictureUrl = [];
 
   var url = req.params.foodId.split("-");
+
 
   // Loop for images to get array of urls related to this food item
   fs.readdir(_folder, (err, files) => {
@@ -507,6 +538,12 @@ app.get("/validate/:foodId", (req, res) => {
       });
 
     });
+
+    // let template = compiled({
+    //   pics: pictureUrl,
+    //   pic_name: id
+    // });
+    // res.end(template);
 
     res.end(`
     
@@ -1668,4 +1705,4 @@ function toTitleCase(str) {
 }
 
 
-app.listen(3030, () => console.log('Example app listening on port 3030!'))
+app.listen(3030, () => console.log('Example app listening on port 3030!'))S
