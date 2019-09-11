@@ -459,7 +459,7 @@ app.get("/foodList", (req, res) => {
 }) // END___GET TABLE LIST OF ALL FOODS
 
 
-// ___GET Validate A Picture
+// ___GET Validate A Picture from PENDING IMAGES
 app.get("/validate/:foodId", (req, res) => {
 
   // need to validate one pictures and remove all others related to this food Item
@@ -509,23 +509,16 @@ app.get("/validate/:foodId", (req, res) => {
 
   });
 
-
-
-});
-
-
+}); //  ___GET Validate A Picture from PENDING IMAGES
 
 // NON image part
 
-// get all food
+// __GET all food JSON
 app.get('/allFood', function (req, res) {
-
-
-
   res.json(foodList);
-})
+}) // END__GET all food JSON
 
-// get food by id
+// ___GET food by id JSON
 app.get('/food/:id', function (req, res) {
   const id = req.params.id;
 
@@ -539,9 +532,9 @@ app.get('/food/:id', function (req, res) {
   });
   console.dir(_food);
   res.json(_food);
-})
+}) // END___GET food by id JSON
 
-// get all food
+// ___GET all Places JSON
 app.get('/places', function (req, res) {
   // todo places need to get them with query
   // let places = ["All", "mcdonalds", "Authentik", "Pizza Hut", "khalid", "Tacos de Lyon"];
@@ -556,9 +549,9 @@ app.get('/places', function (req, res) {
       console.log(places);
     })
   });
-})
+}) // ___GET all Places JSON
 
-// get food by budget
+// ___GET food by budget JSON
 app.get('/budgetFood/:budget', function (req, res) {
   // todo mongodb
   const budget = req.params.budget;
@@ -570,9 +563,9 @@ app.get('/budgetFood/:budget', function (req, res) {
     }
   });
   res.json(foodListFiltred);
-})
+}) // END___GET food by budget JSON
 
-// filter food by category
+// ___GET filter food by category JSON
 app.get('/categoryFood/:budget/:category', function (req, res) {
   // todo mongodb
 
@@ -589,9 +582,9 @@ app.get('/categoryFood/:budget/:category', function (req, res) {
     }
   });
   res.json(foodListFiltred);
-})
+}) // END___GET filter food by category JSON
 
-// filter food by place
+// ___GET filter food by place JSON
 app.get('/placeFood/:budget/:place', function (req, res) {
   // todo mongodb
 
@@ -610,10 +603,9 @@ app.get('/placeFood/:budget/:place', function (req, res) {
   });
 
   res.json(foodListFiltred);
-})
+}) // END___GET filter food by place JSON
 
-
-// filter food by category and place
+// ___GET filter food by category and place JSON
 app.get('/categoryAndPlaceFood/:budget/:category/:place', function (req, res) {
   // todo mongodb
 
@@ -636,8 +628,6 @@ app.get('/categoryAndPlaceFood/:budget/:category/:place', function (req, res) {
 })
 
 app.get("/uploadNewImage/:url", (req, res) => {
-
-
 
   var compiled = _.template(`
     <!DOCTYPE html>
