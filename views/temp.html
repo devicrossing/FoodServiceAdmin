@@ -6,79 +6,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+        integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     <style>
-
 
     </style>
 </head>
 
 <body>
-    <div class="site">
-        <header class="entry-header wide">
-            <h2 class="entry-title">Pictures Pending for <%= pic_name %></h2>
-        </header>
-
-        <div class="entry-content wide">
-
-
-
-
-        </div><!-- .wide -->
-
-
-
-
-        <form class="navigation" encType="multipart/form-data" method="post"
-            action="http://localhost:3030/uploadAdmin/<%= picUrl %>">
-            <a class="btn" href="http://localhost:3030/foodList">Back to List</a>
-            <input class="btn" name="picture" type="file" />
-            <input class="btn" type="submit" />
-        </form>
+    <h1 class="title">
+        <a class="link"
+            style=" background:#00adf7; transition:1s transform; color:white; text-decoration:none; margin-top:5px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"
+            href="http://localhost:3030/"><i style="line-height:3rem;" class="fa fa-home"></i></a>
+        <a class="link"
+            style=" background:#00adf7; transition:1s transform; color:white; text-decoration:none; margin-top:5px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"
+            href="http://localhost:3030/foodList"><i style="line-height:3rem;" class="fas fa-utensils"></i> </i></a>
+        <a class="link"
+            style=" background:#00adf7; transition:1s transform; color:white; text-decoration:none; margin-top:5px; margin-left:10px; border-radius:50%; width:50px; height:50px;  font-size:2rem; float:left"
+            href="http://localhost:3030/listimage"><i style="line-height:3rem;" class="fas fa-images"></i> </i></a>
 
 
 
 
-    </div><!-- .site -->
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="img01">
-        <div id="caption"></div>
+        <span>Places Admin Panel
+            <a style="border-radius: 50%;" class="button " href="#popup1">+</a>
+    </h1>
+
+    <table class="container">
+        <thead>
+            <tr>
+                <th>
+                    <h1>id</h1>
+                </th>
+                <th>
+                    <h1>name</h1>
+                </th>
+                <th>
+                    <h1>telephone</h1>
+                </th>
+                <th>
+                    <h1>horaire</h1>
+                </th>
+                <th>
+                    <h1>lat , long</h1>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% for(var place in places) { %>
+            <tr>
+                <td><%= places[place].id %> </td>
+                <td><%= places[place].name %></td>
+                <td><%= places[place].phone %></td>
+                <td><%= places[place].time %></td>
+                <td>(<%= places[place].lat %> , <%= places[place].long %>) </td>
+            </tr>
+
+            <% } %>
+
+        </tbody>
+    </table>
+
+    <div class="containerDB">
+
+        <div>
+
+            <h2>Need To Add </h2>
+            <!--<span>places present in food Collection && no info in place collection</span> -->
+
+            <% for(var place in needToAdd) { %>
+            <div class="elementToAdd"> <%= needToAdd[place] %> </div>
+            <% } %>
+
+        </div>
+
+        <div>
+
+            <h2>Need To Delete</h2>
+
+            <!--  <span>present in places collection  && and no item in food collection reference these places</span> -->
+
+            <% for(var place in needToDelete) { %>
+            <div class="elementToDelete"> <%= needToDelete[place] %> <a
+                    href="http://localhost:3030/placeDelete/<%= needToDelete[place] %>"><i
+                        style="float:right; cursor:pointer; color:red;" class="fas fa-trash"></i></a>
+
+            </div>
+            <% } %>
+
+        </div>
     </div>
 
+    <div id="popup1" class="overlay">
+        <div class="popup form">
+            <h2>Add new place form</h2>
+            <a class="close" href="#">&times;</a>
 
+            <form method="post" action="http://localhost:3030/placeAdd" class="login-form">
+                <input name="name" required type="text" placeholder="name" />
+                <input name="phone" required type="text" pattern="^[0-9]{10}$" placeholder="0537375343" />
+                <input name="time" required type="text" pattern="^[0-9]{1,2}-[0-9]{1,2}$" placeholder="8-20" />
+                <input name="lat" required type="text" pattern="^[0-9]{1,2}.[0-9]*$" placeholder="23.323223" />
+                <input name="long" required type="text" pattern="^-?[0-9]{1,2}.[0-9]*$" placeholder="12.21212" />
 
-    <script>
-        // Get the modal
-        var modal = document.getElementById('myModal');
+                <input style="background: #00adf7; color:white; " type="submit" value="Ajouter" />
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementsByClassName('food_img');
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-
-        console.dir(img);
-
-
-        for (i = 0; i < img.length; i++) {
-
-            img[i].onclick = function () {
-                modal.style.display = "block";
-                modalImg.src = this.src;
-                captionText.innerHTML = this.alt;
-            }
-        }
-
-
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
-    </script>
+            </form>
+        </div>
+    </div>
 
 </body>

@@ -1,0 +1,263 @@
+body,
+html {
+    background: #00adf7;
+    padding: 0;
+    margin: 0;
+}
+
+
+.title {
+    background: white;
+    display: block;
+    margin: 0;
+    color: #00adf7;
+    text-align: center;
+    padding: 10px;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+table {
+    background: white;
+    margin: auto;
+    padding: 0;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #00adf7;
+    color: white;
+}
+
+tr th,
+tr td {
+    width: 20%;
+    margin: 0;
+}
+
+tr:hover {
+    background: #00adf7;
+    color: white;
+
+}
+
+thead tr {
+    border: 1px white solid;
+
+}
+
+tbody {
+    border: 1px white solid;
+
+}
+
+tbody td {
+    border-left: 1px #00adf7 solid;
+    border-right: 1px #00adf7 solid;
+}
+
+tr {
+    height: 40px;
+    text-align: center;
+}
+
+.button {
+    width: 50px;
+    height: 50px;
+    background: #00adf7;
+    display: inline-block;
+    color: white;
+    line-height: 3rem;
+    border: none;
+    font-size: 3rem;
+    text-decoration: none;
+    transition: all 1s;
+    margin-left: 50px;
+}
+
+.button:hover {
+    transform: scale(1.1);
+}
+
+.button[href='#popup1'] {
+    float: right;
+    margin-right: 10px;
+}
+
+
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 700px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    margin-top: 100px;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #00adf7;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.popup .close:hover {
+    color: #00adf7;
+}
+
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+@media screen and (max-width: 700px) {
+    .box {
+        width: 100%;
+    }
+
+    .popup {
+        width: 70%;
+    }
+}
+
+
+.form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+
+}
+
+.form input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.form button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: ;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+}
+
+.form button:hover,
+.form button:active,
+.form button:focus {
+    background: #00f3ff;
+}
+
+.containerDB {
+    margin-top: 10px;
+}
+
+.containerDB>div {
+    display: inline-block;
+    width: 48%;
+    background: white;
+    vertical-align: top;
+    margin-left: 1%;
+
+}
+
+.containerDB h2 {
+    background: #00adf7;
+    margin: 0;
+    padding: 10px;
+    border: 1px white solid;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+.containerDB h2 span {
+    font-size: .7rem;
+}
+
+.elementToAdd,
+.elementToDelete {
+    padding: 5px;
+    text-align: center;
+}
+
+.link:hover {
+    transform: scale(1.1);
+}
+
+.title a {
+    background: #00adf7;
+    transition: 1s transform;
+    color: white;
+    text-decoration: none;
+    margin-top: 5px;
+    margin-left: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    float: left
+}
+
+.title a i {
+    line-height: 3rem;
+}
+
+.fas.fa-trash {
+    float: right;
+    cursor: pointer;
+    color: red;
+}
+
+input[type='submit'] {
+    background: #00adf7;
+    color: white;
+}

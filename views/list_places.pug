@@ -1,0 +1,63 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
+    style
+      include css/list_places.css
+    
+  body
+    h1(class='title')
+        a(class='link' href='http://localhost:3030/')
+            i(class='fa fa-home')
+        a(class='link' href='http://localhost:3030/foodList')
+            i(class='fa fas fa-utensils')
+        a(class='link' href='http://localhost:3030/listimage')
+            i(class='fas fa-images')
+        .
+         Places Admin Panel
+        a(href="#popup1" class='button') +
+    table(class='container')
+        thead
+            tr
+                th
+                    h1 id
+                th
+                    h1 name
+                th
+                    h1 telephone
+                th
+                    h1 horaire
+                th
+                    h1 lat , long
+        tbody
+         each place in places
+            tr
+                td= place.id
+                td= place.name
+                td= place.phone
+                td= place.time
+                td= place.lat
+    div(class='containerDB')
+        div Need To Add 
+         each place in needToAdd
+            div(class='elementToAdd')= place
+        div Need To Delete
+         each place in needToDelete
+            div(class='elementToDelete')= place
+               a(href="http://localhost:3030/placeDelete/" + place)
+                i(class='fas fa-trash')
+    div(id='popup1' class='overlay')
+        div(class='popup form')
+            h2 Add new place To the LIST
+            a(class='close' href="#") &times;
+            form(method='post' action='http://localhost:3030/placeAdd' class='login-form')
+                input(name='name' required type='text' placeholder='name')
+                input(name='phone' required type='text'  pattern='^[0-9]{10}$' placeholder='+212537375343')
+                input(name='time' required type='text'  pattern='^[0-9]{1,2}-[0-9]{1,2}$' placeholder='8-20')
+                input(name='lat' required type='text'  pattern='^[0-9]{1,2}.[0-9]*$' placeholder='23.323223')
+                input(name='long' required type='text'  pattern='^-?[0-9]{1,2}.[0-9]*$' placeholder='12.21212')
+                input(type='submit' value='AJOUTER')
+                
+
+               
