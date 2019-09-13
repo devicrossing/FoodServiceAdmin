@@ -764,26 +764,6 @@ app.get("/getPlaceInfo/:place", (req, res) => {
 }); // END___GET PLACE INFO BY ID
 
 
-// ___GET ADD PLACE TO DATABASE
-app.get("/addPlaceDB", (req, res) => {
-  MongoClient.connect(db_url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("foodservice");
-    var myobj = [{
-      id: 1,
-      name: "Authentic",
-      long: 2.323232,
-      lat: 32.3434,
-      time: "8-16",
-      phone: "0537375243"
-    }];
-    dbo.collection("places").insertMany(myobj, function (err, res) {
-      if (err) throw err;
-      console.log("Number of documents inserted: " + res.insertedCount);
-      db.close();
-    });
-  });
-}); // END___GET ADD PLACE TO DATABASE
 
 
 // ___GET LIST OF PLACES
@@ -848,9 +828,9 @@ app.get("/listPlaces", (req, res) => {
     });
   });
 
-}); // ___GET LIST OF PLACES
+}); // END___GET LIST OF PLACES
 
-
+// ___GET Delete place by Name
 app.get("/placeDelete/:placeName", (req, res) => {
 
   MongoClient.connect(db_url, function (err, db) {
@@ -868,9 +848,10 @@ app.get("/placeDelete/:placeName", (req, res) => {
 
   res.redirect('/listPlaces');
 
-});
+}); // ___GET Delete place by Name
 
 
+//  ___POST ADD NEW PLACE 
 app.post("/placeAdd", urlencodedParser, (req, res) => {
 
   if (!req.body) return res.sendStatus(400)
@@ -918,10 +899,15 @@ app.post("/placeAdd", urlencodedParser, (req, res) => {
 
   res.redirect('/listPlaces');
 
-})
+}) //  END___POST ADD NEW PLACE 
 
 
-
+// CHANGE TEXT FORMAT
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
 
 
 // creation of database
@@ -939,12 +925,31 @@ app.post("/placeAdd", urlencodedParser, (req, res) => {
 // });
 
 
+// unknown function for now
+// unknown function for now
+// unknown function for now
 
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+
+
+// ___GET ADD PLACE TO DATABASE
+app.get("/addPlaceDB", (req, res) => {
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    var myobj = [{
+      id: 1,
+      name: "Authentic",
+      long: 2.323232,
+      lat: 32.3434,
+      time: "8-16",
+      phone: "0537375243"
+    }];
+    dbo.collection("places").insertMany(myobj, function (err, res) {
+      if (err) throw err;
+      console.log("Number of documents inserted: " + res.insertedCount);
+      db.close();
+    });
   });
-}
+}); // END___GET ADD PLACE TO DATABASE
 
-
-app.listen(3030, () => console.log('Example app listening on port 3030!'))
+app.listen(3030, () => console.log('FOOD SERVICE listening on port 3030!'))
