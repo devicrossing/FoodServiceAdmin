@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
+    style
+      include css/upload_first_img.css
+    
+  body
+    div(class='site')
+        header(class='entry-header wide')
+            h2(class='entry-title')
+        form(action="http://localhost:3030/uploadAdmin/" + picUrl , class='navigation' encType='multipart/form-data' method='post')
+            a(class='btn' href='http://localhost:3030/foodList') Back to Food List
+            input(type="file" name='picture' class='btn')
+            input(type='submit' class='btn')
+    div(class='modal' id='myModal')
+        span(class='close') &times;
+        img(class='modal-content' id='img01')
+        div(class='caption')
+
+    script
+        include js/upload_first_img.js
+
+    
