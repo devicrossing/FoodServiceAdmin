@@ -220,10 +220,15 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
     picturesList.forEach(function (value, index) {
 
+      console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
+      console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
+
       if (value.indexOf(url[0]) !== -1) {
         pictureUrl.push(value);
       }
     });
+
+    console.log(' pictureUrl ' + pictureUrl);
 
     // Rename the image selected for validation 
 
@@ -234,17 +239,21 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
     let sampleFile = req.files.picture;
     let ext = sampleFile.name.split(".")[1];
 
+    // here need code
+
     pictureUrl.forEach((_url) => {
       fs.unlink(`./uploads/${_url}`, (err) => {
         if (err) throw err;
         console.log(`successfully deleted ./uploads/${_url}`);
         // Use the mv() method to place the file somewhere on your server
-        sampleFile.mv(`./uploads/${url}-validated.${ext}`, function (err) {
-          if (err)
-            return res.status(500).send(err);
 
-        });
       });
+
+    });
+
+    sampleFile.mv(`./uploads/${url}-validated.${ext}`, function (err) {
+      if (err)
+        return res.status(500).send(err);
 
     });
 
