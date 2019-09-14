@@ -10,7 +10,6 @@ var _ = require('underscore-node');
 
 var bodyParser = require('body-parser')
 
-
 var FormData = require('form-data');
 
 var MongoClient = require('mongodb').MongoClient;
@@ -19,17 +18,13 @@ var ObjectId = require('mongodb').ObjectID;
 
 let foodList;
 
-
-
 // for parsing application/json
-
 var jsonParser = bodyParser.json()
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({
   extended: false
 })
-
 
 // for parsing application/x-www-form-urlencoded
 app.use(fileUpload({
@@ -38,10 +33,8 @@ app.use(fileUpload({
   },
 }));
 
-
 app.use("/public", express.static('public'));
 app.use("/uploads", express.static('uploads'));
-
 
 MongoClient.connect(db_url, function (err, db) {
   if (err) throw err;
@@ -55,7 +48,6 @@ MongoClient.connect(db_url, function (err, db) {
 
 app.set('view engine', 'pug')
 
-
 // ___GET page Home 
 app.get('/', (req, res) => {
 
@@ -63,7 +55,6 @@ app.get('/', (req, res) => {
     pageTitle: 'Food Info Service Menu',
     message: 'Hello there!'
   })
-
 
 });
 
@@ -206,6 +197,8 @@ app.get("/getImage/:image", (req, res) => {
 });
 // END___GET IMAGE URL
 
+
+// NEED DEBUG
 // ___POST upload FROM ADMIN PANEL AND DELETE OTHER PENDING PHOTOS
 app.post('/uploadAdmin/:foodId', function (req, res) {
 
@@ -928,7 +921,6 @@ function toTitleCase(str) {
 // unknown function for now
 // unknown function for now
 // unknown function for now
-
 
 
 // ___GET ADD PLACE TO DATABASE

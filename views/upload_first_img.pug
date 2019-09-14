@@ -9,7 +9,7 @@ html(lang="en")
   body
     div(class='site')
         header(class='entry-header wide')
-            h2(class='entry-title')
+            h2(class='entry-title')= pic_name
         form(action="http://localhost:3030/uploadAdmin/" + picUrl , class='navigation' encType='multipart/form-data' method='post')
             a(class='btn' href='http://localhost:3030/foodList') Back to Food List
             input(type="file" name='picture' class='btn')
