@@ -59,17 +59,16 @@ app.get('/', (req, res) => {
 });
 
 // ___POST upload FROM APPLICATION
-
 app.post('/upload', function (request, response) {
 
   var outDir = path.join(__dirname, "uploads");
 
   try {
     var Throttle = require("stream-throttle").Throttle;
-
     var fileName = request.headers["file-name"].replace(/ /g, '');
 
     console.log("filename : " + fileName);
+
     if (console) {
       console.log(request.method + "Request! Content-Length: " + request.headers["content-length"] + ", file-name: " + fileName);
       console.dir(request.headers);
@@ -77,7 +76,6 @@ app.post('/upload', function (request, response) {
     let file = fileName.split(".");
     // var out = path.join(outDir, "upload-" + new Date().getTime() + "-" + fileName);
     var out = path.join(outDir, file[0] + "-" + new Date().getTime() + "." + file[1]);
-
 
     if (console) {
       console.log("Output in: " + out);
@@ -162,7 +160,6 @@ app.post('/upload', function (request, response) {
 app.get("/getImage/:image", (req, res) => {
   console.log(req.params.image);
 
-
   let _folder = "./uploads/";
   let picturesList = [];
   pictureUrl = [];
@@ -196,7 +193,6 @@ app.get("/getImage/:image", (req, res) => {
 
 });
 // END___GET IMAGE URL
-
 
 // NEED DEBUG
 // ___POST upload FROM ADMIN PANEL AND DELETE OTHER PENDING PHOTOS
@@ -334,9 +330,6 @@ app.get("/listImage", (request, response) => {
 // ___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
 app.get("/foodValidate/:foodId/:validated", (req, res) => {
 
-  var compiled = _.template(`
-   `);
-
 
   let _folder = "./uploads/";
   let picturesList = [];
@@ -374,11 +367,8 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
 app.get("/foodList", (req, res) => {
 
   let foodImages = [];
-
   let picturesList = [];
   let _folder = "./uploads/";
-
-
   let picturesUrl = [];
   let pictureState = "";
 
@@ -522,8 +512,8 @@ app.get('/allFood', function (req, res) {
 
 // ___GET food by id JSON
 app.get('/food/:id', function (req, res) {
-  const id = req.params.id;
 
+  const id = req.params.id;
   let _food;
 
   foodList.forEach(food => {
@@ -764,9 +754,6 @@ app.get("/getPlaceInfo/:place", (req, res) => {
     });
   });
 }); // END___GET PLACE INFO BY ID
-
-
-
 
 // ___GET LIST OF PLACES
 app.get("/listPlaces", (req, res) => {
