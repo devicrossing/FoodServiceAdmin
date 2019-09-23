@@ -216,8 +216,14 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
     picturesList.forEach(function (value, index) {
 
-      console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
-      console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
+      // console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
+
+      // console.log(' value.indexOf(url[0] ' + value);
+
+      // console.log(' url ' + url);
+      // console.log(' value ' + value);
+
+      // console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
 
       if (value.indexOf(url[0]) !== -1) {
         pictureUrl.push(value);
@@ -237,15 +243,19 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
     // here need code
 
-    pictureUrl.forEach((_url) => {
-      fs.unlink(`./uploads/${_url}`, (err) => {
-        if (err) throw err;
-        console.log(`successfully deleted ./uploads/${_url}`);
-        // Use the mv() method to place the file somewhere on your server
+    // console.log(pictureUrl);
 
-      });
 
-    });
+    // pictureUrl.forEach((_url) => {
+    //   console.log(_url);
+    //   fs.unlink(`./uploads/${_url}`, (err) => {
+    //     if (err) throw err;
+    //     console.log(`successfully deleted ./uploads/${_url}`);
+    //     // Use the mv() method to place the file somewhere on your server
+
+    //   });
+
+    // });
 
     sampleFile.mv(`./uploads/${url}-validated.${ext}`, function (err) {
       if (err)
@@ -930,7 +940,8 @@ app.get("/addPlaceDB", (req, res) => {
       long: 2.323232,
       lat: 32.3434,
       time: "8-16",
-      phone: "0537375243"
+      phone: "0537375243",
+      desc: "description of food"
     }];
     dbo.collection("places").insertMany(myobj, function (err, res) {
       if (err) throw err;
