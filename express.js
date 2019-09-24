@@ -17,6 +17,7 @@ var db_url = "mongodb+srv://bouda:B0uda-bouda!@foodservice-wnasg.mongodb.net/tes
 var ObjectId = require('mongodb').ObjectID;
 
 let foodList;
+let foodChoices;
 
 // for parsing application/json
 var jsonParser = bodyParser.json()
@@ -536,6 +537,7 @@ app.get('/food/:id', function (req, res) {
   res.json(_food);
 }) // END___GET food by id JSON
 
+
 // ___GET all Places JSON
 app.get('/places', function (req, res) {
   // todo places need to get them with query
@@ -847,7 +849,14 @@ app.get("/placeDelete/:placeName", (req, res) => {
 
   res.redirect('/listPlaces');
 
-}); // ___GET Delete place by Name
+}); // END___GET Delete place by Name
+
+
+
+
+
+
+
 
 
 //  ___POST ADD NEW PLACE 
@@ -941,7 +950,8 @@ app.get("/addPlaceDB", (req, res) => {
       lat: 32.3434,
       time: "8-16",
       phone: "0537375243",
-      desc: "description of food"
+      desc: "description of food",
+      image: "//noimage"
     }];
     dbo.collection("places").insertMany(myobj, function (err, res) {
       if (err) throw err;
@@ -950,5 +960,35 @@ app.get("/addPlaceDB", (req, res) => {
     });
   });
 }); // END___GET ADD PLACE TO DATABASE
+
+
+
+
+// ___GET food by Choices by id JSON
+app.get('/foodChoiceById/:id', function (req, res) {
+
+  const id = parseInt(req.params.id);
+
+  console.log(id);
+
+  // console.log(foodChoices);
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("choice").find({
+      id: id
+    }).toArray(function (err, result) {
+      if (err) throw err;
+      foodChoices = result;
+      // console.log(result);
+      db.close();
+      res.json(foodChoices);
+    });
+  });
+
+}) // END___GET food by Choices by id JSON
+
+
+
 
 app.listen(3030, () => console.log('FOOD SERVICE listening on port 3030!'))
