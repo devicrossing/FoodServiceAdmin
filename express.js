@@ -52,6 +52,17 @@ app.set('view engine', 'pug')
 // ___GET page Home 
 app.get('/', (req, res) => {
 
+  res.render('login', {
+    pageTitle: 'Food Info Service Menu',
+    message: 'Hello there!'
+  })
+
+});
+
+
+// ___GET page Home 
+app.get('/index', (req, res) => {
+
   res.render('index', {
     pageTitle: 'Food Info Service Menu',
     message: 'Hello there!'

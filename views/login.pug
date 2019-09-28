@@ -1,0 +1,30 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+    style
+      include css/login.css
+    
+  body
+    div(class="login-page")
+        div(class="form")
+            h1 Food Service Login
+            form(class="register-form")
+                input(type="text" , placeholder="name")
+                input(type="password" , placeholder="password")
+                input(type="email" , placeholder="email address")
+                button CREATE
+                P(class="message") Already registered?
+                    a(href="#") Sign In
+            form(clas="login-form")
+                input(type="text" , placeholder="username")
+                input(type="password" , placeholder="password")
+                button LOGIN
+                P(class="message") Not registred?
+                    a(href="#") Create Account
+                
+    script
+        include js/login.js       
+    
