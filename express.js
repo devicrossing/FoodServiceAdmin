@@ -20,12 +20,14 @@ let foodList;
 let foodChoices;
 
 // for parsing application/json
-var jsonParser = bodyParser.json()
-
+// var jsonParser = bodyParser.json()
+app.use(bodyParser.json());
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({
-  extended: false
+  extended: true
 })
+
+app.use(urlencodedParser);
 
 // for parsing application/x-www-form-urlencoded
 app.use(fileUpload({
@@ -52,12 +54,15 @@ app.set('view engine', 'pug')
 // ___GET page Home 
 app.get('/', (req, res) => {
 
+
   res.render('login', {
     pageTitle: 'Food Info Service Menu',
-    message: 'Hello there!'
+    message: 'Food Service Login Page'
   })
 
 });
+
+
 
 
 // ___GET page Home 
@@ -971,6 +976,63 @@ app.get("/addPlaceDB", (req, res) => {
     });
   });
 }); // END___GET ADD PLACE TO DATABASE
+
+
+
+
+
+
+
+app.post('/login', (req, res) => {
+
+  let user = 'null';
+  let user_exist = false;
+
+  console.log(req.body.name);
+  console.log(req.body.password);
+
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("users").find({
+      username: req.body.name,
+      password: req.body.password
+    }).toArray(function (err, result) {
+      if (err) throw err;
+      user = result;
+      // console.log(result);
+      db.close();
+
+      console.log("exist" + user.length);
+
+      console.dir(user);
+      if (user.length > 0) {
+        res.render('index', {
+          pageTitle: 'Food Info Service Menu',
+          message: 'Food Service index Page'
+        })
+      } else {
+        res.render('login', {
+          pageTitle: 'Food Info Service Menu',
+          message: 'Food Service Login Page'
+        })
+      }
+
+    });
+  });
+
+
+});
+
+
+app.post('/register', (req, res) => {
+
+
+  console.log(req.body.name);
+
+});
+
 
 
 

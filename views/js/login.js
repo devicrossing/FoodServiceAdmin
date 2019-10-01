@@ -4,3 +4,10 @@ $('.message a').click(function () {
         opacity: "toggle"
     }, "slow");
 });
+
+
+
+
+$(".test").on('click', function () {
+    alert($('.login-form .name').val());
+});
