@@ -1008,8 +1008,8 @@ app.post('/login', (req, res) => {
 
       console.dir(user);
       if (user.length > 0) {
-        res.render('index', {
-          pageTitle: 'Food Info Service Menu',
+        res.render('client', {
+          pageTitle: 'Food Service Client',
           message: 'Food Service index Page'
         })
       } else {
