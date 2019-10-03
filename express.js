@@ -985,7 +985,7 @@ app.get("/addPlaceDB", (req, res) => {
 
 app.post('/login', (req, res) => {
 
-  let user = 'null';
+  let user;
   let user_exist = false;
 
   console.log(req.body.name);
@@ -1002,40 +1002,53 @@ app.post('/login', (req, res) => {
       if (err) throw err;
       user = result;
       // console.log(result);
-      db.close();
-
-      console.log("exist" + user.length);
-
-      console.dir(user);
+      console.dir(user[0]);
       if (user.length > 0) {
-        res.render('client', {
-          pageTitle: 'Food Service Client',
-          message: 'Food Service index Page'
-        })
-      } else {
-        res.render('login', {
-          pageTitle: 'Food Info Service Menu',
-          message: 'Food Service Login Page'
-        })
+
+        switch (user[0].type) {
+          case 'admin':
+            res.render('index', {
+              pageTitle: 'Food Service Client Dashboard',
+              message: 'Hello there!',
+              user: user[0]
+            })
+            break;
+          case 'client':
+            res.render('dashboard', {
+              pageTitle: 'Food Service Client Dashboard',
+              user: user[0]
+            })
+            break;
+
+          default:
+            res.render('login', {
+              pageTitle: 'Food Service Client Dashboard',
+              message: 'Hello there!',
+              user: user[0]
+            })
+            break;
+        }
+
+
       }
 
-    });
-  });
 
+      db.close();
+
+
+
+    });
+
+  });
 
 });
 
 
 app.post('/register', (req, res) => {
 
-
   console.log(req.body.name);
 
 });
-
-
-
-
 
 // ___GET food by Choices by id JSON
 app.get('/foodChoiceById/:id', function (req, res) {

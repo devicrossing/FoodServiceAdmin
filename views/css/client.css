@@ -78,6 +78,21 @@ main .helper span {
     cursor: pointer;
 }
 
+.menu ul li.icon-food {
+    background-image: url("http://www.entypo.com/images//gauge.svg");
+}
+
+.menu ul li.icon-place {
+    background-image: url("http://www.entypo.com/images//briefcase.svg");
+}
+
+.menu ul li.icon-users {
+    background-image: url("http://www.entypo.com/images//users.svg");
+}
+
+.menu ul li.icon-settings {
+    background-image: url("http://www.entypo.com/images//tools.svg");
+}
 
 .menu ul li:hover {
     background-color: rgba(0, 0, 0, 0.1);
