@@ -1,3 +1,157 @@
+/** MAIN CSS **/
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.clear-all {
+    clear: both;
+}
+
+.clear-left {
+    clear: left;
+}
+
+.clear-right {
+    clear: right;
+}
+
+.user-banner {
+    width: 180px;
+    padding: 1px 0px 1px 0px;
+    background: #00adf7;
+    text-align: center;
+}
+
+.user-banner img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+    width: 50px;
+    margin-right: 5px;
+    border-radius: 100%;
+}
+
+.user-banner .username {
+    font-weight: bold;
+}
+
+/** IMPORT HELPER CSS **/
+/** IMPORT BASE CSS **/
+html,
+body {
+    height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font: 14px/20px "Proxima Nova", "Helvetica Neue", arial, sans-serif;
+    color: #676e74;
+    background: #E9EEF1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #1F2123;
+}
+
+h1,
+h2 {
+    color: #4f5459;
+    margin: 5px 0 20px 0;
+}
+
+h1 {
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.light {
+    color: #b6babe;
+}
+
+#nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 180px;
+    color: #fff;
+    background: #1F2123;
+    z-index: +10;
+}
+
+#nav a {
+    color: #737E89;
+    text-decoration: none;
+}
+
+#nav ul {
+    list-style-type: none;
+    padding: 12px;
+    margin: 0;
+    font-weight: 600;
+}
+
+#nav ul li.head {
+    color: #50585f;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+}
+
+#nav ul li a {
+    display: block;
+    padding: 6px 12px;
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+#nav ul li a i {
+    margin-right: 8px;
+}
+
+#nav ul li a:hover {
+    background: #2b2e31;
+}
+
+#nav ul li.active a {
+    color: #fff;
+    background: #2DA5EE;
+}
+
+#main {
+    margin-left: 180px;
+}
+
+#main header {
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    padding: 20px;
+    z-index: +1;
+    border-bottom: 1px solid #d9e2e7;
+}
+
+
+
+
+
+/* datatable */
+
+
+
 /* // Table Styles */
 
 /* // flexbox support for scroll-y */
@@ -32,6 +186,7 @@ body {
     height: 100%;
     width: 100%;
     max-width: 100%;
+    overflow-y: hidden;
 }
 
 body {
@@ -107,11 +262,7 @@ select {
     height: 30px;
 }
 
-#example_filter {
-    color: white;
-    margin-right: 2%;
-    width: 25%;
-}
+
 
 #example_length {
     color: white;
@@ -276,9 +427,6 @@ body {
 
 
 
-#example {}
-
-
 
 .overlay {
     position: fixed;
@@ -297,51 +445,12 @@ body {
     opacity: 1;
 }
 
-.popup {
-    margin: 700px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 5px;
-    width: 30%;
-    position: relative;
-    transition: all 5s ease-in-out;
-    margin-top: 100px;
-}
-
-.popup h2 {
-    margin-top: 0;
-    color: #00adf7;
-    font-family: Tahoma, Arial, sans-serif;
-}
-
-.popup .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #333;
-}
-
-.popup .close:hover {
-    color: #00adf7;
-}
-
-.popup .content {
-    max-height: 30%;
-    overflow: auto;
-}
-
 @media screen and (max-width: 700px) {
     .box {
         width: 100%;
     }
 
-    .popup {
-        width: 70%;
-    }
+
 }
 
 .button {
@@ -363,43 +472,6 @@ body {
 }
 
 
-.form {
-    position: relative;
-    z-index: 1;
-    background: #FFFFFF;
-    max-width: 360px;
-    margin: 0 auto 100px;
-    padding: 45px;
-    text-align: center;
-
-}
-
-.form input {
-    font-family: "Roboto", sans-serif;
-    outline: 0;
-    background: #f2f2f2;
-    width: 100%;
-    border: 0;
-    margin: 0 0 15px;
-    padding: 15px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-.form button {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-    outline: 0;
-    background: ;
-    width: 100%;
-    border: 0;
-    padding: 15px;
-    color: #FFFFFF;
-    font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-}
 
 .form button:hover,
 .form button:active,
@@ -433,57 +505,9 @@ body {
 }
 
 
-.box {
-    text-align: center;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-.box a {
-    background: white;
-    transition: transform 1s;
-    color: #00adf7;
-    text-decoration: none;
-    margin-top: 15px;
-    margin-left: 10px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 2rem;
-    float: left
-}
-
-.box a i {
-    line-height: 3rem;
-}
-
-.box h1 {
-    display: inline-block;
-    color: white
-}
-
-.box a.button {
-    border-radius: 50%;
-    background: white;
-    color: #00adf7;
-    float: right;
-}
-
 div.container {
     padding: 0;
     margin: 0;
     overflow: scroll;
     height: 100%;
-
-}
-
-.login-form select {
-    width: 100%;
-    height: 50px;
-    border: none;
-    margin-bottom: 5px;
-}
-
-.login-form input[type='submit'] {
-    background: #00adf7;
-    color: white;
 }
