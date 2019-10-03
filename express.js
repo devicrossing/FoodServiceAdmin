@@ -421,15 +421,30 @@ app.get("/foodList", (req, res) => {
         // for each food in the list search for images related to it
         foodList.forEach(food => {
 
+
+
           picturesList.forEach(function (value, index) {
+
+
+
+
+
+            // console.log(value.indexOf(`indexof : ${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1)
 
             if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
 
               // console.log(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`);
               // console.log(value);
+
               picturesUrl.push(value);
 
+              console.log("value " + value);
+
+
             }
+
+
+
           });
 
           // console.log(food.id)
@@ -1047,6 +1062,7 @@ app.get('/client_produits', (req, res) => {
   let _folder = "./uploads/";
   let picturesUrl = [];
   let pictureState = "";
+  let _foodList;
 
   // update the foodList
 
@@ -1060,7 +1076,7 @@ app.get('/client_produits', (req, res) => {
       place: user[0].place.toLowerCase().trim()
     }).toArray(function (err, result) {
       if (err) throw err;
-      foodList = result;
+      _foodList = result;
       db.close();
 
       // get all files in List
@@ -1071,7 +1087,7 @@ app.get('/client_produits', (req, res) => {
         // console.dir(picturesList);
 
         // for each food in the list search for images related to it
-        foodList.forEach(food => {
+        _foodList.forEach(food => {
 
           picturesList.forEach(function (value, index) {
 
@@ -1120,7 +1136,7 @@ app.get('/client_produits', (req, res) => {
 
         res.render('client_produits', {
           pageTitle: 'Listof all foods - ADMIN PANEL',
-          foodList: foodList,
+          foodList: _foodList,
           images: foodImages
         })
 
