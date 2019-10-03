@@ -414,3 +414,18 @@ h2 {
     width: 100%;
     text-align: center;
 }
+
+
+p.user_message {
+
+    text-align: center;
+}
+
+p.user_message ul li {
+
+    text-align: center;
+}
+
+#content h1 {
+    text-align: center;
+}

@@ -20,7 +20,7 @@ style
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
     li
-      a(href="#")
+      a(href="./client_produts")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Produits
     li
@@ -35,41 +35,70 @@ style
         a(href="#")= user.username
       li.active tableau de bord
   #content
-    h1 Properties
+    h1 Bienvenue dans le tableau de bord Web
     .box: .body
-      p A quick-glance at your performance.
+      p.user_message La solution professionnelle pour gérer votre commerce. Ici vous pouvez efferctuer plusieurs actions pour gérer votre commerce dans Food Service
     .row
-      - for (i = 0; i < 3; i++)
-        .col-sm-4
-          .box.property-glance
-            .header
-              h4.pull-left Hawkins Point
-              span.pull-right Avg. Rent: $790
-              div.progress.clear-right
-                div.progress-bar(role = "progressbar" aria-valuenow = "75" aria-valuemin = "0" aria-valuemax = "100" style = "width: 75%;")
-                  | 70% occupied
-                  span.sr-only 70% Complete
-              div.clear-left
-                i.fa.fa-map-marker
-                span Mascoutah, IL
-            .body
-              .row
-                div.col-sm-6.statistic.text-center
-                  h1 24
-                  small Produits validés
-                div.col-sm-6.text-center
-                  h1 18
-                  small En attente validation
+      .col-sm-4
+        .box.property-glance
+          .header
+            h4.pull-left Mes Produits
+            span.pull-right Avg. Rent: $790
+            div.progress.clear-right
+              div.progress-bar(role = "progressbar" aria-valuenow = "75" aria-valuemin = "0" aria-valuemax = "100" style = "width: 75%;")
+                | 70% occupied
+                span.sr-only 70% Complete
+            div.clear-left
+              i.fa.fa-map-marker
+              span Mascoutah, IL
+          .body
+            .row
+              div.col-sm-6.statistic.text-center
+                h1 24
+                small Produits validés
+              div.col-sm-6.text-center
+                h1 18
+                small En attente validation
 
-              .row
-                .col-sm-3.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
-                  i.fa.fa-comments-o
-                .col-sm-3.col-xs-6.widget
-                  i.fa.fa-line-chart
-                .col-sm-3.col-xs-6.widget
-                  i.fa.fa-money
-                .col-sm-3.col-xs-6.widget
-                  i.fa.fa-users
+            .row
+              .col-sm-3.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
+                i.fa.fa-comments-o
+              .col-sm-3.col-xs-6.widget
+                i.fa.fa-line-chart
+              .col-sm-3.col-xs-6.widget
+                i.fa.fa-money
+              .col-sm-3.col-xs-6.widget
+                i.fa.fa-users
+      .col-sm-4
+        .box.property-glance
+          .header
+            h4.pull-left Contact
+            span.pull-right Avg. Rent: $790
+            div.progress.clear-right
+              div.progress-bar(role = "progressbar" aria-valuenow = "75" aria-valuemin = "0" aria-valuemax = "100" style = "width: 75%;")
+                | 70% occupied
+                span.sr-only 70% Complete
+            div.clear-left
+              i.fa.fa-map-marker
+              span Mascoutah, IL
+          .body
+            .row
+              div.col-sm-6.statistic.text-center
+                h1 24
+                small Produits validés
+              div.col-sm-6.text-center
+                h1 18
+                small En attente validation
+
+            .row
+              .col-sm-3.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
+                i.fa.fa-comments-o
+              .col-sm-3.col-xs-6.widget
+                i.fa.fa-line-chart
+              .col-sm-3.col-xs-6.widget
+                i.fa.fa-money
+              .col-sm-3.col-xs-6.widget
+                i.fa.fa-users
 
     div.row
       .col-sm-6
