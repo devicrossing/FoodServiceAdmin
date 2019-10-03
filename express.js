@@ -1150,9 +1150,14 @@ app.get('/client_produits', (req, res) => {
 });
 
 
-app.post('/register', (req, res) => {
+app.get('/logout', (req, res) => {
 
-  console.log(req.body.name);
+  user = {};
+
+  res.render('login', {
+    pageTitle: 'Food Info Service Menu',
+    message: 'Food Service Login Page'
+  })
 
 });
 
