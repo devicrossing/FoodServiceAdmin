@@ -181,13 +181,14 @@ h2 {
     text-align: center;
     margin-top: 20px;
     padding: 10px;
-    background: #fa5a5a;
+    background: #00adf7;
     color: #fff;
     font-size: 200%;
 }
 
 #main .property-glance .widget:hover {
-    background: #fa4b4b;
+    background: #70adf7;
+    ;
 }
 
 #main .timeline {

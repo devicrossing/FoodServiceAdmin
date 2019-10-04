@@ -1,11 +1,12 @@
 
 
-script(src='https://code.jquery.com/jquery-1.11.1.min.js')
-link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' crossorigin='anonymous')
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js')
+link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' crossorigin='anonymous')
 link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' crossorigin='anonymous')
-script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
-link(href='//datatables.net/download/build/nightly/jquery.dataTables.css' rel='stylesheet' type='text/css')
-script(src='//datatables.net/download/build/nightly/jquery.dataTables.js')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
+link(href='https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css')
+script(src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js')
+script(src='https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js')
 link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
 style
       include css/client_produits.css
@@ -16,17 +17,21 @@ style
 #nav
   div.user-banner
     img(src='./uploads/clients/b0uda.png')
-    h5.username reda
+    h5.username= user.username
   ul
     li.head MENU
     li
       a(href="./dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
+    li
+      a(href="./client_ajouter")
+        i.fa.fa-fw.fa-inbox
+        span.swatch.light-grey Ajouter un produit
     li.active
       a(href="./client_produits")
         i.fa.fa-fw.fa-inbox
-        span.swatch.light-grey Produits
+        span.swatch.light-grey Liste de produits
     li
       a(href="/client_contact")
         i.fa.fa-fw.fa-user

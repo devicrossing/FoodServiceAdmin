@@ -1196,6 +1196,16 @@ app.get('/client_contact', (req, res) => {
 
 });
 
+app.get('/dashboard', (req, res) => {
+
+  res.render('dashboard', {
+    pageTitle: 'Food Service Client Dashboard',
+    message: 'Hello there!',
+    user: user
+  })
+
+});
+
 
 app.get('/dashboard', (req, res) => {
 
