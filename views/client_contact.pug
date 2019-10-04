@@ -1,0 +1,150 @@
+
+
+script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' crossorigin='anonymous')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+style
+      include css/client_contact.css
+      include css/client_unified.css
+
+
+#nav
+  div.user-banner
+    img(src='./uploads/clients/b0uda.png')
+    h5.username= user.username
+  ul
+    li.head MENU
+    li
+      a(href="./dashboard")
+        i.fa.fa-fw.fa-dashboard
+        span Tableau de bord
+    li
+      a(href="./client_produits")
+        i.fa.fa-fw.fa-inbox
+        span.swatch.light-grey Produits
+    li.active
+      a(href="/client_contact")
+        i.fa.fa-fw.fa-user
+        span Contact
+    li
+      a(href="/logout")
+        i.fa.fa-fw.fa-user
+        span Logout
+
+
+
+
+#main
+  header
+    ol.breadcrumb
+      li 
+        a(href="#")= user.username
+      li.active tableau de bord
+  #content.container
+    form#contact_form.well.form-horizontal(action=' ' method='post')
+      fieldset
+        // Form Name
+        legend Fiche d'information sur de votre établissement
+        // Text input
+        .form-group
+          label.col-md-4.control-label Username
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-user
+              input.form-control(name='user_name' placeholder= user[0].username type='text')
+        // Text input
+        // Text input
+        .form-group
+          label.col-md-4.control-label Prénom
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-user
+              input.form-control(name='first_name' placeholder= user[0].firstname type='text')
+        // Text input
+        .form-group
+          label.col-md-4.control-label Nom
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-user
+              input.form-control(name='last_name' placeholder= user[0].lastname type='text')
+        // Text input
+        .form-group
+          label.col-md-4.control-label E-Mail
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control(name='email' placeholder= user[0].username type='text')
+        // Text input
+        .form-group
+          label.col-md-4.control-label Téléphone #
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-earphone
+              input.form-control(name='phone' placeholder= place.phone type='text')
+        // Text input
+        .form-group
+          label.col-md-4.control-label Adresse
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-home
+              input.form-control(name='address' placeholder= 'Lat :' + place.lat + ' , Long : ' + place.long type='text')
+        // Text input
+        .form-group
+          label.col-md-4.control-label Site web ou nom de domaine
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-globe
+              input.form-control(name='website' placeholder= user[0].web type='text')
+        // radio checks
+        .form-group
+          label.col-md-4.control-label Do you have hosting?
+          .col-md-4
+            .radio
+              label
+                if (user[0].hosting)
+                  input(type='radio' checked  name='hosting' value='yes')
+                  |  Yes
+                else
+                  input(type='radio'  name='hosting' value='yes')
+                  |  Yes
+            .radio
+              label
+                if (user[0].hosting)
+                  input(type='radio' name='hosting' value='no')
+                  |  No
+                else
+                  input(type='radio' checked name='hosting' value='no')
+                  |  No
+        // Text area
+        .form-group
+          label.col-md-4.control-label Description de votre d'établissement
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-pencil
+              textarea.form-control(name='comment' placeholder= place.desc)
+        // Success message
+        #success_message.alert.alert-success(role='alert')
+          | Success 
+          i.glyphicon.glyphicon-thumbs-up
+          |  Thanks for contacting us, we will get back to you shortly.
+        // Button
+        .form-group
+          label.col-md-4.control-label
+          .col-md-4
+            button.btn.btn-warning(type='submit')
+              | Enregistrer 
+              span.glyphicon.glyphicon-send
+
+
+
+    script
+        include js/client_contact.js  

@@ -9,6 +9,7 @@ script(src='//datatables.net/download/build/nightly/jquery.dataTables.js')
 link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css' integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg' crossorigin='anonymous')
 style
       include css/client_produits.css
+      include css/client_unified.css
 
 
 
@@ -18,16 +19,16 @@ style
     h5.username reda
   ul
     li.head MENU
-    li.active
-      a(href="./login")
+    li
+      a(href="./dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
-    li
+    li.active
       a(href="./client_produits")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Produits
     li
-      a(href="#")
+      a(href="/client_contact")
         i.fa.fa-fw.fa-user
         span Contact
     li

@@ -19,7 +19,7 @@ var ObjectId = require('mongodb').ObjectID;
 let foodList;
 let foodChoices;
 
-let user;
+global.user;
 
 // for parsing application/json
 // var jsonParser = bodyParser.json()
@@ -1157,6 +1157,52 @@ app.get('/logout', (req, res) => {
   res.render('login', {
     pageTitle: 'Food Info Service Menu',
     message: 'Food Service Login Page'
+  })
+
+});
+
+app.get('/client_contact', (req, res) => {
+
+  console.dir(user);
+
+  let _place;
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    var query = {
+      name: user[0].place
+    };
+    dbo.collection("places").find(query).toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      _place = result;
+      db.close();
+
+      res.render('client_contact', {
+        pageTitle: 'Client Contact',
+        message: 'Food Service Login Page',
+        user: user,
+        place: _place[0]
+      })
+
+
+    });
+  });
+
+  console.dir(_place);
+
+
+
+});
+
+
+app.get('/dashboard', (req, res) => {
+
+  res.render('dashboard', {
+    pageTitle: 'Food Service Client Dashboard',
+    message: 'Hello there!',
+    user: user
   })
 
 });

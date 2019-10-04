@@ -1,0 +1,173 @@
+/** MAIN CSS **/
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.clear-all {
+    clear: both;
+}
+
+.clear-left {
+    clear: left;
+}
+
+.clear-right {
+    clear: right;
+}
+
+.user-banner {
+    width: 180px;
+    padding: 1px 0px 1px 0px;
+    background: #00adf7;
+    text-align: center;
+}
+
+.user-banner img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+    width: 50px;
+    margin-right: 5px;
+    border-radius: 100%;
+}
+
+.user-banner .username {
+    font-weight: bold;
+}
+
+/** IMPORT HELPER CSS **/
+/** IMPORT BASE CSS **/
+html,
+body {
+    height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font: 14px/20px "Proxima Nova", "Helvetica Neue", arial, sans-serif;
+    color: #676e74;
+    background: #E9EEF1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #1F2123;
+}
+
+h1,
+h2 {
+    color: #4f5459;
+    margin: 5px 0 20px 0;
+}
+
+h1 {
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.light {
+    color: #b6babe;
+}
+
+#nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 180px;
+    color: #fff;
+    background: #1F2123;
+    z-index: +10;
+}
+
+#nav a {
+    color: #737E89;
+    text-decoration: none;
+}
+
+#nav ul {
+    list-style-type: none;
+    padding: 12px;
+    margin: 0;
+    font-weight: 600;
+}
+
+#nav ul li.head {
+    color: #50585f;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+}
+
+#nav ul li a {
+    display: block;
+    padding: 6px 12px;
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+#nav ul li a i {
+    margin-right: 8px;
+}
+
+#nav ul li a:hover {
+    background: #2b2e31;
+}
+
+#nav ul li.active a {
+    color: #fff;
+    background: #2DA5EE;
+}
+
+#main {
+    margin-left: 180px;
+}
+
+#main header {
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    padding: 20px;
+    z-index: +19;
+    border-bottom: 1px solid #d9e2e7;
+}
+
+.well {
+    margin-top: 100px;
+}
+
+
+#success_message {
+    display: none;
+}
+
+
+.btn-warning {
+    background-color: #00adf7;
+    border-color: #00adf7;
+}
+
+.btn-warning:hover {
+    background-color: #001df7;
+    border-color: #001df7;
+}
+
+legend {
+    text-align: center;
+}
+
+legend {
+    border-bottom: 0;
+}
