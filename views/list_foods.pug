@@ -28,6 +28,8 @@ html(lang="en")
                     th name
                     th category
                     th price
+                    th admin validated
+                    th client validated
                     th photo
             tfoot    
                 tr
@@ -36,6 +38,8 @@ html(lang="en")
                     th name
                     th category
                     th price
+                    th admin validated
+                    th client validated
                     th photo
             tbody
              each  food , index  in foodList
@@ -45,6 +49,8 @@ html(lang="en")
                 td= food.name 
                 td= food.category 
                 td= food.price 
+                td= food.client_validated 
+                td= food.admin_validated 
                 td!= images[index].state
                         a(href='http://localhost:3030/foodDelete/' + food.id)
                             i(class='fas fa-trash')

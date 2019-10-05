@@ -611,10 +611,11 @@ app.get('/budgetFood/:budget', function (req, res) {
   let foodListFiltred = [];
 
   foodList.forEach(food => {
-    if (Number(food.price) <= Number(budget)) {
+    if (Number(food.price) <= Number(budget) && food.admin_validated) {
       foodListFiltred.push(food);
     }
   });
+
   res.json(foodListFiltred);
 }) // END___GET food by budget JSON
 
