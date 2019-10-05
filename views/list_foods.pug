@@ -48,9 +48,15 @@ html(lang="en")
                 td= food.place 
                 td= food.name 
                 td= food.category 
-                td= food.price 
-                td= food.client_validated 
-                td= food.admin_validated 
+                td= food.price
+                if (food.client_validated ) 
+                    td.true= food.client_validated
+                else
+                   td.false= food.client_validated  
+                if (food.admin) 
+                    td.true= food.admin_validated
+                else
+                   td.false= food.admin_validated  
                 td!= images[index].state
                         a(href='http://localhost:3030/foodDelete/' + food.id)
                             i(class='fas fa-trash')

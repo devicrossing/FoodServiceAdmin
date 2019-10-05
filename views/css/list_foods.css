@@ -274,12 +274,6 @@ body {
 }
 
 
-
-
-#example {}
-
-
-
 .overlay {
     position: fixed;
     top: 0;
@@ -486,4 +480,20 @@ div.container {
 .login-form input[type='submit'] {
     background: #00adf7;
     color: white;
+}
+
+
+
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+    text-align: center;
+}
+
+.true {
+    color: #4CAF50;
+}
+
+.false {
+    color: tomato;
 }
