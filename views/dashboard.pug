@@ -53,7 +53,7 @@ style
         .box.property-glance
           .header
             h4.pull-left Mes Produits
-            span.pull-right Prix moyen: 40DH
+            span.pull-right Prix moyen: 40 DH
             div.clear-left
               i.fa.fa-map-marker
               span Spécialité
@@ -68,9 +68,11 @@ style
 
             .row
               .col-sm-6.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
-                i.fa.fa-plus
+                a(href="/client_ajouter")
+                  i.fa.fa-plus
               .col-sm-6.col-xs-6.widget
-                i.fa.fa-list-ol
+                a(href="/client_produits")
+                  i.fa.fa-list-ol
               
       .col-sm-4
         .box.property-glance
@@ -90,7 +92,8 @@ style
 
             .row
               .col-sm-12.col-xs-12.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
-                i.fa.fa-user
+                a(href="/client_contact")
+                  i.fa.fa-user
               
 
     div.row
