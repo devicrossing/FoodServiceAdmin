@@ -19,7 +19,7 @@ style
       a(href="./dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
-    li
+    li.active
       a(href="./client_ajouter")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Ajouter un produit
@@ -27,7 +27,7 @@ style
       a(href="./client_produits")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Liste de Produits
-    li.active
+    li
       a(href="/client_contact")
         i.fa.fa-fw.fa-user
         span Contact
@@ -43,7 +43,7 @@ style
         a(href="#")= user.username
       li.active tableau de bord
   #content.container
-    form#contact_form.well.form-horizontal(action=' ' method='post')
+    form#contact_form.well.form-horizontal(action='./clientFoodAdd' method='post')
       fieldset
         // Form Name
         legend Ajouter un nouveau produit a votre établissement
@@ -54,7 +54,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='last_name' placeholder= user[0].lastname type='text')
+              input.form-control(name='name' placeholder="Nom du produit" type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Prix
@@ -62,26 +62,18 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
-              input.form-control(name='email' placeholder= user[0].username type='number')
+              input.form-control( name="price" placeholder="prix" type='number')
         // radio checks
         .form-group
-          label.col-md-4.control-label Menu
+          label.col-md-4.control-label Validé
           .col-md-4
             .radio
-              label
-                if (user[0].hosting)
+              label    
                   input(type='radio' checked  name='hosting' value='yes')
-                  |  Yes
-                else
-                  input(type='radio'  name='hosting' value='yes')
                   |  Yes
             .radio
               label
-                if (user[0].hosting)
                   input(type='radio' name='hosting' value='no')
-                  |  No
-                else
-                  input(type='radio' checked name='hosting' value='no')
                   |  No
         // Text area
         .form-group
@@ -90,7 +82,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-pencil
-              textarea.form-control(name='comment' placeholder= place.desc)
+              textarea.form-control(name='desc' placeholder="Définition du produit")
         // Success message
         #success_message.alert.alert-success(role='alert')
           | Success 
@@ -100,9 +92,8 @@ style
         .form-group
           label.col-md-4.control-label
           .col-md-4
-            button.btn.btn-warning(type='submit')
-              | Enregistrer 
-              span.glyphicon.glyphicon-send
+            input.btn.btn-warning(type="submit" value="Enregistrer")
+              
 
 
 

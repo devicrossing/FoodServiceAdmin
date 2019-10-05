@@ -19,21 +19,21 @@ var ObjectId = require('mongodb').ObjectID;
 let foodList;
 let foodChoices;
 
-global.user = [{
-  "_id": {
-    "$oid": "5d9635a21c9d440000c8bb49"
-  },
-  "username": "test",
-  "password": "test",
-  "type": "client",
-  "email": "test@test.test",
-  "admin": true,
-  "place": "big burger",
-  "web": "http://test.com",
-  "firstname": null,
-  "lastname": "",
-  "hosting": false
-}];
+// global.user = [{
+//   "_id": {
+//     "$oid": "5d9635a21c9d440000c8bb49"
+//   },
+//   "username": "test",
+//   "password": "test",
+//   "type": "client",
+//   "email": "test@test.test",
+//   "admin": true,
+//   "place": "big burger",
+//   "web": "http://test.com",
+//   "firstname": null,
+//   "lastname": "",
+//   "hosting": false
+// }];
 global.user_places;
 
 global.user_foods;
@@ -443,10 +443,9 @@ app.get("/foodList", (req, res) => {
           picturesList.forEach(function (value, index) {
 
 
-
-
-
             // console.log(value.indexOf(`indexof : ${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1)
+
+
 
             if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
 
@@ -1305,8 +1304,6 @@ app.get('/dashboard', (req, res) => {
 
       console.dir(contact_required);
 
-
-
       res.render('dashboard', {
         pageTitle: 'Food Service Client Dashboard',
         message: 'Hello there!',
@@ -1322,11 +1319,77 @@ app.get('/dashboard', (req, res) => {
 
   // places
 
-
-
-
 });
 // END___GET client Dashboard
+
+
+// ___POST Client add product
+
+// ___POST ADD FOOD ITEM TO LIST
+app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
+
+  if (!req.body) return res.sendStatus(400)
+
+  var maxId;
+
+  // get max id for autogeneration
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("foods").find({}, {
+      id: 1
+    }).sort({
+      id: -1
+    }).toArray(function (err, result) {
+      if (err) throw err;
+
+      db.close();
+      maxId = result[0].id;
+      console.log(maxId);
+      maxId = Number(maxId);
+      let _id = ++maxId;
+      console.log(`max : ${maxId} , new : ${_id}`);
+      // Add food Item
+      MongoClient.connect(db_url, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("foodservice");
+        var foodToAdd = {
+          id: _id,
+          name: req.body.name,
+          place: user[0].place,
+          price: req.body.price,
+          category: req.body.category,
+          desc: req.body.desc,
+          client_validated: req.body.client_validated,
+          admin_validated: false
+        };
+
+        console.log("-------");
+
+        console.dir(foodToAdd);
+
+        console.log("-------");
+
+        dbo.collection("foods").insertOne(foodToAdd, function (err, res) {
+          if (err) throw err;
+          console.log("1 Food Item inserted");
+          db.close();
+        });
+      });
+
+    });
+  });
+
+
+
+}) // END___POST Clien ADD Product
+
+
+
+
+
+
+
 
 
 // ___GET food by Choices by id JSON
