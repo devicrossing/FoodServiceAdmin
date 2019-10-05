@@ -12,7 +12,7 @@ style
 #nav
   div.user-banner
     img(src='./uploads/clients/b0uda.png')
-    h5.username= user[0].username
+    h5.username= user.username
   ul
     li.head MENU
     li
@@ -36,9 +36,6 @@ style
         i.fa.fa-fw.fa-user
         span Logout
 
-
-
-
 #main
   header
     ol.breadcrumb
@@ -49,24 +46,7 @@ style
     form#contact_form.well.form-horizontal(action=' ' method='post')
       fieldset
         // Form Name
-        legend Fiche d'information sur de votre établissement
-        // Text input
-        .form-group
-          label.col-md-4.control-label Username
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-user
-              input.form-control(name='user_name' placeholder= user[0].username type='text')
-        // Text input
-        // Text input
-        .form-group
-          label.col-md-4.control-label Prénom
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-user
-              input.form-control(name='first_name' placeholder= user[0].firstname type='text')
+        legend Ajouter un nouveau produit a votre établissement
         // Text input
         .form-group
           label.col-md-4.control-label Nom
@@ -77,39 +57,15 @@ style
               input.form-control(name='last_name' placeholder= user[0].lastname type='text')
         // Text input
         .form-group
-          label.col-md-4.control-label E-Mail
+          label.col-md-4.control-label Prix
           .col-md-4.inputGroupContainer
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
-              input.form-control(name='email' placeholder= user[0].username type='text')
-        // Text input
-        .form-group
-          label.col-md-4.control-label Téléphone #
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-earphone
-              input.form-control(name='phone' placeholder= place.phone type='text')
-        // Text input
-        .form-group
-          label.col-md-4.control-label Adresse
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-home
-              input.form-control(name='address' placeholder= 'Lat :' + place.lat + ' , Long : ' + place.long type='text')
-        // Text input
-        .form-group
-          label.col-md-4.control-label Site web ou nom de domaine
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-globe
-              input.form-control(name='website' placeholder= user[0].web type='text')
+              input.form-control(name='email' placeholder= user[0].username type='number')
         // radio checks
         .form-group
-          label.col-md-4.control-label Do you have hosting?
+          label.col-md-4.control-label Menu
           .col-md-4
             .radio
               label

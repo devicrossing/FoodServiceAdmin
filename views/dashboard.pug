@@ -53,62 +53,45 @@ style
         .box.property-glance
           .header
             h4.pull-left Mes Produits
-            span.pull-right Avg. Rent: $790
-            div.progress.clear-right
-              div.progress-bar(role = "progressbar" aria-valuenow = "75" aria-valuemin = "0" aria-valuemax = "100" style = "width: 75%;")
-                | 70% occupied
-                span.sr-only 70% Complete
+            span.pull-right Prix moyen: 40DH
             div.clear-left
               i.fa.fa-map-marker
-              span Mascoutah, IL
+              span Spécialité
           .body
             .row
               div.col-sm-6.statistic.text-center
-                h1 24
+                h1= validated.yes
                 small Produits validés
               div.col-sm-6.text-center
-                h1 18
+                h1= validated.no
                 small En attente validation
 
             .row
-              .col-sm-3.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
-                i.fa.fa-comments-o
-              .col-sm-3.col-xs-6.widget
-                i.fa.fa-line-chart
-              .col-sm-3.col-xs-6.widget
-                i.fa.fa-money
-              .col-sm-3.col-xs-6.widget
-                i.fa.fa-users
+              .col-sm-6.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
+                i.fa.fa-plus
+              .col-sm-6.col-xs-6.widget
+                i.fa.fa-list-ol
+              
       .col-sm-4
         .box.property-glance
           .header
             h4.pull-left Contact
-            span.pull-right Avg. Rent: $790
-            div.progress.clear-right
-              div.progress-bar(role = "progressbar" aria-valuenow = "75" aria-valuemin = "0" aria-valuemax = "100" style = "width: 75%;")
-                | 70% occupied
-                span.sr-only 70% Complete
+            span.pull-right XXX
             div.clear-left
               i.fa.fa-map-marker
-              span Mascoutah, IL
+              span= user.place
           .body
             .row
-              div.col-sm-6.statistic.text-center
-                h1 24
-                small Produits validés
-              div.col-sm-6.text-center
-                h1 18
-                small En attente validation
+              div.col-sm-12.statistic.text-center
+                h1= contact_required.length
+                small  Profil incomplet. Vous pouvez renseigner les informations manquantes 
+                  a(href="/client_contact") ici
+              
 
             .row
-              .col-sm-3.col-xs-6.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
-                i.fa.fa-comments-o
-              .col-sm-3.col-xs-6.widget
-                i.fa.fa-line-chart
-              .col-sm-3.col-xs-6.widget
-                i.fa.fa-money
-              .col-sm-3.col-xs-6.widget
-                i.fa.fa-users
+              .col-sm-12.col-xs-12.widget(data-toggle = "tooltip" data-placement = "bottom" title = "Tooltip on bottom")
+                i.fa.fa-user
+              
 
     div.row
       .col-sm-6

@@ -19,7 +19,24 @@ var ObjectId = require('mongodb').ObjectID;
 let foodList;
 let foodChoices;
 
-global.user;
+global.user = [{
+  "_id": {
+    "$oid": "5d9635a21c9d440000c8bb49"
+  },
+  "username": "test",
+  "password": "test",
+  "type": "client",
+  "email": "test@test.test",
+  "admin": true,
+  "place": "big burger",
+  "web": "http://test.com",
+  "firstname": null,
+  "lastname": "",
+  "hosting": false
+}];
+global.user_places;
+
+global.user_foods;
 
 // for parsing application/json
 // var jsonParser = bodyParser.json()
@@ -1031,10 +1048,7 @@ app.post('/login', (req, res) => {
             })
             break;
           case 'client':
-            res.render('dashboard', {
-              pageTitle: 'Food Service Client Dashboard',
-              user: user[0]
-            })
+            res.redirect('./dashboard');
             break;
 
           default:
@@ -1054,6 +1068,8 @@ app.post('/login', (req, res) => {
 }); //end client login
 
 
+
+// ___GET client produit
 app.get('/client_produits', (req, res) => {
 
 
@@ -1137,7 +1153,8 @@ app.get('/client_produits', (req, res) => {
         res.render('client_produits', {
           pageTitle: 'Listof all foods - ADMIN PANEL',
           foodList: _foodList,
-          images: foodImages
+          images: foodImages,
+          user: user[0]
         })
 
       });
@@ -1148,8 +1165,9 @@ app.get('/client_produits', (req, res) => {
 
 
 });
+// END___GET client produit
 
-
+// ___GET client LOGOUT
 app.get('/logout', (req, res) => {
 
   user = {};
@@ -1160,7 +1178,10 @@ app.get('/logout', (req, res) => {
   })
 
 });
+//END ___GET client produit
 
+
+// ___GET client CONTACT
 app.get('/client_contact', (req, res) => {
 
   console.dir(user);
@@ -1195,27 +1216,118 @@ app.get('/client_contact', (req, res) => {
 
 
 });
+// END___GET client produit
 
-app.get('/dashboard', (req, res) => {
+// ___GET client ADD PRODUCT
 
-  res.render('dashboard', {
-    pageTitle: 'Food Service Client Dashboard',
-    message: 'Hello there!',
-    user: user
-  })
+app.get('/client_ajouter', (req, res) => {
+
+
+
+
+  let _place;
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    var query = {
+      name: user[0].place
+    };
+    dbo.collection("places").find(query).toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      _place = result;
+      db.close();
+
+      res.render('client_ajouter', {
+        pageTitle: 'Client Contact',
+        message: 'Food Service Login Page',
+        user: user,
+        place: _place[0]
+      })
+
+    });
+  });
+
+
 
 });
 
+// END___GET client ADD PRODUCT
 
+
+// ___GET client Dashboard
+// todo needded for redirection
 app.get('/dashboard', (req, res) => {
 
-  res.render('dashboard', {
-    pageTitle: 'Food Service Client Dashboard',
-    message: 'Hello there!',
-    user: user
-  })
+  // foods
+
+  // validated and not validated products
+  let validated = {
+    yes: 0,
+    no: 0
+  };
+  let validated_not = 0
+
+  let contact_required = [];
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    var query = {
+      place: user[0].place
+    };
+    dbo.collection("foods").find(query).toArray(function (err, result) {
+      if (err) throw err;
+
+      user_foods = result;
+
+      user_foods.forEach(food => {
+        if (food.client_validated) {
+          validated.yes++;
+        } else {
+          validated.no++;
+        }
+      });
+
+      db.close();
+
+
+
+      for (const [key, value] of Object.entries(user[0])) {
+        console.log(key, value);
+
+        if (value === "" || value === null || value === "undefined" || value === null) {
+          contact_required.push(key);
+        }
+
+      }
+
+      console.dir(contact_required);
+
+
+
+      res.render('dashboard', {
+        pageTitle: 'Food Service Client Dashboard',
+        message: 'Hello there!',
+        user: user[0],
+        user_foods: user_foods,
+        validated: validated,
+        contact_required: contact_required
+      })
+
+    });
+  });
+
+
+  // places
+
+
+
 
 });
+// END___GET client Dashboard
+
 
 // ___GET food by Choices by id JSON
 app.get('/foodChoiceById/:id', function (req, res) {
