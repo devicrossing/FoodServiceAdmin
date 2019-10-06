@@ -1222,9 +1222,6 @@ app.get('/client_contact', (req, res) => {
 
 app.get('/client_ajouter', (req, res) => {
 
-
-
-
   let _place;
 
   MongoClient.connect(db_url, function (err, db) {

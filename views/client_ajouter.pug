@@ -56,6 +56,21 @@ style
                 i.glyphicon.glyphicon-user
               input.form-control(name='name' placeholder="Nom du produit" type='text')
         // Text input
+        // Select Basic
+        .form-group
+          label.col-md-4.control-label Catégories
+          .col-md-4.selectContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-list
+              select.form-control.selectpicker(name='category')
+                option(value='Burger') Burger
+                option(value='Pizza') Pizza
+                option(value='pasta') Pasta
+                option(value='Salade') Salade
+                option(value='Tajine') Tajine
+                option(value='Tacos') Tacos 
+        // Text input
         .form-group
           label.col-md-4.control-label Prix
           .col-md-4.inputGroupContainer
@@ -69,11 +84,11 @@ style
           .col-md-4
             .radio
               label    
-                  input(type='radio' checked  name='hosting' value='yes')
+                  input(type='radio' checked  name='client_validated' value='true')
                   |  Yes
             .radio
               label
-                  input(type='radio' name='hosting' value='no')
+                  input(type='radio' name='client_validated' value='false')
                   |  No
         // Text area
         .form-group

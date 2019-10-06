@@ -28,8 +28,8 @@ html(lang="en")
                     th name
                     th category
                     th price
-                    th admin validated
                     th client validated
+                    th admin validated
                     th photo
             tfoot    
                 tr
@@ -38,8 +38,8 @@ html(lang="en")
                     th name
                     th category
                     th price
-                    th admin validated
                     th client validated
+                    th admin validated
                     th photo
             tbody
              each  food , index  in foodList
@@ -49,11 +49,11 @@ html(lang="en")
                 td= food.name 
                 td= food.category 
                 td= food.price
-                if (food.client_validated ) 
+                if (food.client_validated) 
                     td.true= food.client_validated
                 else
                    td.false= food.client_validated  
-                if (food.admin) 
+                if (food.admin_validated) 
                     td.true= food.admin_validated
                 else
                    td.false= food.admin_validated  
