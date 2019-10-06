@@ -19,21 +19,21 @@ var ObjectId = require('mongodb').ObjectID;
 let foodList;
 let foodChoices;
 
-// global.user = [{
-//   "_id": {
-//     "$oid": "5d9635a21c9d440000c8bb49"
-//   },
-//   "username": "test",
-//   "password": "test",
-//   "type": "client",
-//   "email": "test@test.test",
-//   "admin": true,
-//   "place": "big burger",
-//   "web": "http://test.com",
-//   "firstname": null,
-//   "lastname": "",
-//   "hosting": false
-// }];
+global.user = [{
+  "_id": {
+    "$oid": "5d93a5ec1c9d440000ae4d9d"
+  },
+  "username": "admin",
+  "password": "admin",
+  "type": "admin",
+  "email": "webicrossing@gmail.com",
+  "admin": true,
+  "place": "mcdonalds",
+  "web": "www.devicrossing.com",
+  "firstname": "reda admin",
+  "lastname": "benlahsen admin",
+  "hosting": true
+}];
 
 global.user = [];
 
@@ -1385,9 +1385,27 @@ app.get('/admin_dashboard', function (req, res) {
     res.redirect("/");
   }
 
-  res.render('admin_dashboard', {
-    user: user[0]
-  })
+
+  let _places = [];
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("places").find({}).toArray(function (err, result) {
+      if (err) throw err;
+      _places = result;
+      console.dir(_places);
+      db.close();
+      res.render('admin_dashboard', {
+        user: user[0],
+        places: _places
+      })
+    });
+  });
+
+
+
+
 }); // ___GET ADMIN DASHBOARD
 
 // ___GET ADMIN contact

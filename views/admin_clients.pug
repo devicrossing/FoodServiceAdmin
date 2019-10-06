@@ -1,9 +1,9 @@
 
 
-script(src='https://code.jquery.com/jquery-1.11.1.min.js')
-link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' crossorigin='anonymous')
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js')
+link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' crossorigin='anonymous')
 link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' crossorigin='anonymous')
-script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
 style
       include css/admin_clients.css
       include css/client_unified.css
@@ -12,18 +12,18 @@ style
 
 #nav
   div.user-banner
-    img(src='./uploads/clients/b0uda.png')
+    img(src='./uploads/clients/admin.png')
     h5.username= user.username
   ul
     li.head MENU
-    li.active
+    li
       a(href="./admin_dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
-    li
+    li.active
       a(href="./admin_clients")
         i.fa.fa-fw.fa-inbox
-        span.swatch.light-grey Commerces
+        span.swatch.light-grey Ajouter client
     li
       a(href="/admin_contact")
         i.fa.fa-fw.fa-user
@@ -36,10 +36,11 @@ style
 
 #main
   header
-    ol.breadcrumb
-      li 
-        a(href="#")= user.username
-      li.active tableau de bord
+    nav(aria-label='breadcrumb')
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='#')= user.username
+        li.breadcrumb-item.active(aria-current='page') Liste des clients
   #content
     h1 ADMIN DASHBOARD
     .box: .body
