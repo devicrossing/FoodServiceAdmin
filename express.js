@@ -34,6 +34,9 @@ let foodChoices;
 //   "lastname": "",
 //   "hosting": false
 // }];
+
+global.user = [];
+
 global.user_places;
 
 global.user_foods;
@@ -1015,7 +1018,6 @@ app.get("/addPlaceDB", (req, res) => {
 
 
 
-
 // start client login
 app.post('/login', (req, res) => {
 
@@ -1041,11 +1043,7 @@ app.post('/login', (req, res) => {
 
         switch (user[0].type) {
           case 'admin':
-            res.render('index', {
-              pageTitle: 'Food Service Client Dashboard',
-              message: 'Hello there!',
-              user: user[0]
-            })
+            res.redirect('./admin_dashboard');
             break;
           case 'client':
             res.redirect('./dashboard');
@@ -1322,8 +1320,6 @@ app.get('/dashboard', (req, res) => {
 
 
 // ___POST Client add product
-
-// ___POST ADD FOOD ITEM TO LIST
 app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 
   if (!req.body) return res.sendStatus(400)
@@ -1378,11 +1374,46 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
     });
   });
 
-
-
 }) // END___POST Clien ADD Product
 
 
+
+// ___GET ADMIN DASHBOARD
+app.get('/admin_dashboard', function (req, res) {
+
+  if (user.length === 0) {
+    res.redirect("/");
+  }
+
+  res.render('admin_dashboard', {
+    user: user[0]
+  })
+}); // ___GET ADMIN DASHBOARD
+
+// ___GET ADMIN contact
+app.get('/admin_contact', function (req, res) {
+
+  if (user.length === 0) {
+    res.redirect("/");
+  }
+
+  res.render('admin_contact', {
+    user: user[0]
+  })
+}); // ___GET ADMIN contact
+
+// ___GET ADMIN contact
+app.get('/admin_clients', function (req, res) {
+
+  if (user.length === 0) {
+    res.redirect("/");
+  }
+
+
+  res.render('admin_clients', {
+    user: user[0]
+  })
+}); // ___GET ADMIN contact
 
 
 

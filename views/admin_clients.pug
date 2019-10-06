@@ -1,0 +1,49 @@
+
+
+script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' crossorigin='anonymous')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+style
+      include css/admin_clients.css
+      include css/client_unified.css
+      
+
+
+#nav
+  div.user-banner
+    img(src='./uploads/clients/b0uda.png')
+    h5.username= user.username
+  ul
+    li.head MENU
+    li.active
+      a(href="./admin_dashboard")
+        i.fa.fa-fw.fa-dashboard
+        span Tableau de bord
+    li
+      a(href="./admin_clients")
+        i.fa.fa-fw.fa-inbox
+        span.swatch.light-grey Commerces
+    li
+      a(href="/admin_contact")
+        i.fa.fa-fw.fa-user
+        span Contact
+    li
+      a(href="/logout")
+        i.fa.fa-fw.fa-user
+        span Logout
+
+
+#main
+  header
+    ol.breadcrumb
+      li 
+        a(href="#")= user.username
+      li.active tableau de bord
+  #content
+    h1 ADMIN DASHBOARD
+    .box: .body
+      p.user_message Ici vous pouvez  gérer les clients de Food Service
+
+    script
+        include js/admin_clients.js  
