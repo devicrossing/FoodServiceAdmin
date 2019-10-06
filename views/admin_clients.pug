@@ -8,6 +8,47 @@ style
       include css/admin_clients.css
       include css/client_unified.css
       
+#nav
+  div.user-banner
+    img(src='./uploads/clients/admin.png')
+    h5.username= user.username
+  ul
+    li.head MENU
+    li
+      a(href="./admin_dashboard")
+        i.fa.fa-fw.fa-dashboard
+        span Tableau de bord
+    li
+      a(href="./admin_clients")
+        i.fa.fa-fw.fa-inbox
+        span.swatch.light-grey Ajouter client
+    li.active
+      a(href="/admin_contact")
+        i.fa.fa-fw.fa-user
+        span Contact
+    li
+      a(href="/logout")
+        i.fa.fa-fw.fa-user
+        span Logout
+
+
+#main
+  header
+    nav(aria-label='breadcrumb')
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='#')= user.username
+        li.breadcrumb-item.active(aria-current='page') Contact
+  
+
+script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' crossorigin='anonymous')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+style
+      include css/admin_clients.css
+      include css/client_unified.css
+      
 
 
 #nav
@@ -41,10 +82,43 @@ style
         li.breadcrumb-item
           a(href='#')= user.username
         li.breadcrumb-item.active(aria-current='page') Liste des clients
-  #content
-    h1 ADMIN DASHBOARD
-    .box: .body
-      p.user_message Ici vous pouvez  gérer les clients de Food Service
+  #content.container
+    form#contact_form.well.form-horizontal(action=' ' method='post')
+      fieldset
+        // Form Name
+        legend Ajouter un nouveau client a l'application
+        // Text input
+        .form-group
+          label.col-md-4.control-label Username
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-user
+              input.form-control(name='user_name' placeholder= user[0].username type='text')
+        // Text input
+        .form-group
+          label.col-md-4.control-label Password
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control(name='password' placeholder= user[0].username type='password')
+        .form-group
+          label.col-md-4.control-label Description de votre d'établissement
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-pencil
+              textarea.form-control(name='comment' placeholder = "Food Service description")
+        // Button
+        .form-group
+          label.col-md-4.control-label
+          .col-md-4
+            button.btn.btn-warning(type='submit')
+              | Enregistrer 
+              span.glyphicon.glyphicon-send
 
-    script
-        include js/admin_clients.js  
+
+
+    script 
+        include js/admin_clients.js 

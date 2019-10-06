@@ -35,8 +35,6 @@ global.user = [{
   "hosting": true
 }];
 
-global.user = [];
-
 global.user_places;
 
 global.user_foods;
@@ -1381,30 +1379,64 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 // ___GET ADMIN DASHBOARD
 app.get('/admin_dashboard', function (req, res) {
 
-  if (user.length === 0) {
-    res.redirect("/");
-  }
+  // if (global.toLowerCaseuser.length === 0) {
+  //   res.redirect("/");
+  // }
 
-
+  let all_places = [];
   let _places = [];
+  let place_foods = [];
+  let hack;
+  let _food;
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
+
+    dbo.collection("foods").find({}).toArray(function (err, result) {
+      if (err) throw err;
+      foodList = result;
+    });
+
+    // places
     dbo.collection("places").find({}).toArray(function (err, result) {
       if (err) throw err;
-      _places = result;
-      console.dir(_places);
-      db.close();
+
+      // console.dir(result);
+      all_places = result;
+
+      all_places.forEach(place => {
+
+        place_foods = [];
+
+        foodList.forEach(food => {
+
+
+
+          if (food.place.toLowerCase().trim() === place.name.toLowerCase().trim()) {
+            place_foods.push(food);
+          }
+
+        });
+        hack = {
+          place: place,
+          foods: place_foods
+        }
+        _places.push(hack);
+      });
+
+      // console.log(_places.length);
+
       res.render('admin_dashboard', {
         user: user[0],
-        places: _places
+        data: _places
       })
+
     });
+
+    db.close();
+
   });
-
-
-
 
 }); // ___GET ADMIN DASHBOARD
 
@@ -1416,27 +1448,40 @@ app.get('/admin_contact', function (req, res) {
   }
 
   res.render('admin_contact', {
-    user: user[0]
+    user: user
   })
-}); // ___GET ADMIN contact
+}); // END___GET ADMIN contact
 
-// ___GET ADMIN contact
+// ___GET ADMIN clients
 app.get('/admin_clients', function (req, res) {
-
-  if (user.length === 0) {
-    res.redirect("/");
-  }
 
 
   res.render('admin_clients', {
-    user: user[0]
+    user: user
   })
-}); // ___GET ADMIN contact
+}); // ___GET ADMIN clients
 
 
+// ___GET Admin Manage Specific client
+app.get('/admin/company/list/:id', function (req, res) {
 
+  let _place = req.params.id.toString().toLowerCase().replace(/ /g, '');
+  _place = unescape(_place);
+  let foodListFiltred = [];
+  foodList.forEach(food => {
+    const food_place = food.place.replace(/ /g, '');
+    if (food_place == _place) {
+      foodListFiltred.push(food);
+    }
+  });
 
+  res.render('admin_client_manage', {
+    user: user[0],
+    client_food: foodListFiltred,
 
+  });
+
+}) // END___GET Admin Manage Specific client
 
 
 // ___GET food by Choices by id JSON

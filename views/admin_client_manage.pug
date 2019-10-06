@@ -18,11 +18,11 @@ style
   ul
     li.head MENU
     li.active
-      a(href="./admin_dashboard")
+      a(href="/admin_dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
     li
-      a(href="./admin_clients")
+      a(href="/admin_clients")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Ajouter client
     li
@@ -40,8 +40,8 @@ style
     nav(aria-label='breadcrumb')
       ol.breadcrumb
         li.breadcrumb-item
-          a(href='#')= user.username
-        li.breadcrumb-item.active(aria-current='page') Tableau de board
+          a(href='/admin_dashboard')= user.username
+        li.breadcrumb-item.active(aria-current='page')= "Gestion de " + user.place
 
   #content
     #content
@@ -49,12 +49,12 @@ style
     .box: .body
       p.user_message La solution professionnelle pour gérer votre commerce. Ici vous pouvez efferctuer plusieurs actions pour gérer votre commerce dans Food Service
     .row
-      each info in data
+      each food in client_food
         .col-sm-4
           .box.property-glance
             .header
-              h4.pull-left= info.place.name
-              span.pull-right= "nombre de produits :" + info.foods.length
+              h4.pull-left= food.name
+              span.pull-right nombre de produits: 40 DH
               div.clear-left
                 i.fa.fa-map-marker
                 span Spécialité
@@ -69,7 +69,7 @@ style
 
               .row
                 .col-sm-12.col-xs-12.widget(data-toggle ="tooltip" data-placement = "bottom" title = "Tooltip on bottom")
-                  a(href="/admin/company/list/" + info.place.name) 
+                  a(href="/admin/company/list/") 
                     i.fa.fa-edit
               
       
