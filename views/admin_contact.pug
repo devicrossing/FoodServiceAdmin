@@ -13,7 +13,7 @@ style
 #nav
   div.user-banner
     img(src='./uploads/clients/admin.png')
-    h5.username= user[0].username
+    h5.username= user.username
   ul
     li.head MENU
     li
@@ -96,7 +96,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='user_name' placeholder= user[0].username type='text')
+              input.form-control(name='user_name' placeholder= user.username type='text')
         // Text input
         // Text input
         .form-group
@@ -105,7 +105,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='first_name' placeholder= user[0].firstname type='text')
+              input.form-control(name='first_name' placeholder= user.firstname type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Nom
@@ -113,7 +113,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='last_name' placeholder= user[0].lastname type='text')
+              input.form-control(name='last_name' placeholder= user.lastname type='text')
         // Text input
         .form-group
           label.col-md-4.control-label E-Mail
@@ -121,7 +121,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
-              input.form-control(name='email' placeholder= user[0].username type='text')
+              input.form-control(name='email' placeholder= user.username type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Site web ou nom de domaine
@@ -129,14 +129,14 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-globe
-              input.form-control(name='website' placeholder= user[0].web type='text')
+              input.form-control(name='website' placeholder= user.web type='text')
         // radio checks
         .form-group
           label.col-md-4.control-label Do you have hosting?
           .col-md-4
             .radio
               label
-                if (user[0].hosting)
+                if (user.hosting)
                   input(type='radio' checked  name='hosting' value='yes')
                   |  Yes
                 else
@@ -144,7 +144,7 @@ style
                   |  Yes
             .radio
               label
-                if (user[0].hosting)
+                if (user.hosting)
                   input(type='radio' name='hosting' value='no')
                   |  No
                 else
@@ -163,7 +163,7 @@ style
           label.col-md-4.control-label
           .col-md-4
             button.btn.btn-warning(type='submit')
-              | Enregistrer 
+              | mise à jour de nos informations
               span.glyphicon.glyphicon-send
 
 

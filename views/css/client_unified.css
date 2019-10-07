@@ -10,3 +10,22 @@
 .user-banner img {
     border-radius: 0;
 }
+
+
+.btn-warning {
+    background-color: #00adf7;
+    border-color: #00adf7;
+}
+
+.btn-warning:hover {
+    background-color: #001df7;
+    border-color: #001df7;
+}
+
+legend {
+    text-align: center;
+}
+
+legend {
+    border-bottom: 0;
+}

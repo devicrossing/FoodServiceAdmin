@@ -83,7 +83,7 @@ style
           a(href='#')= user.username
         li.breadcrumb-item.active(aria-current='page') Liste des clients
   #content.container
-    form#contact_form.well.form-horizontal(action=' ' method='post')
+    form#contact_form.well.form-horizontal(action='/admin_client_add' method='post')
       fieldset
         // Form Name
         legend Ajouter un nouveau client a l'application
@@ -94,28 +94,36 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='user_name' placeholder= user[0].username type='text')
+              input.form-control(name='client_username' placeholder="Username" type='text')
         // Text input
         .form-group
-          label.col-md-4.control-label Password
+          label.col-md-4.control-label Mot de passe
           .col-md-4.inputGroupContainer
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
-              input.form-control(name='password' placeholder= user[0].username type='password')
+              input.form-control(name='client_password' placeholder="Mot de passe" type='password') 
+        // Text input
         .form-group
-          label.col-md-4.control-label Description de votre d'établissement
+          label.col-md-4.control-label Nom de l'établissement
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control(name='client_place' placeholder="Nom de l'établissement" type='password')
+        .form-group
+          label.col-md-4.control-label Description de l'établissement
           .col-md-4.inputGroupContainer
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-pencil
-              textarea.form-control(name='comment' placeholder = "Food Service description")
+              textarea.form-control(name='client_desc' placeholder = "Description de l'établissement")
         // Button
         .form-group
           label.col-md-4.control-label
           .col-md-4
             button.btn.btn-warning(type='submit')
-              | Enregistrer 
+              | Ajouter Client 
               span.glyphicon.glyphicon-send
 
 

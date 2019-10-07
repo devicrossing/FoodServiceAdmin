@@ -1448,7 +1448,7 @@ app.get('/admin_contact', function (req, res) {
   }
 
   res.render('admin_contact', {
-    user: user
+    user: user[0]
   })
 }); // END___GET ADMIN contact
 
@@ -1457,9 +1457,62 @@ app.get('/admin_clients', function (req, res) {
 
 
   res.render('admin_clients', {
-    user: user
+    user: user[0]
   })
 }); // ___GET ADMIN clients
+
+
+
+// ___POST ADMIN add a client
+app.post('/admin_client_add', urlencodedParser, function (req, res) {
+
+  if (!req.body) return res.sendStatus(400)
+
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    var user_to_add = {
+      username: req.body.client_username,
+      password: req.body.client_password,
+      type: "client",
+      email: "unknown@unknown.unknown",
+      admin: false,
+      place: req.body.client_place,
+      web: "www.unknown.com",
+      firstname: "unknown",
+      lastname: "unknown",
+      hosting: false
+    };
+
+    var user_place_add = {
+      name: req.body.client_place,
+      phone: "0537377272",
+      time: "8-23",
+      lat: "lat google map",
+      long: "long google map",
+      desc: "description de vtre etablissement",
+      validated: true,
+    };
+
+    dbo.collection("users").insertOne(user_to_add, function (err, res) {
+      if (err) throw err;
+      console.log("1 user inserted");
+
+    });
+
+    dbo.collection("places").insertOne(user_place_add, function (err, res) {
+      if (err) throw err;
+      console.log("1 user place inserted");
+
+    });
+
+
+    db.close();
+  });
+
+  res.redirect('/admin_clients');
+}); // ___POST ADMIN add a clients
 
 
 // ___GET Admin Manage Specific client
