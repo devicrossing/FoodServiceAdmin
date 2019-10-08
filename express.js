@@ -19,21 +19,8 @@ var ObjectId = require('mongodb').ObjectID;
 let foodList;
 let foodChoices;
 
-global.user = [{
-  "_id": {
-    "$oid": "5d9b6f3ce7244165282b540c"
-  },
-  "username": "oten tik",
-  "password": "b0uda",
-  "type": "client",
-  "email": "unknown@unknown.unknown",
-  "admin": false,
-  "place": "otentik",
-  "web": "www.unknown.com",
-  "firstname": "unknown",
-  "lastname": "unknown",
-  "hosting": false
-}];
+
+global.user;
 
 global.user_places;
 
@@ -1158,8 +1145,6 @@ app.get('/client_produits', (req, res) => {
     });
   });
 
-
-
 });
 // END___GET client produit
 
@@ -1192,7 +1177,7 @@ app.get('/client_contact', (req, res) => {
     };
     dbo.collection("places").find(query).toArray(function (err, result) {
       if (err) throw err;
-      console.log(result);
+      // console.log(result);
       _place = result;
       db.close();
 
@@ -1207,9 +1192,68 @@ app.get('/client_contact', (req, res) => {
     });
   });
 
-  console.dir(_place);
+
+  // ___POST Clien Contact Updated
+  app.post("/client_contact_update", urlencodedParser, (req, res) => {
+
+    if (!req.body) return res.sendStatus(400)
 
 
+    MongoClient.connect(db_url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db("foodservice");
+
+      console.log("user");
+      console.dir(user);
+
+
+      var myquery = {
+        username: user[0].username
+      };
+
+
+      var user_to_update = {
+        $set: {
+          email: req.body.email,
+          web: req.body.website,
+          firstname: req.body.first_name,
+          lastname: req.body.last_name,
+          phone: req.body.phone,
+          address: req.body.address
+        }
+      };
+
+
+
+      user[0].email = req.body.email;
+      user[0].web = req.body.web;
+      user[0].firstname = req.body.firstname;
+      user[0].lastname = req.body.lastname;
+      user[0].address = req.body.address;
+
+
+      console.log("XXXXXXX");
+      console.log("XXXXXXX");
+      console.log("XXXXXXX");
+      console.log("XXXXXXX");
+      console.log("myquery");
+      console.dir(myquery);
+      console.log("user_to_update");
+      console.dir(user_to_update);
+
+
+      dbo.collection("users").updateOne(myquery, user_to_update, function (err, res) {
+        if (err) throw err;
+        console.log("1 user updated");
+        db.close();
+      });
+
+      db.close();
+    });
+
+    res.redirect('/client_contact');
+
+  }) // END___POST Clien Contact Updated
 
 });
 // END___GET client produit
@@ -1241,8 +1285,6 @@ app.get('/client_ajouter', (req, res) => {
 
     });
   });
-
-
 
 });
 
@@ -1376,6 +1418,9 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 
 
 
+
+
+
 // ___GET ADMIN DASHBOARD
 app.get('/admin_dashboard', function (req, res) {
 
@@ -1455,11 +1500,11 @@ app.get('/admin_contact', function (req, res) {
 // ___GET ADMIN clients
 app.get('/admin_clients', function (req, res) {
 
-
   res.render('admin_clients', {
     user: user[0]
   })
 }); // ___GET ADMIN clients
+
 
 
 

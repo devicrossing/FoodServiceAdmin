@@ -46,18 +46,18 @@ style
         a(href="#")= user.username
       li.active tableau de bord
   #content.container
-    form#contact_form.well.form-horizontal(action=' ' method='post')
+    form#contact_form.well.form-horizontal(action='/client_contact_update' method='post')
       fieldset
         // Form Name
         legend Fiche d'information sur de votre établissement
-        // Text input
-        .form-group
-          label.col-md-4.control-label Username
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-user
-              input.form-control(name='user_name' placeholder= user[0].username type='text')
+        //- // Text input
+        //- .form-group
+        //-   label.col-md-4.control-label Username
+        //-   .col-md-4.inputGroupContainer
+        //-     .input-group
+        //-       span.input-group-addon
+        //-         i.glyphicon.glyphicon-user
+        //-       input.form-control(name='user_name' placeholder= user[0].username type='text')
         // Text input
         // Text input
         .form-group
@@ -107,34 +107,6 @@ style
               span.input-group-addon
                 i.glyphicon.glyphicon-globe
               input.form-control(name='website' placeholder= user[0].web type='text')
-        // radio checks
-        .form-group
-          label.col-md-4.control-label Do you have hosting?
-          .col-md-4
-            .radio
-              label
-                if (user[0].hosting)
-                  input(type='radio' checked  name='hosting' value='yes')
-                  |  Yes
-                else
-                  input(type='radio'  name='hosting' value='yes')
-                  |  Yes
-            .radio
-              label
-                if (user[0].hosting)
-                  input(type='radio' name='hosting' value='no')
-                  |  No
-                else
-                  input(type='radio' checked name='hosting' value='no')
-                  |  No
-        // Text area
-        .form-group
-          label.col-md-4.control-label Description de votre d'établissement
-          .col-md-4.inputGroupContainer
-            .input-group
-              span.input-group-addon
-                i.glyphicon.glyphicon-pencil
-              textarea.form-control(name='comment' placeholder= place.desc)
         // Success message
         #success_message.alert.alert-success(role='alert')
           | Success 
