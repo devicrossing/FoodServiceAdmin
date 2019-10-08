@@ -52,6 +52,7 @@ style
                     th category
                     th price
                     th photo
+                    th actions
             tfoot    
                 tr
                     th id
@@ -60,6 +61,7 @@ style
                     th category
                     th price
                     th photo
+                    th actions
             tbody
              each  food , index  in foodList
               tr(class='item')
@@ -69,8 +71,12 @@ style
                 td= food.category 
                 td= food.price 
                 td!= images[index].state
-                        a(href='http://localhost:3030/foodDeleteClientRequest/' + food.id)
-                            i(class='fas fa-trash')
+                td.actions
+                  a(href='http://localhost:3030/foodUpdateClientRequest/' + food.id)
+                    i(class='fas fa-edit')
+                  a(href='http://localhost:3030/foodDeleteClientRequest/' + food.id)
+                    i(class='fas fa-trash')
+                  
 
     script
         include js/client_produits.js  

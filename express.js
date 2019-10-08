@@ -1394,7 +1394,7 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
           price: req.body.price,
           category: req.body.category,
           desc: req.body.desc,
-          client_validated: req.body.client_validated,
+          client_validated: true,
           admin_validated: false
         };
 

@@ -287,7 +287,7 @@ table.dataTable tr:nth-of-type(even) {
     background: #F9F9F9;
 }
 
-// compact toggle
+
 // table.dataTable.dt-compact th,
 // table.dataTable.dt-compact td {
 // font-size: .875rem;
@@ -330,7 +330,7 @@ table.dataTable td {
     @include dt-display-flex;
     @include dt-flex-vertical;
     @include dt-flex-11a;
-    // codepen rules to better identify scroll wrapper
+
     border: 1px solid #ccc;
     margin: 1.5rem 0
 }
@@ -341,7 +341,7 @@ table.dataTable td {
     -webkit-overflow-scrolling: touch;
 }
 
-// Fixes issue with Safari width calc. under rare conditions
+
 .dataTables_scrollHeadInner {
     flex: 1 1 auto;
 }
@@ -362,7 +362,7 @@ table.dataTable td {
     height: 0;
 }
 
-// column sorting indicators
+
 
 table.dataTable thead .sorting_asc,
 table.dataTable thead .sorting_desc,
@@ -480,15 +480,15 @@ body {
 }
 
 .fa-trash {
-    float: right;
     color: red;
-    cursor: pointer;
-    transition: transform 1s;
+
 }
 
-.fa-trash:hover {
+.fa-trash:hover,
+.fa-edit:hover {
     transform: scale(1.2);
 }
+
 
 
 .item:hover {
@@ -514,4 +514,17 @@ div.container {
 
 .container {
     width: 100%;
+}
+
+
+.fa-trash,
+.fa-edit {
+    margin-left: 10px;
+    cursor: pointer;
+    transition: transform 1s;
+}
+
+
+td.actions {
+    text-align: center;
 }
