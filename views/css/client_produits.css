@@ -198,9 +198,9 @@ body {
 .container {
     @include dt-display-flex;
     @include dt-flex-11a;
-    height: 80%; // codepen - vary to see flex rule in action
-    width: 60%; // codepen - vary to see flex rule in action
-    //  code rules to better identify container visually
+    height: 80%;
+    width: 60%;
+
     background-color: #f0f0f0;
     border: 1px solid blue;
     margin-top: 1rem;
@@ -228,7 +228,7 @@ table.dataTable {
     border-spacing: 0;
 }
 
-// header
+/* // header */
 
 table.dataTable thead,
 table.dataTable tfoot {
@@ -279,7 +279,6 @@ table.dataTable thead td:active {
     outline: none;
 }
 
-// rows
 
 table.dataTable tr.even,
 table.dataTable tr.alt,
@@ -288,13 +287,13 @@ table.dataTable tr:nth-of-type(even) {
 }
 
 
-// table.dataTable.dt-compact th,
-// table.dataTable.dt-compact td {
-// font-size: .875rem;
-// padding: .5rem .625rem;
-// text-align: left;
-// white-space: nowrap;
-// }
+table.dataTable.dt-compact th,
+table.dataTable.dt-compact td {
+    font-size: .875rem;
+    padding: .5rem .625rem;
+    text-align: left;
+    white-space: nowrap;
+}
 
 table.dataTable th,
 table.dataTable td {
