@@ -72,9 +72,9 @@ style
                 td= food.price 
                 td!= images[index].state
                 td.actions
-                  a(href='http://localhost:3030/foodUpdateClientRequest/' + food.id)
+                  a(href='http://localhost:3030/foodUpdateClientRequest/' + food.name)
                     i(class='fas fa-edit')
-                  a(href='http://localhost:3030/foodDeleteClientRequest/' + food.id)
+                  a(href='http://localhost:3030/foodDeleteClientRequest/' + food.name)
                     i(class='fas fa-trash')
                   
 

@@ -1070,7 +1070,6 @@ app.post('/login', (req, res) => {
 // ___GET client produit
 app.get('/client_produits', (req, res) => {
 
-
   let foodImages = [];
   let picturesList = [];
   let _folder = "./uploads/";
@@ -1162,6 +1161,30 @@ app.get('/client_produits', (req, res) => {
 
 });
 // END___GET client produit
+
+
+// ___GET client deleteproduct
+app.get('/foodDeleteClientRequest/:name', (req, res) => {
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    var toDelete = {
+      name: req.params.name
+    };
+    dbo.collection("foods").deleteOne(toDelete, function (err, obj) {
+      if (err) throw err;
+      console.log("1 food deleted");
+      db.close();
+      res.redirect("/client_produits");
+    });
+  });
+
+});
+// END___GET client deleteproduct
+
+
+
 
 // ___GET client LOGOUT
 app.get('/logout', (req, res) => {
@@ -1646,8 +1669,5 @@ app.get('/foodChoiceById/:id', function (req, res) {
   });
 
 }) // END___GET food by Choices by id JSON
-
-
-
 
 app.listen(3030, () => console.log('FOOD SERVICE listening on port 3030!'))
