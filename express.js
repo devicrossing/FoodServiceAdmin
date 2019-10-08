@@ -1184,6 +1184,49 @@ app.get('/foodDeleteClientRequest/:name', (req, res) => {
 // END___GET client deleteproduct
 
 
+app.get('/foodUpdateClientRequest/:name', (req, res) => {
+
+  let _food;
+
+  console.log(`params  ${req.params.name}`);
+
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("foods").findOne({
+      name: req.params.name
+    }, function (err, result) {
+      if (err) throw err;
+      console.dir(result);
+      _food = result;
+      db.close();
+      res.render('client_produit_update', {
+        pageTitle: 'Listof all foods - ADMIN PANEL',
+        user: user,
+        food: _food
+      })
+    });
+  });
+
+
+
+
+
+});
+
+// ___POST client update product 000
+app.post('/foodUpdateClientRequest', (req, res) => {
+
+  // to change after joint
+
+
+
+
+});
+// END___POST client update product
+
+
 
 
 // ___GET client LOGOUT
@@ -1480,10 +1523,9 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 
 }) // END___POST Clien ADD Product
 
-
-
-
-
+// Admin
+// Admin
+// Admin
 
 // ___GET ADMIN DASHBOARD
 app.get('/admin_dashboard', function (req, res) {

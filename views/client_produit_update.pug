@@ -1,0 +1,109 @@
+
+
+script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' crossorigin='anonymous')
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+style
+      include css/client_contact.css
+      include css/client_unified.css
+
+
+#nav
+  div.user-banner
+    img(src='./uploads/clients/b0uda.png')
+    h5.username= user[0].username
+  ul
+    li.head MENU
+    li
+      a(href="/dashboard")
+        i.fa.fa-fw.fa-dashboard
+        span Tableau de bord
+    li.active
+      a(href="/client_ajouter")
+        i.fa.fa-fw.fa-inbox
+        span.swatch.light-grey Ajouter un produit
+    li
+      a(href="/client_produits")
+        i.fa.fa-fw.fa-inbox
+        span.swatch.light-grey Liste de Produits
+    li
+      a(href="/client_contact")
+        i.fa.fa-fw.fa-user
+        span Contact
+    li
+      a(href="/logout")
+        i.fa.fa-fw.fa-user
+        span Logout
+
+#main
+  header
+    ol.breadcrumb
+      li 
+        a(href="#")= user[0].username
+      li.active= "Modifier le produit " + food.name 
+  #content.container
+    form#contact_form.well.form-horizontal(action='./clientFoodAdd' encType='multipart/form-data' method='post')
+      fieldset
+        // Form Name
+        legend= "Modifier le produit " + food.name 
+        // Text input
+        .form-group
+          label.col-md-4.control-label Nom
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-user
+              input.form-control(name='name' required placeholder= food.name type='text')
+        // Text input
+        // Select Basic
+        .form-group
+          label.col-md-4.control-label Catégories
+          .col-md-4.selectContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-list
+              select.form-control.selectpicker(name='category' required)
+                option(value='Burger') Burger
+                option(value='Pizza') Pizza
+                option(value='pasta') Pasta
+                option(value='Salade') Salade
+                option(value='Tajine') Tajine
+                option(value='Tacos') Tacos 
+        // Text input
+        .form-group
+          label.col-md-4.control-label Prix
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control( name="price" placeholder= food.price required type='number')
+        // Text area
+        .form-group
+          label.col-md-4.control-label Description du produit
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-pencil
+              textarea.form-control(name='desc' required placeholder= food.desc)
+        // Text input
+        .form-group
+          label.col-md-4.control-label Photo
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control( name="picture" type='file')
+        // Success message
+        #success_message.alert.alert-success(role='alert')
+          | Success 
+          i.glyphicon.glyphicon-thumbs-up
+          |  Thanks for contacting us, we will get back to you shortly.
+        // Button
+        .form-group
+          label.col-md-4.control-label
+          .col-md-4
+            input.btn.btn-warning(type="submit" value="Mettre à jour")
+              
+    script
+        include js/client_produit_update.js  
