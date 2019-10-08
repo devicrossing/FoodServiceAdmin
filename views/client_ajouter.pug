@@ -43,7 +43,7 @@ style
         a(href="#")= user[0].username
       li.active Ajouter un produit
   #content.container
-    form#contact_form.well.form-horizontal(action='./clientFoodAdd' method='post')
+    form#contact_form.well.form-horizontal(action='./clientFoodAdd' encType='multipart/form-data' method='post')
       fieldset
         // Form Name
         legend Ajouter un nouveau produit a votre établissement
@@ -86,6 +86,14 @@ style
               span.input-group-addon
                 i.glyphicon.glyphicon-pencil
               textarea.form-control(name='desc' required placeholder="Définition du produit")
+        // Text input
+        .form-group
+          label.col-md-4.control-label Photo
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control( name="picture" type='file')
         // Success message
         #success_message.alert.alert-success(role='alert')
           | Success 

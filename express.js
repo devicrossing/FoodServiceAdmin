@@ -20,7 +20,22 @@ let foodList;
 let foodChoices;
 
 
-global.user;
+global.user = [{
+  "_id": {
+    "$oid": "5d9b6f3ce7244165282b540c"
+  },
+  "username": "oten tik",
+  "password": "b0uda",
+  "type": "client",
+  "email": "benlahsen.bouda@gmail.com",
+  "admin": false,
+  "place": "otentik",
+  "web": "www.salma.com",
+  "firstname": "Reda",
+  "lastname": "Benlahsen",
+  "hosting": false,
+  "address": "address unknown"
+}];
 
 global.user_places;
 
@@ -1111,8 +1126,8 @@ app.get('/client_produits', (req, res) => {
               // console.log("validated");
               pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
             } else {
-              // console.log("1 pending");
-              pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> 1 pending <i class="far fa-clock"></i>  </span>   </a>     `;
+              // console.log("Waiting Admin Confirmation");
+              pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> Confirmation <i class="far fa-clock"></i>  </span>   </a>     `;
             }
 
           } else {
@@ -1197,6 +1212,8 @@ app.get('/client_contact', (req, res) => {
   app.post("/client_contact_update", urlencodedParser, (req, res) => {
 
     if (!req.body) return res.sendStatus(400)
+
+
 
 
     MongoClient.connect(db_url, function (err, db) {
@@ -1365,6 +1382,7 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
   if (!req.body) return res.sendStatus(400)
 
   var maxId;
+  let _id;
 
   // get max id for autogeneration
   MongoClient.connect(db_url, function (err, db) {
@@ -1381,9 +1399,31 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
       maxId = result[0].id;
       console.log(maxId);
       maxId = Number(maxId);
-      let _id = ++maxId;
+      _id = ++maxId;
       console.log(`max : ${maxId} , new : ${_id}`);
       // Add food Item
+      let _name = req.body.name.toLowerCase().replace(/ /g, '');
+      let _place = user[0].place.toLowerCase().replace(/ /g, '');
+
+      if (!req.files)
+        return res.status(400).send('No files were uploaded.');
+
+      // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+      let sampleFile = req.files.picture;
+      let ext = sampleFile.name.split(".")[1];
+
+      console.log(_name);
+      console.log(_place);
+
+      sampleFile.mv(`./uploads/${_id}_${_name}_${_place}-pending.${ext}`, function (err) {
+        if (err)
+          return res.status(500).send(err);
+
+      });
+
+
+
+
       MongoClient.connect(db_url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("foodservice");
@@ -1398,11 +1438,11 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
           admin_validated: false
         };
 
-        console.log("-------");
+        // console.log("-------");
 
-        console.dir(foodToAdd);
+        // console.dir(foodToAdd);
 
-        console.log("-------");
+        // console.log("-------");
 
         dbo.collection("foods").insertOne(foodToAdd, function (err, res) {
           if (err) throw err;
@@ -1410,6 +1450,7 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
           db.close();
         });
       });
+
 
     });
   });
