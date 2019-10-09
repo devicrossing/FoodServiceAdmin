@@ -85,7 +85,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
-              input.form-control( name="hack" placeholder= food.price value= food.name type='text')      
+              input.form-control( name="hack" placeholder= food.price value= '' + food.id + '||' + food.name  type='text')      
         // Text area
         .form-group
           label.col-md-4.control-label Description du produit

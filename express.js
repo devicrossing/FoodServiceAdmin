@@ -1220,12 +1220,36 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
     if (err) throw err;
     var dbo = db.db("foodservice");
 
+    let hack = req.body.hack.split("||");
+    console.log("hack");
+    console.log(hack);
+
+    if (!req.files)
+      return res.status(400).send('No files were uploaded.');
+
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let sampleFile = req.files.picture;
+    let ext = sampleFile.name.split(".")[1];
+
+    try {
+      fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.png`);
+      fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.jpg`);
+      //file removed
+    } catch (err) {
+      console.error(err)
+    }
+
+    sampleFile.mv(`./uploads/${hack[0]}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.${ext}`, function (err) {
+      if (err)
+        return res.status(500).send(err);
+
+    });
+
     var myquery = {
-      name: req.body.hack
+      name: hack[1]
     };
 
-    console.log("params 2")
-    console.log(req.params.id);
+
 
     var food_to_update = {
       $set: {
