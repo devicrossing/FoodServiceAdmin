@@ -43,7 +43,7 @@ style
         a(href="#")= user[0].username
       li.active= "Modifier le produit " + food.name 
   #content.container
-    form#contact_form.well.form-horizontal(action='./clientFoodAdd' encType='multipart/form-data' method='post')
+    form#contact_form.well.form-horizontal(action='/foodUpdateClientRequest' encType='multipart/form-data' method='post')
       fieldset
         // Form Name
         legend= "Modifier le produit " + food.name 
@@ -78,6 +78,14 @@ style
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
               input.form-control( name="price" placeholder= food.price required type='number')
+        // Text input
+        .form-group.hack(style="display: none;")
+          label.col-md-4.control-label hack
+          .col-md-4.inputGroupContainer
+            .input-group
+              span.input-group-addon
+                i.glyphicon.glyphicon-envelope
+              input.form-control( name="hack" placeholder= food.price value= food.name type='text')      
         // Text area
         .form-group
           label.col-md-4.control-label Description du produit

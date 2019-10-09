@@ -1183,7 +1183,7 @@ app.get('/foodDeleteClientRequest/:name', (req, res) => {
 });
 // END___GET client deleteproduct
 
-
+// END___GET client update Product
 app.get('/foodUpdateClientRequest/:name', (req, res) => {
 
   let _food;
@@ -1208,18 +1208,50 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
       })
     });
   });
-
-
-
-
-
 });
+// END___GET client update Product
 
 // ___POST client update product 000
-app.post('/foodUpdateClientRequest', (req, res) => {
+app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
 
-  // to change after joint
+  if (!req.body) return res.sendStatus(400)
 
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+
+    var myquery = {
+      name: req.body.hack
+    };
+
+    console.log("params 2")
+    console.log(req.params.id);
+
+    var food_to_update = {
+      $set: {
+        name: req.body.name,
+        category: req.body.category,
+        price: req.body.price,
+        desc: req.body.desc
+      }
+    };
+
+    console.log("XXXXXXX");
+    console.log("XXXXXXX");
+    console.log("XXXXXXX");
+    console.log("XXXXXXX");
+    console.log("myquery");
+    console.dir(myquery);
+    console.log("user_to_update");
+    console.dir(food_to_update);
+
+
+    dbo.collection("foods").updateOne(myquery, food_to_update, function (err, res) {
+      if (err) throw err;
+      console.log("1 food updated by user");
+    });
+    db.close();
+  });
 
 
 
@@ -1336,10 +1368,10 @@ app.get('/client_contact', (req, res) => {
 
     res.redirect('/client_contact');
 
-  }) // END___POST Clien Contact Updated
+  })
 
 });
-// END___GET client produit
+// END___POST Clien Contact Updated
 
 // ___GET client ADD PRODUCT
 
