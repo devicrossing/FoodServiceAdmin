@@ -527,3 +527,11 @@ div.container {
 td.actions {
     text-align: center;
 }
+
+td.red {
+    color: red;
+}
+
+td.green {
+    color: green;
+}

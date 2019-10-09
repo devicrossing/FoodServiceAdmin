@@ -20,22 +20,7 @@ let foodList;
 let foodChoices;
 
 
-global.user = [{
-  "_id": {
-    "$oid": "5d9b6f3ce7244165282b540c"
-  },
-  "username": "oten tik",
-  "password": "b0uda",
-  "type": "client",
-  "email": "benlahsen.bouda@gmail.com",
-  "admin": false,
-  "place": "otentik",
-  "web": "www.salma.com",
-  "firstname": "Reda",
-  "lastname": "Benlahsen",
-  "hosting": false,
-  "address": "address unknown"
-}];
+global.user;
 
 global.user_places;
 
@@ -1117,21 +1102,18 @@ app.get('/client_produits', (req, res) => {
           // console.dir(picturesUrl);
 
           if (picturesUrl.length == 0) {
-            pictureState = `<a href="http://localhost:3030/ClientuploadProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}"><span style='color:red;'> no photo </span> </a>`;
+            pictureState = `<a href="http://localhost:3030/ClientuploadProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/empty"><span style='color:red;'> no photo </span> </a>`;
             // console.log("no photo");
           } else if (picturesUrl.length == 1) {
 
             if (picturesUrl[0].indexOf("-validated") != -1) {
               // console.log("validated");
-              pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
+              pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/validated"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
             } else {
               // console.log("Waiting Admin Confirmation");
-              pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> Confirmation <i class="far fa-clock"></i>  </span>   </a>     `;
+              pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/pending"><span style='color:orange;'> Confirmation <i class="far fa-clock"></i>  </span>   </a>     `;
             }
 
-          } else {
-            // console.log(`${picturesUrl.length} pending`);
-            pictureState = `<a href="http://localhost:3030/ClientuploadProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'>  ${picturesUrl.length} pending <i class="far fa-clock"> </i>  </span>  </a>    `;
           }
 
           // pictureimages is array of ids and pictures
