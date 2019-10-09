@@ -13,6 +13,7 @@ style
   div.user-banner
     img(src='./uploads/clients/b0uda.png')
     h5.username= user[0].username
+    span= user[0].lastname + " " + user[0].firstname
   ul
     li.head MENU
     li
@@ -66,7 +67,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='first_name' placeholder= user[0].firstname type='text')
+              input.form-control(name='first_name' value= user[0].firstname placeholder= user[0].firstname type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Nom
@@ -74,7 +75,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-user
-              input.form-control(name='last_name' placeholder= user[0].lastname type='text')
+              input.form-control(name='last_name' value= user[0].lastname placeholder= user[0].lastname type='text')
         // Text input
         .form-group
           label.col-md-4.control-label E-Mail
@@ -82,7 +83,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-envelope
-              input.form-control(name='email' placeholder= user[0].username type='text')
+              input.form-control(name='email' value= user[0].email placeholder= user[0].email type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Téléphone #
@@ -90,7 +91,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-earphone
-              input.form-control(name='phone' placeholder= place.phone type='text')
+              input.form-control(name='phone' value= place.phone placeholder= place.phone type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Adresse
@@ -98,7 +99,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-home
-              input.form-control(name='address' placeholder= 'Lat :' + place.lat + ' , Long : ' + place.long type='text')
+              input.form-control(name='address' value= place.address placeholder= place.address type='text')
         // Text input
         .form-group
           label.col-md-4.control-label Site web ou nom de domaine
@@ -106,7 +107,7 @@ style
             .input-group
               span.input-group-addon
                 i.glyphicon.glyphicon-globe
-              input.form-control(name='website' placeholder= user[0].web type='text')
+              input.form-control(name='website' value= user[0].web placeholder= user[0].web type='text')
         // Success message
         #success_message.alert.alert-success(role='alert')
           | Success 

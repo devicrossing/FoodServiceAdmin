@@ -1333,6 +1333,13 @@ app.get('/client_contact', (req, res) => {
       };
 
 
+      user[0].email = req.body.email;
+      user[0].web = req.body.website;
+      user[0].firstname = req.body.first_name;
+      user[0].lastname = req.body.last_name;
+      user[0].phone = req.body.phone;
+      user[0].address = req.body.address;
+
       var user_to_update = {
         $set: {
           email: req.body.email,
@@ -1344,35 +1351,17 @@ app.get('/client_contact', (req, res) => {
         }
       };
 
-
-
-      user[0].email = req.body.email;
-      user[0].web = req.body.web;
-      user[0].firstname = req.body.firstname;
-      user[0].lastname = req.body.lastname;
-      user[0].address = req.body.address;
-
-
-      console.log("XXXXXXX");
-      console.log("XXXXXXX");
-      console.log("XXXXXXX");
-      console.log("XXXXXXX");
-      console.log("myquery");
-      console.dir(myquery);
-      console.log("user_to_update");
-      console.dir(user_to_update);
-
-
       dbo.collection("users").updateOne(myquery, user_to_update, function (err, res) {
         if (err) throw err;
         console.log("1 user updated");
         db.close();
       });
 
-      db.close();
-    });
 
-    res.redirect('/client_contact');
+
+      res.redirect('/client_contact');
+
+    });
 
   })
 
@@ -1448,8 +1437,6 @@ app.get('/dashboard', (req, res) => {
 
       db.close();
 
-
-
       for (const [key, value] of Object.entries(user[0])) {
         console.log(key, value);
 
@@ -1458,8 +1445,6 @@ app.get('/dashboard', (req, res) => {
         }
 
       }
-
-      console.dir(contact_required);
 
       res.render('dashboard', {
         pageTitle: 'Food Service Client Dashboard',
