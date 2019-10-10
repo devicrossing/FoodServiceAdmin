@@ -46,6 +46,8 @@ style
 
   #content
     h1= "Pending photos du produit " + pic_name
+        a(href='http://localhost:3030/imagesRemove/' + pictureUrl[0].split('-')[0])
+                li(class='fa fa-trash') Remove all images
     .row
             each pic in pics
                  div(class='food_item')

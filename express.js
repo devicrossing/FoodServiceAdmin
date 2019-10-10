@@ -264,12 +264,13 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
       // console.log(' value.indexOf(url[0] ' + value.indexOf(url[0]));
 
-      if (value.indexOf(url[0]) !== -1) {
+      if (value.indexOf(url) !== -1) {
         pictureUrl.push(value);
+        console.log(`pictureUrl value : ${value}`)
       }
     });
 
-    console.log(' pictureUrl ' + pictureUrl);
+
 
     // Rename the image selected for validation 
 
@@ -284,17 +285,16 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
     // console.log(pictureUrl);
 
+    pictureUrl.forEach((_url) => {
+      console.log(_url);
+      fs.unlink(`./uploads/${_url}`, (err) => {
+        if (err) throw err;
+        console.log(`successfully deleted ./uploads/${_url}`);
+        // Use the mv() method to place the file somewhere on your server
 
-    // pictureUrl.forEach((_url) => {
-    //   console.log(_url);
-    //   fs.unlink(`./uploads/${_url}`, (err) => {
-    //     if (err) throw err;
-    //     console.log(`successfully deleted ./uploads/${_url}`);
-    //     // Use the mv() method to place the file somewhere on your server
+      });
 
-    //   });
-
-    // });
+    });
 
     sampleFile.mv(`./uploads/${url}-validated.${ext}`, function (err) {
       if (err)
@@ -302,9 +302,11 @@ app.post('/uploadAdmin/:foodId', function (req, res) {
 
     });
 
-    res.render('uploaded', {
-      pageTitle: 'File uploaded - ADMIN PANEL'
-    });
+    // res.render('uploaded', {
+    //   pageTitle: 'File uploaded - ADMIN PANEL'
+    // });
+
+    res.redirect("/admin_dashboard");
 
   });
 
@@ -706,6 +708,8 @@ app.get("/uploadNewImage/:url", (req, res) => {
     pic_name: req.params.url,
     picUrl: req.params.url
   });
+
+
 
 }); // END___GET Upload image for food with no image -ADMING PANEL
 
@@ -1287,6 +1291,10 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
       console.log("1 food updated by user");
     });
     db.close();
+
+
+    res.redirect("/dashboard");
+
   });
 
 
