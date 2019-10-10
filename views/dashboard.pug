@@ -42,12 +42,12 @@ style
   header
     ol.breadcrumb
       li 
-        a(href="#")= user.username
+        a(href="/dashboard")= user.username
       li.active tableau de bord
   #content
-    h1 Bienvenue dans le tableau de bord Web
+    h1= "Bienvenue " + user.lastname + " " + user.firstname + "  dans votre tableau de bord Web" 
     .box: .body
-      p.user_message La solution professionnelle pour gérer votre commerce. Ici vous pouvez efferctuer plusieurs actions pour gérer votre commerce dans Food Service
+      p.user_message La solution professionnelle pour gérer votre commerce dans Food Service
     .row
       .col-sm-4
         .box.property-glance

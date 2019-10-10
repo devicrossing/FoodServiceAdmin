@@ -16,15 +16,15 @@ style
   ul
     li.head MENU
     li
-      a(href="./dashboard")
+      a(href="/dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
     li.active
-      a(href="./client_ajouter")
+      a(href="/client_ajouter")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Ajouter un produit
     li
-      a(href="./client_produits")
+      a(href="/client_produits")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Liste de Produits
     li
@@ -40,7 +40,7 @@ style
   header
     ol.breadcrumb
       li 
-        a(href="#")= user[0].username
+        a(href="/dashboard")= user[0].username
       li.active Ajouter un produit
   #content.container
     form#contact_form.well.form-horizontal(action='./clientFoodAdd' encType='multipart/form-data' method='post')

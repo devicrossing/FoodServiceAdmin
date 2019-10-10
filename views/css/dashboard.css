@@ -430,3 +430,10 @@ p.user_message ul li {
 #content h1 {
     text-align: center;
 }
+
+
+
+span.username {
+    color: yellow;
+    ;
+}

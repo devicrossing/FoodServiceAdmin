@@ -42,17 +42,24 @@ style
         span Logout
 
 #main
+    nav(aria-label='breadcrumb')
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='#')= user.username
+        li.breadcrumb-item.active(aria-current='page') Gestions de vos produits
+
+
     div(class='container')
         table(id='example' datatable='' width='100%' cellspacing='0' data-page-length='33' data-scroll-x='true' scroll-collapse='false')
             thead
                 tr
                     th Admin
                     th Name
-                    th Description
                     th Category
                     th Price
                     th Photo
                     th Actions
+                    th Description
             tbody
              each  food , index  in foodList
               tr(class='item')
@@ -60,8 +67,7 @@ style
                   td.green Validated
                 else
                   td.red Non validated
-                td= food.name
-                td= food.desc  
+                td= food.name  
                 td= food.category 
                 td= food.price 
                 td!= images[index].state
@@ -70,6 +76,7 @@ style
                     i(class='fas fa-edit')
                   a(href='http://localhost:3030/foodDeleteClientRequest/' + food.name)
                     i(class='fas fa-trash')
+                td= food.desc
                   
 
     script

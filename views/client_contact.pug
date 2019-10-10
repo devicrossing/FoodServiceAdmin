@@ -13,19 +13,18 @@ style
   div.user-banner
     img(src='./uploads/clients/b0uda.png')
     h5.username= user[0].username
-    span= user[0].lastname + " " + user[0].firstname
   ul
     li.head MENU
     li
-      a(href="./dashboard")
+      a(href="/dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
     li
-      a(href="./client_ajouter")
+      a(href="/client_ajouter")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Ajouter un produit
     li
-      a(href="./client_produits")
+      a(href="/client_produits")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Liste de Produits
     li.active
@@ -44,8 +43,8 @@ style
   header
     ol.breadcrumb
       li 
-        a(href="#")= user.username
-      li.active tableau de bord
+        a(href="/dashboard")= user[0].username
+      li.active Modifier vos informations
   #content.container
     form#contact_form.well.form-horizontal(action='/client_contact_update' method='post')
       fieldset

@@ -203,7 +203,7 @@ body {
 
     background-color: #f0f0f0;
     border: 1px solid blue;
-    margin-top: 1rem;
+    margin-top: 3rem;
     padding: 1rem;
 }
 
@@ -534,4 +534,40 @@ td.red {
 
 td.green {
     color: green;
+}
+
+.breadcrumb {
+    background-color: white;
+}
+
+nav[aria-label="breadcrumb"] {
+    background-color: white;
+}
+
+
+#main {
+    background-color: white;
+}
+
+div.container {
+    margin-top: 2rem;
+    border: 0;
+    ;
+}
+
+.dataTables_wrapper .dataTables_scroll {
+    border: 0;
+}
+
+div.container {
+    background-color: #E9EEF1;
+}
+
+#example_length.dataTables_length {
+    color: #00adf7;
+}
+
+.dataTables_wrapper {
+    padding-top: 10px;
+
 }
