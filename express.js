@@ -20,7 +20,22 @@ let foodList;
 let foodChoices;
 
 
-global.user;
+global.user = [{
+  "_id": {
+    "$oid": "5d93a5ec1c9d440000ae4d9d"
+  },
+  "username": "admin",
+  "password": "admin",
+  "type": "admin",
+  "email": "webicrossing@gmail.com",
+  "admin": true,
+  "place": "mcdonalds",
+  "web": "www.devicrossing.com",
+  "firstname": "reda admin",
+  "lastname": "benlahsen admin",
+  "hosting": true,
+  "address": "mc donalds 7da la garre"
+}];
 
 global.user_places;
 
@@ -1690,23 +1705,129 @@ app.post('/admin_client_add', urlencodedParser, function (req, res) {
 
 
 // ___GET Admin Manage Specific client
-app.get('/admin/company/list/:id', function (req, res) {
+app.get('/admin/company/list/:place', function (req, res) {
 
-  let _place = req.params.id.toString().toLowerCase().replace(/ /g, '');
-  _place = unescape(_place);
-  let foodListFiltred = [];
-  foodList.forEach(food => {
-    const food_place = food.place.replace(/ /g, '');
-    if (food_place == _place) {
-      foodListFiltred.push(food);
-    }
+  // let _place = req.params.id.toString().toLowerCase().replace(/ /g, '');
+  // _place = unescape(_place);
+  // let foodListFiltred = [];
+  // foodList.forEach(food => {
+  //   const food_place = food.place.replace(/ /g, '');
+  //   if (food_place == _place) {
+  //     foodListFiltred.push(food);
+  //   }
+  // });
+
+  // res.render('admin_client_manage', {
+  //   user: user[0],
+  //   client_food: foodListFiltred,
+
+  // });
+
+  let foodImages = [];
+  let picturesList = [];
+  let _folder = "./uploads/";
+  let picturesUrl = [];
+  let pictureState = "";
+  let _foodlist;
+
+
+  // update the foodList
+
+  console.log(req.params.place)
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+    dbo.collection("foods").find({
+      place: req.params.place
+    }).toArray(function (err, result) {
+      if (err) throw err;
+      _foodlist = result;
+      console.dir(result)
+      db.close();
+
+      // get all files in List
+      fs.readdir(_folder, (err, files) => {
+        files.forEach(file => {
+          picturesList.push(file);
+        });
+        // console.dir(picturesList);
+
+        // for each food in the list search for images related to it
+        _foodlist.forEach(food => {
+
+
+
+          picturesList.forEach(function (value, index) {
+
+
+            // console.log(value.indexOf(`indexof : ${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1)
+
+
+
+            if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
+
+              // console.log(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`);
+              // console.log(value);
+
+              picturesUrl.push(value);
+
+              console.log("value " + value);
+
+
+            }
+
+
+
+          });
+
+          // console.log(food.id)
+          // console.dir(picturesUrl);
+
+          if (picturesUrl.length == 0) {
+            pictureState = `<a href="http://localhost:3030/uploadNewImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}"><span style='color:red;'> no photo </span> </a>`;
+            // console.log("no photo");
+          } else if (picturesUrl.length == 1) {
+
+            if (picturesUrl[0].indexOf("-validated") != -1) {
+              // console.log("validated");
+              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
+            } else {
+              // console.log("1 pending");
+              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> 1 pending <i class="far fa-clock"></i>  </span>   </a>     `;
+            }
+
+          } else {
+            // console.log(`${picturesUrl.length} pending`);
+            pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'>  ${picturesUrl.length} pending <i class="far fa-clock"> </i>  </span>  </a>    `;
+          }
+
+          // pictureimages is array of ids and pictures
+          foodImages.push({
+            id: food.id,
+            images: picturesUrl,
+            state: pictureState
+          });
+
+          picturesUrl = [];
+
+        });
+
+        // console.log(foodImages);
+
+        res.render('admin_client_manage', {
+          pageTitle: 'Listof all foods - ADMIN PANEL',
+          foodList: _foodlist,
+          images: foodImages
+        })
+
+      });
+
+    });
   });
 
-  res.render('admin_client_manage', {
-    user: user[0],
-    client_food: foodListFiltred,
 
-  });
+
 
 }) // END___GET Admin Manage Specific client
 
