@@ -401,12 +401,27 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
 
     // console.log(pictureGroups);
 
-    res.render('image_validated_manage.pug', {
-      pageTitle: 'MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS',
-      pics: pictureUrl,
-      pic_name: id,
-      validated: validated
-    })
+    console.log("pictureUrl : " + pictureUrl);
+
+
+    if (req.params.validated === "yes") {
+      console.log("validated");
+      res.render('image_validated_manage.pug', {
+        pageTitle: 'SHOW/UPDATE PHOTO OF VALIDATED FOOD',
+        pics: pictureUrl,
+        pic_name: id,
+        validated: validated
+      })
+    } else if (req.params.validated === "non") {
+      console.log("SHOW/UPDATE PHOTO OF LIST OF PENDING FOOD");
+      res.render('image_pending_manage.pug', {
+        pageTitle: 'MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS',
+        pics: pictureUrl,
+        pic_name: id,
+        validated: validated
+      })
+    }
+
 
   });
 

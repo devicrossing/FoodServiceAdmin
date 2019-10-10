@@ -1,0 +1,24 @@
+.food_item {
+    width: 23%;
+    overflow: hidden;
+    margin-left: 1%;
+}
+
+.food_item img {
+    width: 100%;
+    height: 150px;
+}
+
+.food_actions {
+    background: green;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.btn_validate {
+    color: white;
+}
+
+.btn_validate:hover {
+    color: white;
+}

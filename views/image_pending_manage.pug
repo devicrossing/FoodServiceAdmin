@@ -8,6 +8,7 @@ script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.
 style
       include css/admin_dashboard.css
       include css/client_unified.css
+      include css/image_pending_manage.css
       
 
 
@@ -41,18 +42,20 @@ style
       ol.breadcrumb
         li.breadcrumb-item
           a(href='#')= user.username
-        li.breadcrumb-item.active(aria-current='page')= "Modifier la Photo de " + pic_name
+        li.breadcrumb-item.active(aria-current='page')= "Pending Photos de " + pic_name
 
   #content
+    h1= "Pending photos du produit " + pic_name
     .row
-        h1= "Modifier la Photo de " + pic_name
-            a(href='http://localhost:3030/imagesRemove/' + pictureUrl[0].split('-')[0])
-                li(class='fa fa-trash')
-            img(class='food_img food_img_validated' src="http://localhost:3030/uploads/" + pics[0] , alt="")
+            each pic in pics
+                 div(class='food_item')
+                    img(src="http://localhost:3030/uploads/" + pic , class='food_img' alt="")
+                    div(class='food_actions')
+                        a(href='http://localhost:3030/validate/' + pic , id='btn_validate' class='btn_validate') VALIDATE
     form#contact_form.well.form-horizontal(action="http://localhost:3030/uploadAdmin/" + pictureUrl[0].split('-')[0] encType='multipart/form-data'  method='post')
       fieldset
         // Form Name
-        legend Modifier PHOTO
+        legend Ajouter une autre Photo par L'ADMIN
         // Text input
         .form-group
           label.col-md-4.control-label= pictureUrl[0].split('-')[0]
@@ -66,7 +69,7 @@ style
           label.col-md-4.control-label
           .col-md-4
             button.btn.btn-warning(type='submit')
-              | Modifier photo
+              | Ajouter autre photo
               span.glyphicon.glyphicon-send
               
       
