@@ -1245,49 +1245,57 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
 app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
 
 
+
+  let old_food = JSON.parse(req.body.hack);
+  console.log("hack");
+  console.dir(old_food)
+
   if (!req.body) return res.sendStatus(400)
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
 
-    let hack = req.body.hack.split("||");
-    console.log("hack");
-    console.log(hack);
+    let hack = old_food.name;
+
+    // test
+
+
+    fs.readFile("./uploads/", function (err, data) {
+      if (err) throw err;
+      // if(data.includes('search string')){
+      console.log(data)
+      // }
+    });
+
+
+    // test
 
     if (!req.files)
       return res.status(400).send('No files were uploaded.');
 
-    if (!req.files) {
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let sampleFile = req.files.picture;
+    let ext = sampleFile.name.split(".")[1];
 
-      // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-      let sampleFile = req.files.picture;
-      let ext = sampleFile.name.split(".")[1];
-
-      try {
-        fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.png`);
-        fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.jpg`);
-        //file removed
-      } catch (err) {
-        console.error(err)
-      }
-
-      sampleFile.mv(`./uploads/${hack[0]}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.${ext}`, function (err) {
-        if (err)
-          return res.status(500).send(err);
-
-      });
+    try {
+      fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.png`);
+      fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpg`);
+      fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpeg`);
+      //file removed
+    } catch (err) {
+      console.error(err)
     }
 
-
-
+    sampleFile.mv(`./uploads/${old_food.id}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.${ext}`, function (err) {
+      if (err)
+        return res.status(500).send(err);
+    });
 
 
     var myquery = {
-      name: hack[1]
+      name: hack
     };
-
-
 
     var food_to_update = {
       $set: {
@@ -1298,14 +1306,14 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
       }
     };
 
-    console.log("XXXXXXX");
-    console.log("XXXXXXX");
-    console.log("XXXXXXX");
-    console.log("XXXXXXX");
-    console.log("myquery");
-    console.dir(myquery);
-    console.log("user_to_update");
-    console.dir(food_to_update);
+    // console.log("XXXXXXX");
+    // console.log("XXXXXXX");
+    // console.log("XXXXXXX");
+    // console.log("XXXXXXX");
+    // console.log("myquery");
+    // console.dir(myquery);
+    // console.log("user_to_update");
+    // console.dir(food_to_update);
 
 
     dbo.collection("foods").updateOne(myquery, food_to_update, function (err, res) {
