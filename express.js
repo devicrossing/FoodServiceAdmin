@@ -4,6 +4,8 @@ var fs = require("fs");
 const fileUpload = require('express-fileupload');
 
 var path = require("path");
+var findInFiles = require('find-in-files');
+
 var multiparty = require('multiparty');
 
 var _ = require('underscore-node');
@@ -15,6 +17,8 @@ var FormData = require('form-data');
 var MongoClient = require('mongodb').MongoClient;
 var db_url = "mongodb+srv://bouda:B0uda-bouda!@foodservice-wnasg.mongodb.net/test?retryWrites=true";
 var ObjectId = require('mongodb').ObjectID;
+
+
 
 let foodList;
 let foodChoices;
@@ -1112,8 +1116,6 @@ app.get('/client_produits', (req, res) => {
     if (err) throw err;
     var dbo = db.db("foodservice");
 
-    console.log(user[0].place);
-
     dbo.collection("foods").find({
       place: user[0].place.toLowerCase()
     }).toArray(function (err, result) {
@@ -1123,21 +1125,28 @@ app.get('/client_produits', (req, res) => {
       console.dir(_foodList);
       db.close();
 
-
-
       // get all files in List
       fs.readdir(_folder, (err, files) => {
         files.forEach(file => {
           picturesList.push(file);
         });
-        // console.dir(picturesList);
+
+
+        console.dir(picturesList);
 
         // for each food in the list search for images related to it
         _foodList.forEach(food => {
 
           picturesList.forEach(function (value, index) {
 
-            if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
+            // console.log("----")
+            // console.log(`${food.id}_${food.name.toLowerCase().replace(/ /g, '')}_${food.place.toLowerCase().replace(/ /g, '')}`);
+
+            // console.log("---- bool")
+            // console.log(value.indexOf(`${food.id}_${food.name.toLowerCase().replace(/ /g, '')}_${food.place.toLowerCase().replace(/ /g, '')}`) !== -1)
+
+            if (value.indexOf(`${food.id}_${food.name.toLowerCase().replace(/ /g, '')}_${food.place.toLowerCase().replace(/ /g, '')}`) !== -1) {
+
 
               // console.log(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`);
               // console.log(value);
@@ -1163,6 +1172,9 @@ app.get('/client_produits', (req, res) => {
             }
 
           }
+
+
+          console.dir(picturesUrl);
 
           // pictureimages is array of ids and pictures
           foodImages.push({
@@ -1218,9 +1230,6 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
 
   let _food;
 
-  console.log(`params  ${req.params.name}`);
-
-
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
@@ -1228,7 +1237,6 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
       name: req.params.name
     }, function (err, result) {
       if (err) throw err;
-      console.dir(result);
       _food = result;
       db.close();
       res.render('client_produit_update', {
@@ -1244,8 +1252,6 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
 // ___POST client update product 000
 app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
 
-
-
   let old_food = JSON.parse(req.body.hack);
   console.log("hack");
   console.dir(old_food)
@@ -1260,38 +1266,47 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
 
     // test
 
-
-    fs.readFile("./uploads/", function (err, data) {
-      if (err) throw err;
-      // if(data.includes('search string')){
-      console.log(data)
-      // }
-    });
-
-
     // test
+
+    console.dir(req.files);
 
     if (!req.files)
       return res.status(400).send('No files were uploaded.');
 
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    let sampleFile = req.files.picture;
-    let ext = sampleFile.name.split(".")[1];
+    if (Object.keys(req.files).length > 0) {
+      // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+      let sampleFile = req.files.picture;
+      let ext = sampleFile.name.split(".")[1];
 
-    try {
-      fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.png`);
-      fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpg`);
-      fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpeg`);
-      //file removed
-    } catch (err) {
-      console.error(err)
+      try {
+        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpeg`);
+      } catch (err) {
+        console.error(err)
+      }
+
+      try {
+        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.png`);
+      } catch (err) {
+        console.error(err)
+      }
+
+      try {
+        // fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.png`);
+        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpg`);
+      } catch (err) {
+        console.error(err)
+      }
+
+      sampleFile.mv(`./uploads/${old_food.id}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.${ext}`, function (err) {
+        if (err)
+          return res.status(500).send(err);
+      });
+    } else {
+      // todo need code for extensions
+      fs.rename(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpg`, `./uploads/${old_food.id}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpg`, function (err) {
+        if (err) console.log('ERROR: ' + err);
+      });
     }
-
-    sampleFile.mv(`./uploads/${old_food.id}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.${ext}`, function (err) {
-      if (err)
-        return res.status(500).send(err);
-    });
-
 
     var myquery = {
       name: hack
@@ -1305,16 +1320,6 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
         desc: req.body.desc
       }
     };
-
-    // console.log("XXXXXXX");
-    // console.log("XXXXXXX");
-    // console.log("XXXXXXX");
-    // console.log("XXXXXXX");
-    // console.log("myquery");
-    // console.dir(myquery);
-    // console.log("user_to_update");
-    // console.dir(food_to_update);
-
 
     dbo.collection("foods").updateOne(myquery, food_to_update, function (err, res) {
       if (err) throw err;
