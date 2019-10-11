@@ -1282,20 +1282,22 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
       let ext = sampleFile.name.split(".")[1];
 
       try {
-        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpeg`);
+        console.log(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-validated.jpeg`);
+        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-validated.jpeg`);
       } catch (err) {
         console.error(err)
       }
 
       try {
-        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.png`);
+        console.log()
+        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-validated.png`);
       } catch (err) {
         console.error(err)
       }
 
       try {
         // fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.png`);
-        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-pending.jpg`);
+        fs.unlinkSync(`./uploads/${old_food.id}_${old_food.name.toLowerCase().replace(/ /g, '')}_${user[0].place.toLowerCase().replace(/ /g, '')}-validated.jpg`);
       } catch (err) {
         console.error(err)
       }
@@ -1396,9 +1398,6 @@ app.get('/client_contact', (req, res) => {
   app.post("/client_contact_update", urlencodedParser, (req, res) => {
 
     if (!req.body) return res.sendStatus(400)
-
-
-
 
     MongoClient.connect(db_url, function (err, db) {
       if (err) throw err;
@@ -1570,6 +1569,8 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
       maxId = Number(maxId);
       _id = ++maxId;
       console.log(`max : ${maxId} , new : ${_id}`);
+
+
       // Add food Item
       let _name = req.body.name.toLowerCase().replace(/ /g, '');
       let _place = user[0].place.toLowerCase().replace(/ /g, '');
@@ -1579,6 +1580,8 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 
       if (Object.keys(req.files).length > 0) {
 
+        console.log("entred if");
+
 
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
         let sampleFile = req.files.picture;
@@ -1587,23 +1590,13 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
         console.log(_name);
         console.log(_place);
 
-        sampleFile.mv(`./uploads/${_id}_${_name}_${_place}-pending.${ext}`, function (err) {
+        sampleFile.mv(`./uploads/${_id}_${_name.replace(/ /g, '')}_${_place}-pending.${ext}`, function (err) {
           if (err)
             return res.status(500).send(err);
 
         });
 
       }
-
-
-
-
-
-
-
-
-
-
 
 
       MongoClient.connect(db_url, function (err, db) {
