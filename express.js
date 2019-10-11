@@ -19,22 +19,22 @@ var ObjectId = require('mongodb').ObjectID;
 let foodList;
 let foodChoices;
 
+// global.user;
 
 global.user = [{
   "_id": {
-    "$oid": "5d93a5ec1c9d440000ae4d9d"
+    "$oid": "5da077518da8858e330ed822"
   },
-  "username": "admin",
-  "password": "admin",
-  "type": "admin",
-  "email": "webicrossing@gmail.com",
-  "admin": true,
-  "place": "mcdonalds",
-  "web": "www.devicrossing.com",
-  "firstname": "reda admin",
-  "lastname": "benlahsen admin",
-  "hosting": true,
-  "address": "mc donalds 7da la garre"
+  "username": "chan",
+  "password": "chan",
+  "type": "client",
+  "email": "unknown@unknown.unknown",
+  "admin": false,
+  "place": "les Champs Elysées",
+  "web": "www.unknown.com",
+  "firstname": "unknown",
+  "lastname": "unknown",
+  "hosting": false
 }];
 
 global.user_places;
@@ -495,7 +495,7 @@ app.get("/foodList", (req, res) => {
 
             if (picturesUrl[0].indexOf("-validated") != -1) {
               // console.log("validated");
-              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
+              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated  </span></a>`;
             } else {
               // console.log("1 pending");
               pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> 1 pending <i class="far fa-clock"></i>  </span>   </a>     `;
@@ -579,7 +579,7 @@ app.get("/validate/:foodId", (req, res) => {
 
     });
 
-    res.render('validate_picture');
+    res.redirect("/admin_dashboard");
 
   });
 
@@ -784,45 +784,45 @@ app.post("/foodAdd", urlencodedParser, (req, res) => {
 
   if (!req.body) return res.sendStatus(400)
 
-  var maxId;
+  // var maxId;
 
-  // get max id for autogeneration
-  MongoClient.connect(db_url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("foodservice");
-    dbo.collection("foods").find({}, {
-      id: 1
-    }).sort({
-      id: -1
-    }).toArray(function (err, result) {
-      if (err) throw err;
+  // // get max id for autogeneration
+  // MongoClient.connect(db_url, function (err, db) {
+  //   if (err) throw err;
+  //   var dbo = db.db("foodservice");
+  //   dbo.collection("foods").find({}, {
+  //     id: 1
+  //   }).sort({
+  //     id: -1
+  //   }).toArray(function (err, result) {
+  //     if (err) throw err;
 
-      db.close();
-      maxId = result[0].id;
-      console.log(maxId);
-      maxId = Number(maxId);
-      let _id = ++maxId;
-      console.log(`max : ${maxId} , new : ${_id}`);
-      // Add food Item
-      MongoClient.connect(db_url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("foodservice");
-        var foodToAdd = {
-          id: _id,
-          name: req.body.name,
-          place: toTitleCase(req.body.place),
-          price: req.body.price,
-          category: req.body.category
-        };
-        dbo.collection("foods").insertOne(foodToAdd, function (err, res) {
-          if (err) throw err;
-          console.log("1 Food Item inserted");
-          db.close();
-        });
-      });
+  //     db.close();
+  //     maxId = result[0].id;
+  //     console.log(maxId);
+  //     maxId = Number(maxId);
+  //     let _id = ++maxId;
+  //     console.log(`max : ${maxId} , new : ${_id}`);
+  //     // Add food Item
+  //     MongoClient.connect(db_url, function (err, db) {
+  //       if (err) throw err;
+  //       var dbo = db.db("foodservice");
+  //       var foodToAdd = {
+  //         id: _id,
+  //         name: req.body.name,
+  //         place: toTitleCase(req.body.place),
+  //         price: req.body.price,
+  //         category: req.body.category
+  //       };
+  //       dbo.collection("foods").insertOne(foodToAdd, function (err, res) {
+  //         if (err) throw err;
+  //         console.log("1 Food Item inserted");
+  //         db.close();
+  //       });
+  //     });
 
-    });
-  });
+  //   });
+  // });
 
   res.redirect('/foodList');
 
@@ -1111,13 +1111,19 @@ app.get('/client_produits', (req, res) => {
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
-    console.log
+
+    console.log(user[0].place);
+
     dbo.collection("foods").find({
-      place: user[0].place.toLowerCase().trim()
+      place: user[0].place.toLowerCase()
     }).toArray(function (err, result) {
       if (err) throw err;
       _foodList = result;
+
+      console.dir(_foodList);
       db.close();
+
+
 
       // get all files in List
       fs.readdir(_folder, (err, files) => {
@@ -1238,6 +1244,7 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
 // ___POST client update product 000
 app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
 
+
   if (!req.body) return res.sendStatus(400)
 
   MongoClient.connect(db_url, function (err, db) {
@@ -1251,23 +1258,30 @@ app.post('/foodUpdateClientRequest', urlencodedParser, (req, res) => {
     if (!req.files)
       return res.status(400).send('No files were uploaded.');
 
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    let sampleFile = req.files.picture;
-    let ext = sampleFile.name.split(".")[1];
+    if (!req.files) {
 
-    try {
-      fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.png`);
-      fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.jpg`);
-      //file removed
-    } catch (err) {
-      console.error(err)
+      // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+      let sampleFile = req.files.picture;
+      let ext = sampleFile.name.split(".")[1];
+
+      try {
+        fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.png`);
+        fs.unlinkSync(`./uploads/${hack[0]}_${hack[1].toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.jpg`);
+        //file removed
+      } catch (err) {
+        console.error(err)
+      }
+
+      sampleFile.mv(`./uploads/${hack[0]}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.${ext}`, function (err) {
+        if (err)
+          return res.status(500).send(err);
+
+      });
     }
 
-    sampleFile.mv(`./uploads/${hack[0]}_${req.body.name.toLowerCase().replace(/ /g, '')}_${user[0].place}-pending.${ext}`, function (err) {
-      if (err)
-        return res.status(500).send(err);
 
-    });
+
+
 
     var myquery = {
       name: hack[1]
@@ -1543,18 +1557,27 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
       if (!req.files)
         return res.status(400).send('No files were uploaded.');
 
-      // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-      let sampleFile = req.files.picture;
-      let ext = sampleFile.name.split(".")[1];
+      console.dir(req.files);
 
-      console.log(_name);
-      console.log(_place);
+      if (req.file != {}) {
+        console.log(req.files);
+        console.dir(req.files);
 
-      sampleFile.mv(`./uploads/${_id}_${_name}_${_place}-pending.${ext}`, function (err) {
-        if (err)
-          return res.status(500).send(err);
+        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+        let sampleFile = req.files.picture;
+        let ext = sampleFile.name.split(".")[1];
 
-      });
+        console.log(_name);
+        console.log(_place);
+
+        sampleFile.mv(`./uploads/${_id}_${_name}_${_place}-pending.${ext}`, function (err) {
+          if (err)
+            return res.status(500).send(err);
+
+        });
+      }
+
+
 
 
 
@@ -1565,7 +1588,7 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
         var foodToAdd = {
           id: _id,
           name: req.body.name,
-          place: user[0].place,
+          place: user[0].place.toLowerCase(),
           price: req.body.price,
           category: req.body.category,
           desc: req.body.desc,
@@ -1588,6 +1611,9 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 
 
     });
+
+    res.redirect("/dashboard");
+
   });
 
 }) // END___POST Clien ADD Product
@@ -1689,49 +1715,106 @@ app.post('/admin_client_add', urlencodedParser, function (req, res) {
   if (!req.body) return res.sendStatus(400)
 
 
+
+  // test
+
+  var maxId;
+
+  // get max id for autogeneration
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
-    var user_to_add = {
-      username: req.body.client_username,
-      password: req.body.client_password,
-      type: "client",
-      email: "unknown@unknown.unknown",
-      admin: false,
-      place: req.body.client_place,
-      web: "www.unknown.com",
-      firstname: "unknown",
-      lastname: "unknown",
-      hosting: false
-    };
-
-    var user_place_add = {
-      name: req.body.client_place,
-      phone: "0537377272",
-      time: "8-23",
-      lat: "lat google map",
-      long: "long google map",
-      desc: "description de vtre etablissement",
-      validated: true,
-    };
-
-    dbo.collection("users").insertOne(user_to_add, function (err, res) {
+    dbo.collection("foods").find({}, {
+      id: 1
+    }).sort({
+      id: -1
+    }).toArray(function (err, result) {
       if (err) throw err;
-      console.log("1 user inserted");
 
+      db.close();
+      maxId = result[0].id;
+      console.log(maxId);
+      maxId = Number(maxId);
+      let _id = ++maxId;
+      console.log(`max : ${maxId} , new : ${_id}`);
+      // Add food Item
+
+
+      MongoClient.connect(db_url, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("foodservice");
+        var user_to_add = {
+          username: req.body.client_username,
+          password: req.body.client_password,
+          type: "client",
+          email: "unknown@unknown.unknown",
+          admin: false,
+          place: req.body.client_place,
+          web: "www.unknown.com",
+          firstname: "unknown",
+          lastname: "unknown",
+          hosting: false
+        };
+
+        var user_place_add = {
+          name: req.body.client_place,
+          phone: "0537377272",
+          time: "8-23",
+          lat: "lat google map",
+          long: "long google map",
+          desc: "description de vtre etablissement",
+          validated: true,
+        };
+
+        var user_food_add = {
+          id: _id,
+          name: "Burger Test",
+          place: req.body.client_place,
+          price: 20,
+          category: "burger",
+          client_validated: false,
+          admin_validated: false,
+          desc: "Produit de test",
+          validated: false,
+        };
+
+        dbo.collection("users").insertOne(user_to_add, function (err, res) {
+          if (err) throw err;
+          console.log("1 user inserted");
+
+        });
+
+        dbo.collection("places").insertOne(user_place_add, function (err, res) {
+          if (err) throw err;
+          console.log("1 user place inserted");
+
+        });
+
+        dbo.collection("foods").insertOne(user_food_add, function (err, res) {
+          if (err) throw err;
+          console.log("1 user food inserted");
+
+        });
+
+        db.close();
+      });
+
+      // 
     });
 
-    dbo.collection("places").insertOne(user_place_add, function (err, res) {
-      if (err) throw err;
-      console.log("1 user place inserted");
+    res.redirect('/admin_clients');
 
-    });
-
-
-    db.close();
   });
 
-  res.redirect('/admin_clients');
+
+
+
+
+
+
+
+
+
 }); // ___POST ADMIN add a clients
 
 
@@ -1822,7 +1905,7 @@ app.get('/admin/company/list/:place', function (req, res) {
 
             if (picturesUrl[0].indexOf("-validated") != -1) {
               // console.log("validated");
-              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated <i class="fas fa-check"> </i> </span></a>`;
+              pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/yes"><span style='color:green;'> validated  </span></a>`;
             } else {
               // console.log("1 pending");
               pictureState = `<a href="http://localhost:3030/foodValidate/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/non"><span style='color:orange;'> 1 pending <i class="far fa-clock"></i>  </span>   </a>     `;
