@@ -1874,6 +1874,12 @@ app.get("/validateFoodObject/:id/:place/:state", (req, res) => {
   console.log(` place ${req.params.place}`);
   console.log(` state ${req.params.state}`);
 
+  let place_bool;
+
+  if (req.params.state == "false")
+    place_bool = false;
+  else if (req.params.state == "true")
+    place_bool = true;
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
@@ -1885,7 +1891,7 @@ app.get("/validateFoodObject/:id/:place/:state", (req, res) => {
 
     var food_to_update = {
       $set: {
-        admin_validated: req.params.state,
+        admin_validated: place_bool,
       }
     };
 
