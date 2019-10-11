@@ -1570,11 +1570,8 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
       if (!req.files)
         return res.status(400).send('No files were uploaded.');
 
-      console.dir(req.files);
+      if (Object.keys(req.files).length > 0) {
 
-      if (req.file != {}) {
-        console.log(req.files);
-        console.dir(req.files);
 
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
         let sampleFile = req.files.picture;
@@ -1588,7 +1585,14 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
             return res.status(500).send(err);
 
         });
+
       }
+
+
+
+
+
+
 
 
 
