@@ -1367,10 +1367,14 @@ app.get('/client_contact', (req, res) => {
     var query = {
       name: user[0].place
     };
-    dbo.collection("places").find(query).toArray(function (err, result) {
+    dbo.collection("places").find(query).collation({
+      locale: "fr",
+      strength: 1
+    }).toArray(function (err, result) {
       if (err) throw err;
       // console.log(result);
       _place = result;
+      console.dir(_place);
       db.close();
 
       res.render('client_contact', {
@@ -1779,8 +1783,9 @@ app.post('/admin_client_add', urlencodedParser, function (req, res) {
           time: "8-23",
           lat: "lat google map",
           long: "long google map",
-          desc: "description de vtre etablissement",
+          desc: "Description de votre etablissement",
           validated: true,
+          address: "Votre Addresse"
         };
 
         var user_food_add = {
