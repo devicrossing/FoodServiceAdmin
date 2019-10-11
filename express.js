@@ -412,7 +412,8 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
         pageTitle: 'SHOW/UPDATE PHOTO OF VALIDATED FOOD',
         pics: pictureUrl,
         pic_name: id,
-        validated: validated
+        validated: validated,
+        user: user[0]
       })
     } else if (req.params.validated === "non") {
       console.log("SHOW/UPDATE PHOTO OF LIST OF PENDING FOOD");
@@ -420,7 +421,8 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
         pageTitle: 'MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS',
         pics: pictureUrl,
         pic_name: id,
-        validated: validated
+        validated: validated,
+        user: user[0]
       })
     }
 
@@ -582,6 +584,12 @@ app.get("/validate/:foodId", (req, res) => {
   });
 
 }); //  ___GET Validate A Picture from PENDING IMAGES
+
+
+
+
+
+
 
 // NON image part
 
@@ -1841,7 +1849,8 @@ app.get('/admin/company/list/:place', function (req, res) {
         res.render('admin_client_manage', {
           pageTitle: 'Listof all foods - ADMIN PANEL',
           foodList: _foodlist,
-          images: foodImages
+          images: foodImages,
+          user: user[0]
         })
 
       });
@@ -1853,6 +1862,58 @@ app.get('/admin/company/list/:place', function (req, res) {
 
 
 }) // END___GET Admin Manage Specific client
+
+
+// ___GET Validate A Food Object by admin
+app.get("/validateFoodObject/:id/:place/:state", (req, res) => {
+
+  const id = parseInt(req.params.id);
+
+
+  console.log(` id ${req.params.id}`);
+  console.log(` place ${req.params.place}`);
+  console.log(` state ${req.params.state}`);
+
+
+  MongoClient.connect(db_url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("foodservice");
+
+    var myquery = {
+      id: id
+    };
+
+    var food_to_update = {
+      $set: {
+        admin_validated: req.params.state,
+      }
+    };
+
+    console.log("XXXXXXX");
+    console.log("XXXXXXX");
+    console.log("XXXXXXX");
+    console.log("XXXXXXX");
+    console.log("myquery");
+    console.dir(myquery);
+    console.log("user_to_update");
+    console.dir(food_to_update);
+
+
+    dbo.collection("foods").updateOne(myquery, food_to_update, function (err, res) {
+      if (err) throw err;
+      console.log("1 food Admin_validated updated by user");
+    });
+    db.close();
+
+
+    res.redirect("/admin/company/list/" + req.params.place);
+
+  });
+
+
+
+
+}); //  END___GET Validate A Picture from PENDING IMAGES
 
 
 // ___GET food by Choices by id JSON

@@ -15,11 +15,11 @@ style
   ul
     li.head MENU
     li
-      a(href="./admin_dashboard")
+      a(href="/admin_dashboard")
         i.fa.fa-fw.fa-dashboard
         span Tableau de bord
     li
-      a(href="./admin_clients")
+      a(href="/admin_clients")
         i.fa.fa-fw.fa-inbox
         span.swatch.light-grey Ajouter client
     li.active
@@ -81,7 +81,7 @@ style
       ol.breadcrumb
         li.breadcrumb-item
           a(href='#')= user.username
-        li.breadcrumb-item.active(aria-current='page') Liste des clients
+        li.breadcrumb-item.active(aria-current='page') Ajouter un client
   #content.container
     form#contact_form.well.form-horizontal(action='/admin_client_add' method='post')
       fieldset

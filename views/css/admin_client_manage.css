@@ -535,3 +535,44 @@ td.false {
 td.true {
     color: green;
 }
+
+.breadcrumb {
+    background-color: white;
+}
+
+nav[aria-label="breadcrumb"] {
+    background-color: white;
+}
+
+
+#main {
+    background-color: white;
+}
+
+div.container {
+    margin-top: 2rem;
+    border: 0;
+    ;
+}
+
+.dataTables_wrapper .dataTables_scroll {
+    border: 0;
+}
+
+div.container {
+    background-color: #E9EEF1;
+}
+
+#example_length.dataTables_length {
+    color: #00adf7;
+}
+
+.dataTables_wrapper {
+    padding-top: 10px;
+
+}
+
+td a i {
+    margin-left: 6px;
+    ;
+}
