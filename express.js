@@ -27,18 +27,21 @@ let foodChoices;
 
 global.user = [{
   "_id": {
-    "$oid": "5da077518da8858e330ed822"
+    "$oid": "5da0da0a7d72fdcf2eea7402"
   },
-  "username": "chan",
-  "password": "chan",
-  "type": "client",
-  "email": "unknown@unknown.unknown",
-  "admin": false,
-  "place": "les Champs Elysées",
-  "web": "www.unknown.com",
-  "firstname": "unknown",
-  "lastname": "unknown",
-  "hosting": false
+  "id": {
+    "$numberInt": "49"
+  },
+  "name": "Burger Test",
+  "place": "Réservoir Ambassadeur",
+  "price": {
+    "$numberInt": "20"
+  },
+  "category": "burger",
+  "client_validated": false,
+  "admin_validated": false,
+  "desc": "Produit de test",
+  "validated": false
 }];
 
 global.user_places;
@@ -1735,8 +1738,6 @@ app.post('/admin_client_add', urlencodedParser, function (req, res) {
 
   if (!req.body) return res.sendStatus(400)
 
-
-
   // test
 
   var maxId;
@@ -1791,7 +1792,7 @@ app.post('/admin_client_add', urlencodedParser, function (req, res) {
         var user_food_add = {
           id: _id,
           name: "Burger Test",
-          place: req.body.client_place,
+          place: req.body.client_place.toLowerCase(),
           price: 20,
           category: "burger",
           client_validated: false,
