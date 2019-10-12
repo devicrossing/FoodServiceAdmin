@@ -18,35 +18,39 @@ var MongoClient = require('mongodb').MongoClient;
 var db_url = "mongodb+srv://bouda:B0uda-bouda!@foodservice-wnasg.mongodb.net/test?retryWrites=true";
 var ObjectId = require('mongodb').ObjectID;
 
+var session = require('express-session');
+
 
 
 let foodList;
 let foodChoices;
+var sess;
 
 // global.user;
 
-global.user = [{
-  "_id": {
-    "$oid": "5da0da0a7d72fdcf2eea7402"
-  },
-  "id": {
-    "$numberInt": "49"
-  },
-  "name": "Burger Test",
-  "place": "Réservoir Ambassadeur",
-  "price": {
-    "$numberInt": "20"
-  },
-  "category": "burger",
-  "client_validated": false,
-  "admin_validated": false,
-  "desc": "Produit de test",
-  "validated": false
-}];
+global.user;
 
 global.user_places;
 
 global.user_foods;
+
+app.use(session({
+  secret: 'ssshhhhh',
+  saveUninitialized: true,
+  resave: true
+}));
+
+
+
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: true
+  }
+}))
 
 // for parsing application/json
 // var jsonParser = bodyParser.json()
@@ -80,9 +84,8 @@ MongoClient.connect(db_url, function (err, db) {
 
 app.set('view engine', 'pug')
 
-// ___GET page Home 
+// ___GET LOGIN PAGE 
 app.get('/', (req, res) => {
-
 
   res.render('login', {
     pageTitle: 'Food Info Service Menu',
@@ -90,7 +93,7 @@ app.get('/', (req, res) => {
   })
 
 });
-
+// END___GET LOGIN PAGE 
 
 
 
@@ -388,7 +391,7 @@ app.get("/listImage", (request, response) => {
 // ___GET MANAGE/UPDATE/DELEE VALIDATED PHOTO OF FOODS
 app.get("/foodValidate/:foodId/:validated", (req, res) => {
 
-
+  sess = req.session;
   let _folder = "./uploads/";
   let picturesList = [];
   pictureUrl = [];
@@ -420,7 +423,7 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
         pics: pictureUrl,
         pic_name: id,
         validated: validated,
-        user: user[0]
+        user: sess.user[0]
       })
     } else if (req.params.validated === "non") {
       console.log("SHOW/UPDATE PHOTO OF LIST OF PENDING FOOD");
@@ -429,7 +432,7 @@ app.get("/foodValidate/:foodId/:validated", (req, res) => {
         pics: pictureUrl,
         pic_name: id,
         validated: validated,
-        user: user[0]
+        user: sess.user[0]
       })
     }
 
@@ -939,13 +942,6 @@ app.get("/placeDelete/:placeName", (req, res) => {
 }); // END___GET Delete place by Name
 
 
-
-
-
-
-
-
-
 //  ___POST ADD NEW PLACE 
 app.post("/placeAdd", urlencodedParser, (req, res) => {
 
@@ -1057,6 +1053,8 @@ app.post('/login', (req, res) => {
 
 
   let user_exist = false;
+  sess = req.session;
+
 
   console.log(req.body.name);
   console.log(req.body.password);
@@ -1071,6 +1069,7 @@ app.post('/login', (req, res) => {
     }).toArray(function (err, result) {
       if (err) throw err;
       user = result;
+      sess.user = result;
       // console.log(result);
 
       if (user.length > 0) {
@@ -1087,7 +1086,7 @@ app.post('/login', (req, res) => {
             res.render('login', {
               pageTitle: 'Food Service Client Dashboard',
               message: 'Hello there!',
-              user: user[0]
+              user: sess.user[0]
             })
             break;
         }
@@ -1104,6 +1103,8 @@ app.post('/login', (req, res) => {
 // ___GET client produit
 app.get('/client_produits', (req, res) => {
 
+
+  sess = req.session;
   let foodImages = [];
   let picturesList = [];
   let _folder = "./uploads/";
@@ -1196,7 +1197,7 @@ app.get('/client_produits', (req, res) => {
           pageTitle: 'Listof all foods - ADMIN PANEL',
           foodList: _foodList,
           images: foodImages,
-          user: user[0]
+          user: sess.user[0]
         })
 
       });
@@ -1231,6 +1232,7 @@ app.get('/foodDeleteClientRequest/:name', (req, res) => {
 // END___GET client update Product
 app.get('/foodUpdateClientRequest/:name', (req, res) => {
 
+  sess = req.session;
   let _food;
 
   MongoClient.connect(db_url, function (err, db) {
@@ -1244,7 +1246,7 @@ app.get('/foodUpdateClientRequest/:name', (req, res) => {
       db.close();
       res.render('client_produit_update', {
         pageTitle: 'Listof all foods - ADMIN PANEL',
-        user: user,
+        user: sess.user,
         food: _food
       })
     });
@@ -1362,7 +1364,8 @@ app.get('/logout', (req, res) => {
 // ___GET client CONTACT
 app.get('/client_contact', (req, res) => {
 
-  console.dir(user);
+  // console.dir(user);
+  sess = req.session;
 
   let _place;
 
@@ -1385,7 +1388,7 @@ app.get('/client_contact', (req, res) => {
       res.render('client_contact', {
         pageTitle: 'Client Contact',
         message: 'Food Service Login Page',
-        user: user,
+        user: sess.user,
         place: _place[0]
       })
 
@@ -1452,6 +1455,7 @@ app.get('/client_contact', (req, res) => {
 app.get('/client_ajouter', (req, res) => {
 
   let _place;
+  sess = req.session;
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
@@ -1468,7 +1472,7 @@ app.get('/client_ajouter', (req, res) => {
       res.render('client_ajouter', {
         pageTitle: 'Client Contact',
         message: 'Food Service Login Page',
-        user: user,
+        user: sess.user,
         place: _place[0]
       })
 
@@ -1483,7 +1487,7 @@ app.get('/client_ajouter', (req, res) => {
 // ___GET client Dashboard
 // todo needded for redirection
 app.get('/dashboard', (req, res) => {
-
+  sess = req.session;
   // foods
 
   // validated and not validated products
@@ -1528,7 +1532,7 @@ app.get('/dashboard', (req, res) => {
       res.render('dashboard', {
         pageTitle: 'Food Service Client Dashboard',
         message: 'Hello there!',
-        user: user[0],
+        user: sess.user[0],
         user_foods: user_foods,
         validated: validated,
         contact_required: contact_required
@@ -1642,6 +1646,7 @@ app.post("/clientFoodAdd", urlencodedParser, (req, res) => {
 // ___GET ADMIN DASHBOARD
 app.get('/admin_dashboard', function (req, res) {
 
+  sess = req.session;
   // if (global.toLowerCaseuser.length === 0) {
   //   res.redirect("/");
   // }
@@ -1691,7 +1696,7 @@ app.get('/admin_dashboard', function (req, res) {
       // console.log(_places.length);
 
       res.render('admin_dashboard', {
-        user: user[0],
+        user: sess.user[0],
         data: _places
       })
 
@@ -1706,20 +1711,24 @@ app.get('/admin_dashboard', function (req, res) {
 // ___GET ADMIN contact
 app.get('/admin_contact', function (req, res) {
 
+  sess = req.session;
+
   if (user.length === 0) {
     res.redirect("/");
   }
 
   res.render('admin_contact', {
-    user: user[0]
+    user: sess.user[0]
   })
 }); // END___GET ADMIN contact
 
 // ___GET ADMIN clients
 app.get('/admin_clients', function (req, res) {
 
+  sess = req.session;
+
   res.render('admin_clients', {
-    user: user[0]
+    user: sess.user[0]
   })
 }); // ___GET ADMIN clients
 
@@ -1859,7 +1868,7 @@ app.get('/admin/company/list/:place', function (req, res) {
   let picturesUrl = [];
   let pictureState = "";
   let _foodlist;
-
+  sess = req.session;
 
   // update the foodList
 
@@ -1949,7 +1958,7 @@ app.get('/admin/company/list/:place', function (req, res) {
           pageTitle: 'Listof all foods - ADMIN PANEL',
           foodList: _foodlist,
           images: foodImages,
-          user: user[0]
+          user: sess.user[0]
         })
 
       });
