@@ -14,7 +14,7 @@ style
 #nav
   div.user-banner
     img(src='./uploads/clients/admin.png')
-    h5.username= user.username
+    h5.username= user[0].username
   ul
     li.head MENU
     li.active
@@ -40,7 +40,7 @@ style
     nav(aria-label='breadcrumb')
       ol.breadcrumb
         li.breadcrumb-item
-          a(href='#')= user.username
+          a(href='#')= user[0].username
         li.breadcrumb-item.active(aria-current='page') Tableau de board
 
   #content

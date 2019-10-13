@@ -20,6 +20,9 @@ var ObjectId = require('mongodb').ObjectID;
 
 var session = require('express-session');
 
+let router = express.Router();
+app.use(router);
+
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
@@ -1741,7 +1744,7 @@ app.get('/admin_dashboard', function (req, res) {
       // console.log(_places.length);
 
       res.render('admin_dashboard', {
-        user: sess.user[0],
+        user: sess.user,
         data: _places
       })
 
