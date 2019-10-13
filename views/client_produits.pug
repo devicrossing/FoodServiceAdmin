@@ -17,7 +17,7 @@ style
 #nav
   div.user-banner
     img(src='./uploads/clients/b0uda.png')
-    h5.username= user.username
+    h5.username= user[0].username
   ul
     li.head MENU
     li
@@ -45,7 +45,7 @@ style
     nav(aria-label='breadcrumb')
       ol.breadcrumb
         li.breadcrumb-item
-          a(href='#')= user.username
+          a(href='#')= user[0].username
         li.breadcrumb-item.active(aria-current='page') Gestions de vos produits
 
 

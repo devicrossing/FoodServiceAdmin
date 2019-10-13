@@ -28,7 +28,6 @@ var sess;
 
 // global.user;
 
-global.user;
 
 global.user_places;
 
@@ -37,7 +36,10 @@ global.user_foods;
 app.use(session({
   secret: 'ssshhhhh',
   saveUninitialized: true,
-  resave: true
+  resave: true,
+  cookie: {
+    maxAge: 60000
+  }
 }));
 
 
@@ -95,16 +97,24 @@ app.get('/', (req, res) => {
 });
 // END___GET LOGIN PAGE 
 
+// ___GET LOGIN PAGE 
+app.get('/login', (req, res) => {
 
+  res.redirect("/");
+
+});
+// END___GET LOGIN PAGE 
+
+// old version routes
+// old version routes
+// old version routes
 
 // ___GET page Home 
 app.get('/index', (req, res) => {
-
   res.render('index', {
     pageTitle: 'Food Info Service Menu',
     message: 'Hello there!'
   })
-
 });
 
 // ___POST upload FROM APPLICATION
@@ -1051,14 +1061,11 @@ app.get("/addPlaceDB", (req, res) => {
 // start client login
 app.post('/login', (req, res) => {
 
-
   let user_exist = false;
   sess = req.session;
 
-
   console.log(req.body.name);
   console.log(req.body.password);
-
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
@@ -1068,13 +1075,14 @@ app.post('/login', (req, res) => {
       password: req.body.password
     }).toArray(function (err, result) {
       if (err) throw err;
-      user = result;
+
       sess.user = result;
-      // console.log(result);
+      console.dir("sess.user");
+      console.dir(sess.user);
 
-      if (user.length > 0) {
+      if (sess.user.length > 0) {
 
-        switch (user[0].type) {
+        switch (sess.user[0].type) {
           case 'admin':
             res.redirect('./admin_dashboard');
             break;
@@ -1103,7 +1111,6 @@ app.post('/login', (req, res) => {
 // ___GET client produit
 app.get('/client_produits', (req, res) => {
 
-
   sess = req.session;
   let foodImages = [];
   let picturesList = [];
@@ -1112,56 +1119,44 @@ app.get('/client_produits', (req, res) => {
   let pictureState = "";
   let _foodList;
 
-  // update the foodList
+  console.log("ncshcbwbc");
+  console.log(sess.user);
 
-  console.dir(user);
+  // update the foodList
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
 
+    // db_call
+    // __db foodlist filtred by place name
     dbo.collection("foods").find({
-      place: user[0].place.toLowerCase()
+      place: sess.user[0].place.toLowerCase()
     }).toArray(function (err, result) {
       if (err) throw err;
       _foodList = result;
-
-      console.dir(_foodList);
       db.close();
 
-      // get all files in List
+      // get all files in List || picturesList
       fs.readdir(_folder, (err, files) => {
         files.forEach(file => {
           picturesList.push(file);
         });
 
-
+        console.log("get all files in List in ./uploads");
         console.dir(picturesList);
 
-        // for each food in the list search for images related to it
+        // _foodlist looop
         _foodList.forEach(food => {
 
+          // _foodlist loop || filter purpuse
           picturesList.forEach(function (value, index) {
-
-            // console.log("----")
-            // console.log(`${food.id}_${food.name.toLowerCase().replace(/ /g, '')}_${food.place.toLowerCase().replace(/ /g, '')}`);
-
-            // console.log("---- bool")
-            // console.log(value.indexOf(`${food.id}_${food.name.toLowerCase().replace(/ /g, '')}_${food.place.toLowerCase().replace(/ /g, '')}`) !== -1)
-
             if (value.indexOf(`${food.id}_${food.name.toLowerCase().replace(/ /g, '')}_${food.place.toLowerCase().replace(/ /g, '')}`) !== -1) {
-
-
-              // console.log(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`);
-              // console.log(value);
               picturesUrl.push(value);
-
             }
           });
 
-          // console.log(food.id)
-          // console.dir(picturesUrl);
-
+          // html js render pictureState 
           if (picturesUrl.length == 0) {
             pictureState = `<a href="http://localhost:3030/ClientuploadProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/empty"><span style='color:red;'> no photo </span> </a>`;
             // console.log("no photo");
@@ -1174,10 +1169,9 @@ app.get('/client_produits', (req, res) => {
               // console.log("Waiting Admin Confirmation");
               pictureState = `<a href="http://localhost:3030/ClientupdateProductImage/${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}/pending"><span style='color:orange;'> Confirmation <i class="far fa-clock"></i>  </span>   </a>     `;
             }
-
           }
 
-
+          console.log("picturesUrl filter of picturesList");
           console.dir(picturesUrl);
 
           // pictureimages is array of ids and pictures
@@ -1191,17 +1185,13 @@ app.get('/client_produits', (req, res) => {
 
         });
 
-        // console.log(foodImages);
-
         res.render('client_produits', {
           pageTitle: 'Listof all foods - ADMIN PANEL',
           foodList: _foodList,
           images: foodImages,
-          user: sess.user[0]
+          user: sess.user
         })
-
       });
-
     });
   });
 
@@ -1373,7 +1363,7 @@ app.get('/client_contact', (req, res) => {
     if (err) throw err;
     var dbo = db.db("foodservice");
     var query = {
-      name: user[0].place
+      name: sess.user[0].place
     };
     dbo.collection("places").find(query).collation({
       locale: "fr",
@@ -1415,12 +1405,12 @@ app.get('/client_contact', (req, res) => {
       };
 
 
-      user[0].email = req.body.email;
-      user[0].web = req.body.website;
-      user[0].firstname = req.body.first_name;
-      user[0].lastname = req.body.last_name;
-      user[0].phone = req.body.phone;
-      user[0].address = req.body.address;
+      sess.user[0].email = req.body.email;
+      sess.user[0].web = req.body.website;
+      sess.user[0].firstname = req.body.first_name;
+      sess.user[0].lastname = req.body.last_name;
+      sess.user[0].phone = req.body.phone;
+      sess.user[0].address = req.body.address;
 
       var user_to_update = {
         $set: {
@@ -1453,15 +1443,15 @@ app.get('/client_contact', (req, res) => {
 // ___GET client ADD PRODUCT
 
 app.get('/client_ajouter', (req, res) => {
-
-  let _place;
   sess = req.session;
+  let _place;
+
 
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
     var query = {
-      name: user[0].place
+      name: sess.user[0].place
     };
     dbo.collection("places").find(query).toArray(function (err, result) {
       if (err) throw err;
@@ -1499,11 +1489,14 @@ app.get('/dashboard', (req, res) => {
 
   let contact_required = [];
 
+  console.log("sess.user[0].place")
+  console.dir(sess.user[0].place);
+
   MongoClient.connect(db_url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("foodservice");
     var query = {
-      place: user[0].place
+      place: sess.user[0].place
     };
     dbo.collection("foods").find(query).toArray(function (err, result) {
       if (err) throw err;
@@ -1520,7 +1513,7 @@ app.get('/dashboard', (req, res) => {
 
       db.close();
 
-      for (const [key, value] of Object.entries(user[0])) {
+      for (const [key, value] of Object.entries(sess.user[0])) {
         console.log(key, value);
 
         if (value === "" || value === null || value === "undefined" || value === null) {
@@ -1532,7 +1525,7 @@ app.get('/dashboard', (req, res) => {
       res.render('dashboard', {
         pageTitle: 'Food Service Client Dashboard',
         message: 'Hello there!',
-        user: sess.user[0],
+        user: sess.user,
         user_foods: user_foods,
         validated: validated,
         contact_required: contact_required
@@ -1713,10 +1706,6 @@ app.get('/admin_contact', function (req, res) {
 
   sess = req.session;
 
-  if (user.length === 0) {
-    res.redirect("/");
-  }
-
   res.render('admin_contact', {
     user: sess.user[0]
   })
@@ -1846,6 +1835,8 @@ app.post('/admin_client_add', urlencodedParser, function (req, res) {
 // ___GET Admin Manage Specific client
 app.get('/admin/company/list/:place', function (req, res) {
 
+  sess = req.session;
+
   // let _place = req.params.id.toString().toLowerCase().replace(/ /g, '');
   // _place = unescape(_place);
   // let foodListFiltred = [];
@@ -1868,7 +1859,7 @@ app.get('/admin/company/list/:place', function (req, res) {
   let picturesUrl = [];
   let pictureState = "";
   let _foodlist;
-  sess = req.session;
+
 
   // update the foodList
 
@@ -1895,14 +1886,7 @@ app.get('/admin/company/list/:place', function (req, res) {
         // for each food in the list search for images related to it
         _foodlist.forEach(food => {
 
-
-
           picturesList.forEach(function (value, index) {
-
-
-            // console.log(value.indexOf(`indexof : ${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1)
-
-
 
             if (value.indexOf(`${food.id}_${food.name.replace(/ /g, '')}_${food.place.replace(/ /g, '')}`) !== -1) {
 
@@ -1911,13 +1895,8 @@ app.get('/admin/company/list/:place', function (req, res) {
 
               picturesUrl.push(value);
 
-              console.log("value " + value);
-
-
+              console.log(" picturesUrl value pushed " + value);
             }
-
-
-
           });
 
           // console.log(food.id)
